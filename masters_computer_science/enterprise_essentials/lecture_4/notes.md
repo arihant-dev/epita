@@ -121,3 +121,36 @@ Reorganized into five regions as requested: top-left, top-right, middle, bottom-
 **Bottom right**
 - Revenue Streams — how the business generates income
 
+
+## Support Functions Finance & Accounting
+Finance deals with the management of assets and liabilities and the planning of future growth. Accounting focuses on the accurate recording and reporting of financial transactions.
+
+## Finance & Accounting Cost Management
+- Average Cost -> the total cost divided by the number of goods produced
+- Fixed Cost -> costs that do not change with the level of output
+- Variable Cost -> costs that vary directly with the level of output
+- Marginal Cost -> the cost of producing one additional unit of output
+
+## Finally, from a time perspective:
+- Short-term costs -> costs that vary with production levels in the short term
+- Long-term costs -> costs that can be adjusted in the long term, including fixed costs
+
+## CAPEX vs OPEX
+- CAPEX (Capital Expenditures) -> funds used by a company to acquire or upgrade physical assets such as property, industrial buildings, or equipment
+- OPEX (Operational Expenditures) -> ongoing costs for running a product, business, or system.
+
+## Finance & Accounting On Costs
+Whatever happens, i.e. an enterprise makes a profit or a loss, costs are incurred. Costs can be broadly classified into:
+
+## Two key performance indicators would be then:
+1. Variables Cost Ratio = VCM = (R - VC) / R
+2. Break-even Point = BEP = R / VCM
+
+Where R = Revenue, VC = Variable Costs
+
+- Measures profitablity through variable costs and revenue
+- P&L formula: M = R - VC - FC = (R-C)/R
+  - M = Margin (Profit or Loss)
+  - R = Revenue
+  - VC = Variable Costs
+  - FC = Fixed Costs
