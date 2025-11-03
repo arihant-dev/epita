@@ -1,0 +1,71 @@
+# .gitignore for college/class notes on macOS
+# - Keeps macOS/system files, editor/project metadata, temporary files,
+#   and common secret files out of the repository.
+# - Customize the "Optional" sections if you want to track e.g. datasets or
+#   notebooks. This file is intentionally conservative for notes projects.
+
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+# Icon must end with two \\\r
+Icon
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.VolumeIcon.icns
+
+# ---- Editor folders / IDEs ----
+.vscode/
+.idea/
+# JetBrains project files
+*.iml
+
+# ---- Swap / backup / temp files ----
+*~
+*.swp
+*.swo
+*.swn
+# Emacs
+*~
+
+# ---- Python / virtualenv (optional; remove if not used) ----
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+# If you prefer to ignore notebook outputs, enable the next line.
+# *.ipynb
+
+# ---- Logs and coverage ----
+*.log
+.coverage
+coverage.xml
+.pytest_cache/
+
+# ---- Secrets and local configuration ----
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# ---- Large data / exports (optional) ----
+# Uncomment if you don't want to check in exported data files
+# *.csv
+# *.tsv
+# *.xlsx
+# data/
+
+# ---- Misc ----
+Thumbs.db
+desktop.ini
+
+# End of .gitignore
