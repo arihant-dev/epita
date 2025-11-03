@@ -305,15 +305,17 @@ projectCards.forEach(card => {
 });
 
 // ==================== Console Message ====================
-console.log('%c🚀 Welcome to Arihant\'s Portfolio!', 'color: #2563eb; font-size: 20px; font-weight: bold;');
+console.log('%c🚀 Welcome to My Portfolio!', 'color: #2563eb; font-size: 20px; font-weight: bold;');
 console.log('%cBuilt with ❤️ and modern web technologies', 'color: #6b7280; font-size: 14px;');
-console.log('%cGitHub: https://github.com/arihant-dev', 'color: #7c3aed; font-size: 12px;');
 
 // ==================== Performance Monitoring ====================
 window.addEventListener('load', () => {
-    // Log page load time
-    const loadTime = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
-    console.log(`⚡ Page loaded in ${loadTime}ms`);
+    // Log page load time using modern Performance API
+    const perfData = performance.getEntriesByType('navigation')[0];
+    if (perfData) {
+        const loadTime = perfData.loadEventEnd - perfData.fetchStart;
+        console.log(`⚡ Page loaded in ${Math.round(loadTime)}ms`);
+    }
 });
 
 // ==================== Service Worker Registration (PWA Support) ====================

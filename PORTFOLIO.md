@@ -40,7 +40,7 @@ Edit `index.html` and update the following sections:
 
 #### Contact Information (Lines 279-309)
 ```html
-<p>your.email@example.com</p>  <!-- Update with your email -->
+<p>your-email@example.com</p>  <!-- Update with your email -->
 <p>Your City, Country</p>       <!-- Update with your location -->
 ```
 
