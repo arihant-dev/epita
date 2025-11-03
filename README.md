@@ -2,6 +2,17 @@
 
 This repository holds notes, notebooks, course materials and small project files for my Master's courses at EPITA. It is organized by course and lecture so you can quickly find notes, Jupyter notebooks, and any accompanying data.
 
+## 🌟 Portfolio Website
+
+A modern, responsive portfolio website is now available in this repository! Open `index.html` to view your portfolio showcasing your education, skills, projects, and contact information.
+
+**Quick Start:**
+- View locally: Open `index.html` in your browser
+- Customize: See `PORTFOLIO.md` for detailed customization guide
+- Features: Dark/light theme, responsive design, smooth animations
+
+[View Portfolio Customization Guide →](PORTFOLIO.md)
+
 ## Quick facts
 - Location: this repository root (you are here)
 - Primary use: store and version class notes and small project artifacts
