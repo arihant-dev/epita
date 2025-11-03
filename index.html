@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Arihant's Portfolio - EPITA Master's Student in Computer Science">
+    <title>Arihant | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>Arihant</h2>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Hi, I'm <span class="highlight">Arihant</span>
+                </h1>
+                <p class="hero-subtitle">Computer Science Master's Student at EPITA</p>
+                <p class="hero-description">
+                    Passionate about algorithms, data privacy, and building innovative solutions.
+                    Currently pursuing advanced studies in Computer Science.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="profile-placeholder">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <a href="#about">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I'm currently pursuing my Master's degree in Computer Science at EPITA, 
+                        one of France's leading engineering schools. My academic journey focuses on 
+                        advanced algorithms, data privacy, operating systems, and enterprise solutions.
+                    </p>
+                    <p>
+                        I am passionate about solving complex problems and building scalable systems. 
+                        My coursework includes technical warmup sessions, corporate finance, project 
+                        management principles, and communications for leaders, providing me with a 
+                        well-rounded skill set.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h3>10+</h3>
+                            <p>Courses Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Multiple</h3>
+                            <p>Projects</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Active</h3>
+                            <p>Learner</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education section">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Master's in Computer Science</h3>
+                        <h4>EPITA - École Pour l'Informatique et les Techniques Avancées</h4>
+                        <p class="timeline-date">Current</p>
+                        <p>
+                            Pursuing advanced studies in Computer Science with focus on:
+                        </p>
+                        <ul>
+                            <li>Advanced Algorithms & Data Structures</li>
+                            <li>Data Privacy by Design</li>
+                            <li>Operating Systems (Unix)</li>
+                            <li>Enterprise Essentials</li>
+                            <li>Project Management Principles</li>
+                            <li>Corporate Finance</li>
+                            <li>Communications for Leaders</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills section">
+        <div class="container">
+            <h2 class="section-title">Skills & Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Programming Languages</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">C/C++</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Data & Algorithms</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Data Structures</span>
+                        <span class="skill-tag">Algorithm Design</span>
+                        <span class="skill-tag">Complexity Analysis</span>
+                        <span class="skill-tag">Optimization</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Data Privacy & Security</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Privacy by Design</span>
+                        <span class="skill-tag">Data Anonymization</span>
+                        <span class="skill-tag">GDPR Compliance</span>
+                        <span class="skill-tag">Security Principles</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Systems & Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Unix/Linux</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Jupyter</span>
+                        <span class="skill-tag">VS Code</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Project Management</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Agile</span>
+                        <span class="skill-tag">Planning</span>
+                        <span class="skill-tag">Team Leadership</span>
+                        <span class="skill-tag">Communication</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Business & Finance</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Corporate Finance</span>
+                        <span class="skill-tag">Business Analysis</span>
+                        <span class="skill-tag">Strategic Thinking</span>
+                        <span class="skill-tag">Leadership</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects section">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>FitLife Data Anonymization</h3>
+                    <p>
+                        Implemented privacy-preserving data anonymization techniques for a fitness 
+                        tracking dataset, ensuring GDPR compliance while maintaining data utility.
+                    </p>
+                    <div class="project-tags">
+                        <span>Python</span>
+                        <span>Data Privacy</span>
+                        <span>GDPR</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">
+                            <i class="fas fa-code"></i> View Code
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Algorithm Complexity Analysis</h3>
+                    <p>
+                        Comprehensive study and implementation of advanced algorithms including 
+                        dynamic arrays, linked lists, and complexity analysis using Jupyter notebooks.
+                    </p>
+                    <div class="project-tags">
+                        <span>Python</span>
+                        <span>Algorithms</span>
+                        <span>Jupyter</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">
+                            <i class="fas fa-code"></i> View Code
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3>Unix Systems Programming</h3>
+                    <p>
+                        Hands-on projects exploring Unix/Linux operating systems, including 
+                        process management, shell scripting, and system-level programming.
+                    </p>
+                    <div class="project-tags">
+                        <span>C</span>
+                        <span>Unix</span>
+                        <span>Systems</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">
+                            <i class="fas fa-code"></i> View Code
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <h3>Course Notes Repository</h3>
+                    <p>
+                        Organized collection of lecture notes, Jupyter notebooks, and course 
+                        materials from my Master's program, maintained with version control.
+                    </p>
+                    <div class="project-tags">
+                        <span>Documentation</span>
+                        <span>Git</span>
+                        <span>Markdown</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> View Repository
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p class="contact-description">
+                        I'm always interested in discussing new opportunities, collaborations, 
+                        or just connecting with fellow developers and students. Feel free to reach out!
+                    </p>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>your.email@example.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Location</h4>
+                                <p>Paris, France</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div>
+                                <h4>Institution</h4>
+                                <p>EPITA</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="GitHub" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" aria-label="Email" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Arihant. All rights reserved.</p>
+                <p>Built with passion for learning and innovation</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
