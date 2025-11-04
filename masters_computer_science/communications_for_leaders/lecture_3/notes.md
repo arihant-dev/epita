@@ -49,3 +49,6 @@ Tools for Improved Writing
 - Reference
 
 
+ASA - American Sociological Association
+MLA - Modern Language Association
+APA - American Psychological Association
