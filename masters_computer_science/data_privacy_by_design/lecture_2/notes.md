@@ -1,12 +1,37 @@
-Owasp top 10 porivacy risks
-- P2: Operati=or sided data leakage
+Owasp top 10 privacy risks
+- P1: inadequate data protection
+    - weak encryption
+    - lack of hashing/salting passwords
+    - improper key management
+- P2: Operator sided data leakage
     -  lack of awareness
     - poor access management
     - unnecessary copies of personal data
-
+- P3: lack of user control
+    - no opt-in/opt-out mechanisms
+    - no data access or deletion options
+- P4: third party data sharing
+    - sharing without user consent
+    - inadequate vetting of third parties
+    - lack of contractual safeguards
 - P5: non transparent policies , terms and conditions
     - data processing is not explained
-    - conditions are too long and users do not erad them
+    - conditions are too long and users do not read them
+- P6: insufficient data minimization
+    - collecting more data than necessary
+    - retaining data longer than needed
+- P7: lack of privacy by design
+    - privacy not considered in system design
+    - no privacy impact assessments
+- P8: inadequate incident response
+    - no plan for data breaches
+    - failure to notify affected users
+- P9: poor user authentication and session management
+    - weak password policies
+    - lack of multi-factor authentication
+- P10: insufficient monitoring and auditing
+    - no logging of data access
+    - lack of regular audits for compliance
 
 
 Cryptography
