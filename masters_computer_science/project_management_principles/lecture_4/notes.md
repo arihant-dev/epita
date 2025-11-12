@@ -28,5 +28,5 @@ Law of diminishing returns: after a certain point, adding more resources results
 
 ## Costs consolidation
 - Provisions for risks are important for budget preparation
--> Known unknowns(contingency reserves)
--> Unknown unknowns(discretionary reserves)
+-> Known unknowns(contingency reserves): Contingency reserves
+-> Unknown unknowns(discretionary reserves): Management reserves: Discretionary reserves
