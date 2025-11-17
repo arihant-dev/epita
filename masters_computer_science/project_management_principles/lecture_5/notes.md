@@ -124,6 +124,11 @@ The PDCA cycle is a four-step iterative process for continuous improvement of pr
 - Promotes data-driven decision making
 - Involves all team members in the improvement process
 
+# Kaizen
+- A Japanese term meaning "change for the better" or "continuous improvement."
+- Focuses on small, incremental changes that collectively lead to significant improvements over time.
+- Efficiency, Quality, and Productivity
+
 ## Practice Problems
 You are the project manager on a project that has $800,000 software development effort. Two teams of programmers will work for six months for a total of 10,000 hours. According to the project schedule, your team should be done with 38% of the work. As of today, the project is 40% complete and 50% budget has been used. Calculate and share your conclusion(s).
 
