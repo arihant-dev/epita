@@ -110,7 +110,7 @@ Calculations:
 - Focus on processes to improve quality
 
 # Definition of Quality
-- The international Organization for Standardization (ISO) defines quality as "the extent to which a set of intrinsic characteristics fulfills requirements."
+- The International Organization for Standardization (ISO) defines quality as "the extent to which a set of intrinsic characteristics fulfills requirements."
 
 # Shewhart and Deming Cycle (PDCA Cycle)
 The PDCA cycle is a four-step iterative process for continuous improvement of processes and products.
