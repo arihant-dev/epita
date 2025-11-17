@@ -124,7 +124,73 @@ The PDCA cycle is a four-step iterative process for continuous improvement of pr
 - Promotes data-driven decision making
 - Involves all team members in the improvement process
 
-# Quality Management Process
+## Practice Problems
+You are the project manager on a project that has $800,000 software development effort. Two teams of programmers will work for six months for a total of 10,000 hours. According to the project schedule, your team should be done with 38% of the work. As of today, the project is 40% complete and 50% budget has been used. Calculate and share your conclusion(s).
 
+### Solution to Practice Problem 1
+Given:
+- Total Budget (BAC) = $800,000
+- Percent of work scheduled to be completed = 38%
+- Percent of work actually completed = 40%
+- Percent of budget used (AC) = 50% 
+Calculations:
+1. Planned Value (PV):
+   - PV = (Percent of work scheduled to be completed) x (Total Budget)
+   - PV = 38% x $800,000 = $304,000
+2. Actual Cost (AC):
+   - AC = Total cost incurred to date
+   - AC = 50% x $800,000 = $400,000
+3. Earned Value (EV):
+   - EV = (Percent of work actually completed) x (Total Budget)
+   - EV = 40% x $800,000 = $320,000
+4. Cost Variance (CV):
+   - CV = EV - AC
+   - CV = $320,000 - $400,000 = -$80,000 (indicating a cost overrun)
+5. Schedule Variance (SV):
+   - SV = EV - PV
+   - SV = $320,000 - $304,000 = $16,000 (indicating the project is ahead of schedule)
+6. Cost Performance Index (CPI):
+   - CPI = EV / AC
+   - CPI = $320,000 / $400,000 = 0.8 (indicating cost inefficiency)
+7. Schedule Performance Index (SPI):
+   - SPI = EV / PV
+   - SPI = $320,000 / $304,000 = 1.05 (indicating schedule efficiency)
 
+You are to develop and install ten printer drivers.
+Budget - $100,000 ($10K per printer driver)
+Time duration is 10 weeks (1 printer driver per week) At week 5:
+4 printer drivers have been developed and installed
+$47,500 spent to date
+Calculate the following - PV, AC, EV, ETC and VAC, and evaluate the performance of the project.
+### Solution to Practice Problem 2
 
+Given:
+- Total Budget (BAC) = $100,000 (10 drivers × $10,000 each)
+- Project duration = 10 weeks → at week 5 the scheduled work = 5/10 = 50%
+- Work actually completed = 4 drivers → 4/10 = 40%
+- Actual Cost (AC) to date = $47,500
+
+Calculations:
+1. Planned Value (PV):
+   - PV = Scheduled % × BAC = 50% × $100,000 = $50,000
+2. Earned Value (EV):
+   - EV = Actual % complete × BAC = 40% × $100,000 = $40,000
+3. Actual Cost (AC):
+   - AC = $47,500 (given)
+4. Cost Variance (CV):
+   - CV = EV − AC = $40,000 − $47,500 = −$7,500 (cost overrun)
+5. Schedule Variance (SV):
+   - SV = EV − PV = $40,000 − $50,000 = −$10,000 (behind schedule)
+6. Performance Indices:
+   - CPI = EV / AC = 40,000 / 47,500 ≈ 0.8421
+   - SPI = EV / PV = 40,000 / 50,000 = 0.80
+
+Forecasts (simple CPI-based):
+- EAC = BAC / CPI = 100,000 / 0.8421 ≈ $118,824
+- ETC = EAC − AC ≈ 118,824 − 47,500 = $71,324
+- VAC = BAC − EAC ≈ 100,000 − 118,824 = −$18,824
+
+Interpretation and recommended next steps:
+- The project is both behind schedule (SPI < 1) and over budget (CPI < 1). The variance amounts are modest in absolute terms but represent substantial percentages for a small project.
+- Investigate causes: scope creep, unexpected rework, lower productivity, or underestimated complexity for remaining drivers.
+- Recommended actions: perform a bottom-up ETC (re-estimate remaining work rather than relying solely on CPI), prioritise the remaining drivers (MVP first), control additional scope, and review resource allocation to improve CPI/SPI.
