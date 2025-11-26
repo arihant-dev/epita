@@ -60,3 +60,6 @@ Goals
 - One-to-One (1:1): Each record in Table A corresponds to one record in Table B
 - One-to-Many (1:N): Each record in Table A corresponds to multiple records in Table B
 - Many-to-Many (M:N): Multiple records in Table A correspond to multiple records in Table B (requires a junction table)
+
+
+[Test Preparation](https://pgexercises.com/questions/basic/where3.html)
