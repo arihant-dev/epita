@@ -59,10 +59,10 @@
 
 - Risk is an uncertain event or condition that, if it occurs, affects at least one project objective
 - Risk Management Objectives:
-    - Increase the probability and impact of positive events(opportunities)
-    - Decrease the probability and impact of negative events(threats)
+  - Increase the probability and impact of positive events(opportunities)
+  - Decrease the probability and impact of negative events(threats)
 
-## Exogenous Risks
+### Exogenous Risks
 
 - Political
 - Meteorological
