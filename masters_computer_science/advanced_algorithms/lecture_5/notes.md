@@ -29,3 +29,15 @@ def fractional_knapsack_algorithm(weights, prices, max_weight):
             total_value += prices[i] * quantities[i]
             remaining_weight = 0
     return total_value, quantities
+
+## Activity Selection Problem
+
+Propose a greedy algorithm to solve the activity selection problem, i.e. to select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time. Clearly state what are the inputs of your algorithm and the output.
+
+To have non optimal solution for activities selection problem we can sort the activities based on their starting time
+    - example where we stuck with non optimal solution
+    (1, 4), (2, 3), (3, 5)
+
+Another non optimal solution for least duration first we can sort the activities based on their duration (end time - start time)
+    - example where we stuck with non optimal solution
+    (1, 4), (3, 5), (6, 7), (8, 9), (5, 9)
