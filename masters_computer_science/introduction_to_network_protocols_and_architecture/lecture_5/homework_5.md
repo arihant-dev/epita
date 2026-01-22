@@ -6,7 +6,6 @@
 
 Please refer to the attached file labelled "Arihant_Jain_Ex-5-11.pkt" for the detailed implementation of the exercise.
 
-
 ## Exercise 12
 
 ### Solution to Exercise 12
