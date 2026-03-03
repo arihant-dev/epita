@@ -73,7 +73,6 @@ loop runs infinitely via `while(true)`.
 
 | File | Lines | Last Modified | Purpose |
 |------|-------|---------------|---------|
-
 | `main.cpp` | 29 | Feb 17 | Entry point; game loop |
 | `game.cpp` | 190 | Feb 17 | Game initialization; player management |
 | `board.cpp` | 190 | Feb 23* | Board singleton; path-clear checks; display |
@@ -94,7 +93,6 @@ loop runs infinitely via `while(true)`.
 
 | File | Lines | Purpose |
 |------|-------|---------|
-
 | `game.h` | 66 | Game class declaration |
 | `board.h` | 99 | Board class declaration |
 | `player.h` | 101 | Player class declaration |
@@ -112,7 +110,6 @@ loop runs infinitely via `while(true)`.
 
 | File | Purpose |
 |------|---------|
-
 | `README.md` | 3-line original readme ("A C++ chess program.") |
 | `Chess.vcxproj` | Visual Studio 2022 project file (v143 toolset) |
 | `chess` | Pre-compiled macOS executable (136KB) |
@@ -227,7 +224,6 @@ piece (if any) occupies it.
 
 | Member | Type | Access | Description |
 |--------|------|--------|-------------|
-
 | `_x` | `int` | private | Column coordinate (0-7) |
 | `_y` | `int` | private | Row coordinate (0-7) |
 | `_piece` | `Piece*` | private | Pointer to occupying piece, `NULL` if empty |
@@ -236,7 +232,6 @@ piece (if any) occupies it.
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-
 | Constructor | `Square(int x, int y)` | Initializes coordinates, sets `_piece = NULL` |
 | Constructor | `Square()` | **Declared in header but NOT implemented** |
 | Destructor | `~Square()` | Empty body |
@@ -265,7 +260,6 @@ path-clearance checks for sliding pieces, end-row detection, and display renderi
 
 | Member | Type | Access | Description |
 |--------|------|--------|-------------|
-
 | `_theBoard` | `static Board*` | private | Singleton instance (initialized to `NULL`) |
 | `_DIMENSION` | `static const int = 8` | private | Board dimension constant |
 | `_squares` | `Square*[8][8]` | private | 2D array of dynamically allocated squares |
@@ -274,7 +268,6 @@ path-clearance checks for sliding pieces, end-row detection, and display renderi
 
 | Method | Signature | Lines | Description |
 |--------|-----------|-------|-------------|
-
 | Constructor | `Board()` | board.cpp:8-18 | Private. Creates 64 `new Square(i, j)` objects |
 | Destructor | `~Board()` | board.cpp:20-31 | Deletes all 64 squares, sets pointers to `nullptr` |
 | `getBoard` | `static Board* getBoard()` | board.cpp:33-38 | Lazy singleton; creates Board on first call |
@@ -334,7 +327,6 @@ pattern. Subclasses only need to implement geometry-specific `canMoveTo()`.
 
 | Member | Type | Access | Description |
 |--------|------|--------|-------------|
-
 | `_isWhite` | `bool` | protected | Piece color |
 | `_color` | `string` | protected | `"W"` or `"B"` for display |
 | `_square` | `Square*` | private | Current location; `NULL` if captured |
@@ -343,7 +335,6 @@ pattern. Subclasses only need to implement geometry-specific `canMoveTo()`.
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-
 | Constructor | `Piece(bool isWhite)` | Sets color fields, `_square = NULL` |
 | Destructor | `virtual ~Piece()` | Empty body (virtual for proper cleanup) |
 | `moveTo` | `virtual bool moveTo(Player&, Square&)` | **Core move logic** (see detailed breakdown below) |
@@ -402,14 +393,12 @@ moved. This is used by:
 
 | Member | Type | Access | Description |
 |--------|------|--------|-------------|
-
 | `_moved` | `bool` | private | Initially `false`; set to `true` after first valid move |
 
 **Methods:**
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-
 | Constructor | `RestrictedPiece(bool isWhite)` | Calls `Piece(isWhite)`, sets `_moved = false` |
 | Destructor | `virtual ~RestrictedPiece()` | Empty body |
 | `moveTo` | `virtual bool moveTo(Player&, Square&)` | Calls `Piece::moveTo()`, then sets `_moved = true` if valid and not already moved |
@@ -435,7 +424,6 @@ so this is actually safe: `_moved` is only set after `Piece::moveTo()` returns `
 
 | Method | Return | Description |
 |--------|--------|-------------|
-
 | `value()` | `0` | King has no capture value (game ends before king is captured) |
 | `canMoveTo(Square&)` | `bool` | `|dx| <= 1 && |dy| <= 1` (but not both 0, since `canMoveTo` is only called when from != to) |
 | `display()` | void | Prints `WK` or `BK` |
@@ -464,7 +452,6 @@ Valid if: (|dy| == 1 AND dx == 0)           // vertical
 
 | Method | Return | Description |
 |--------|--------|-------------|
-
 | `value()` | `9` | Standard chess piece value |
 | `canMoveTo(Square&)` | `bool` | Clear vertical OR clear horizontal OR clear diagonal |
 | `display()` | void | Prints `WQ` or `BQ` |
@@ -491,7 +478,6 @@ Valid if: Board::isClearVertical(current, target)
 
 | Method | Return | Description |
 |--------|--------|-------------|
-
 | `value()` | `5` | Standard chess piece value |
 | `canMoveTo(Square&)` | `bool` | Clear vertical OR clear horizontal |
 | `display()` | void | Prints `WR` or `BR` |
@@ -510,7 +496,6 @@ Valid if: Board::isClearVertical(current, target)
 
 | Method | Return | Description |
 |--------|--------|-------------|
-
 | `value()` | `3` | Standard chess piece value |
 | `canMoveTo(Square&)` | `bool` | Clear diagonal |
 | `display()` | void | Prints `WB` or `BB` |
@@ -529,7 +514,6 @@ Valid if: Board::isClearVertical(current, target)
 
 | Method | Return | Description |
 |--------|--------|-------------|
-
 | `value()` | `3` | Standard chess piece value |
 | `canMoveTo(Square&)` | `bool` | L-shape pattern |
 | `display()` | void | Prints `WN` or `BN` (N for kNight to avoid King conflict) |
@@ -558,14 +542,12 @@ initial double-move, diagonal capture, and promotion to Queen.
 
 | Member | Type | Access | Description |
 |--------|------|--------|-------------|
-
 | `_delegate` | `Piece*` | private | `NULL` normally; points to a `Queen` object after promotion |
 
 **Methods:**
 
 | Method | Description |
 |--------|-------------|
-
 | Constructor | `Pawn(bool isWhite)` - initializes `_delegate = NULL` |
 | Destructor | Deletes `_delegate` if it exists |
 | `setLocation(Square*)` | Calls `Piece::setLocation()` (pass-through) |
@@ -639,7 +621,6 @@ detection, and piece capture tracking.
 
 | Member | Type | Access | Description |
 |--------|------|--------|-------------|
-
 | `_name` | `string` | private | `"White"` or `"Black"` |
 | `_isWhite` | `bool` | private | Player's color |
 | `_myPieces` | `set<Piece*>&` | private | **Reference** to the Game's piece set for this color |
@@ -650,7 +631,6 @@ detection, and piece capture tracking.
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-
 | Constructor | `Player(string, bool, King&, set<Piece*>&)` | Stores all params |
 | Destructor | `~Player()` | Empty body |
 | `makeMove` | `bool makeMove()` | Get and execute a move (see detailed flow below) |
@@ -713,7 +693,6 @@ turn alternation. All data members and key methods are static.
 
 | Member | Type | Description |
 |--------|------|-------------|
-
 | `player1` | `Player*` | White player (initialized to `NULL`) |
 | `player2` | `Player*` | Black player (initialized to `NULL`) |
 | `nextPlayer` | `Player*` | Pointer used for turn alternation |
@@ -724,7 +703,6 @@ turn alternation. All data members and key methods are static.
 
 | Method | Description |
 |--------|-------------|
-
 | `Game()` | Private empty constructor (prevents instantiation) |
 | `~Game()` | Deletes all pieces and players (see bugs section) |
 | `initialize()` | Creates all 32 pieces, places them on board, creates 2 players |
@@ -992,7 +970,6 @@ while the outer loop says "Invalid move... Try again." (ellipsis).
 
 | What | Where Created | How Many | Owned By |
 |------|---------------|----------|----------|
-
 | Board (singleton) | `Board::getBoard()` | 1 | Static pointer `_theBoard` |
 | Square objects | `Board::Board()` | 64 | Board's `_squares[][]` array |
 | Piece objects | `Game::initialize()` | 32 | Game's `whitePieces`/`blackPieces` sets |
@@ -1004,7 +981,6 @@ while the outer loop says "Invalid move... Try again." (ellipsis).
 
 | What | Where Deleted | Notes |
 |------|---------------|-------|
-
 | Square objects | `Board::~Board()` | Properly deleted in nested loop |
 | Piece objects | `Game::~Game()` | Iterates both sets and deletes each |
 | Delegate Queens | `Pawn::~Pawn()` | Deleted if `_delegate != NULL` |
@@ -1078,7 +1054,6 @@ and wires them together. The `Game` class itself is never instantiated.
 
 | Feature | Status | Details |
 |---------|--------|---------|
-
 | 2-player alternating turns | COMPLETE | White always moves first |
 | All 6 piece types | COMPLETE | King, Queen, Rook, Bishop, Knight, Pawn |
 | Standard piece movement | COMPLETE | Each piece follows correct geometry |
@@ -1100,7 +1075,6 @@ and wires them together. The `Game` class itself is never instantiated.
 
 | Missing Feature | Chess Rule | Difficulty | Notes |
 |-----------------|------------|------------|-------|
-
 | **Checkmate detection** | Game ends when king is in check and cannot escape | Medium | Requires checking all possible moves for the player in check |
 | **Stalemate detection** | Draw when player has no legal moves but is not in check | Medium | Same mechanism as checkmate but checking for zero legal moves |
 | **Castling** | King moves 2 squares toward rook; rook jumps over king | Medium | `RestrictedPiece` already tracks `hasMoved()` for King and Rook |

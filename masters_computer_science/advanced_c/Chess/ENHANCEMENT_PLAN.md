@@ -14,7 +14,6 @@
 
 | Phase | Focus | Summary |
 |-------|-------|---------|
-
 | **Phase 1** | Bug Fixes + Build System + Core Rules | Fix existing bugs, add Makefile, implement checkmate/stalemate, castling, game termination |
 | **Phase 2** | Remaining Chess Rules + UX Polish | En passant, pawn under-promotion, captured pieces display, resign/quit, move counter |
 
