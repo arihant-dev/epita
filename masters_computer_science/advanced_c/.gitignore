@@ -39,7 +39,3 @@ Release/
 # Precompiled headers
 *.pch
 *.gch
-
-# Agent logs and temporary files
-ENHANCEMENT_PLAN.md
-PROJECT_BASELINE.md
