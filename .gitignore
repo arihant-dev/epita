@@ -69,4 +69,19 @@ secrets/
 Thumbs.db
 desktop.ini
 
+## LaTeX auxiliary files
+*.aux
+*.lof
+*.lot
+*.fls
+*.log
+*.out
+*.toc
+*.fmt
+*.fot
+*.cbl
+*.cb2
+*.lb
+*.bbl
+
 # End of .gitignore
