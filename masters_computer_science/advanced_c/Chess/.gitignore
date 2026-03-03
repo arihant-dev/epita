@@ -1,0 +1,45 @@
+# Compiled binaries
+chess
+*.exe
+*.out
+
+# Object files
+*.o
+*.obj
+
+# macOS debug symbols
+*.dSYM/
+
+# Visual Studio build artifacts
+x64/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.sdf
+*.opensdf
+*.tlog/
+*.log
+*.recipe
+*.FileListAbsolute.txt
+Debug/
+Release/
+
+# IDE / Editor config
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS system files
+.DS_Store
+
+# Precompiled headers
+*.pch
+*.gch
+
+# Agent logs and temporary files
+ENHANCEMENT_PLAN.md
+PROJECT_BASELINE.md
