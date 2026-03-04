@@ -64,25 +64,114 @@ After registering on AWS and setting up an EC2 instance, we have the following i
 
 \begin{figure}[H]
 \centering
-\makebox[\textwidth][c]{%
-    \begin{minipage}{0.33\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/ec2_apt_update_upgrade.png}
-        \captionof{figure}{Huize Su}
-    \end{minipage}
-    \begin{minipage}{0.33\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/ec2_apt_update_upgrade.png}
-        \captionof{figure}{Other Student}
-    \end{minipage}
-    \begin{minipage}{0.33\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/ec2_apt_update_upgrade.png}
-        \captionof{figure}{Other Student}
-    \end{minipage}
-}
+\includegraphics[width=0.65\textwidth]{figures/ec2.png}
+\caption{AWS EC instance information page (Huizhe Su)}
 \end{figure}
+It's recommanded to use ssh to login to the remote server. First, we download our ssh key from our account, then we need to change the permission of the private key to be read-only by user only.
+\begin{lstlisting}[language=bash]
+chmod 400 ./aws-ubuntu-lab.pem
+\end{lstlisting}
+For easy access our remote server, we can edit \texttt{~/.ssh/config} and add the following configuration.
+\begin{lstlisting}
+Host aws_epita
+    HostName ec2-13-60-230-94.eu-north-1.compute.amazonaws.com
+    User ubuntu
+    IdentityFile ~/.ssh/aws-ubuntu-lab.pem
+\end{lstlisting}
+\subsection{Update the system}
+We update the server using the following command:
+\begin{lstlisting}[language=bash]
+sudo apt-get install update
+sudp apt-get install upgrade
+\end{lstlisting}
 
+\subsection{Find the main characteristics of your instance from the commands below.}
+
+Instead of output the information by command line, we can use a new tool called \texttt{neofetch}. Install neofetch and run neofetch
+\begin{lstlisting}[language=bash]
+sudo apt-get install neofetch
+neofetch
+\end{lstlisting}
+Then we will get the information
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/neofetch.png}
+    \caption{Neofetch and system infromation (Huizhe Su)}
+\end{figure}
+For other information, we selected to show \texttt{ssh} logs, network interfaces, detailed CPU infomation, installed packages, groups, passwd, devices, processes, fire wall status, hardware space.
+\begin{lstlisting}[language=bash]
+journalctl -u ssh # log for ssh
+ifconfig #network interfaces
+cat /proc/cpuinfo # cpu info
+dpkg -l | wc -l # calculate installed packages
+# we use getent instead of cat for accessing sytem database
+getent group  # groups
+getent passwd # passwd
+lsusb # list usb devices
+lspci # list pheripheral devices
+top # snapshot of current processes
+ps x # list all processes
+sudo ufw status verbose # show firewall status
+df -l --si # hardware spaces
+\end{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/journalctl_ssh.png}
+    \caption{User level logs of ssh service(Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/ifconfig.png}
+    \caption{Network interfaces (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/cpuinfo.png}
+    \caption{Detailed CPU information (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/dpkg.png}
+    \caption{There are 778 installed packages (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/group.png}
+        \captionof{figure}{Group information}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/passwd.png}
+        \captionof{figure}{User informaiton}
+    \end{minipage}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/lspci.png}
+    \caption{USB information and pheripheral information (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/top.png}
+    \caption{current processes (using \texttt{top}) (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/ps.png}
+    \caption{current processes (using \texttt{ps}) (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/ufw.png}
+    \caption{Firewall status (closed) (Huizhe Su)}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/df_runlevel.png}
+    \caption{Free space on disk (Huizhe Su)}
+\end{figure}
 %% ============ SECTION 2: Installing Apache Web Server ============ %%
 \section{Installing Apache Web Server}
 \setcounter{subsection}{3}
@@ -237,8 +326,40 @@ While this enables HTTPS, the browser displays a security warning because the ce
 \end{figure}
 
 \subsection{Create and Install a Certified Certificate with ZeroSSL. Test with a Web Browser}
-We explored ZeroSSL as an option for obtaining a trusted certificate. However, ZeroSSL's free tier has limitations --- it requires manual renewal every 90 days, the dashboard-based workflow is less straightforward for server-side automation, and domain verification can be cumbersome compared to other solutions. For these reasons, we opted to skip ZeroSSL and proceed directly with Let's Encrypt and Certbot, which offers a fully automated and CLI-based approach better suited for server administration.
-
+To get a ZeroSSL certificate, we need to register an account on ZeroSSL and request the certificate on the website.
+After that, we need to use CNAME verification to ensu we can install our certificate by adding the url for verification to our DNS Zone.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/cnameverification.png}
+    \caption{CName verification setting on DNS Zone (Huizhe Su)}
+\end{figure}
+Then we need to download and upload the certificate to our server, with following configuration.
+We use \texttt{scp} to upload the files to our remote instance.
+\begin{lstlisting}[language=bash]
+scp ./www.marija-epita-lab.cloud-ip.cc.zip aws_epita:/home/ubuntu
+\end{lstlisting}
+Then we will unzip it and install them into \texttt{/etc/apache2/ssl/}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/zerosslconfig.png}
+    \caption{ZeroSSL configuration (Huizhe Su)}
+\end{figure}
+Then, we restart apache service.
+\begin{lstlisting}[language=bash]
+sudo systemctl restart apache2
+\end{lstlisting}
+Then we can verify the installation on ZeroSSL website.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/zerosslverification.png}
+    \caption{Verification result on ZeroSSL (Huizhe Su)}
+\end{figure}
+Now when we can go to our website \url{www.marija-epita-lab.cloud-ip.cc}, we can see the certificate is ZeroSSL.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/zerossl.png}
+    \caption{ZeroSSL certificate (Huizhe Su)}
+\end{figure}
 \subsection{Create and Install a Certified Certificate with Let's Encrypt and Certbot. Test with a Web Browser}
 To obtain a trusted SSL certificate with automatic renewal, we used Certbot with Let's Encrypt. First, we install Certbot and its Apache plugin:
 
