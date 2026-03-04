@@ -67,6 +67,17 @@ After registering on AWS and setting up an EC2 instance, we have the following i
 \includegraphics[width=0.65\textwidth]{figures/ec2.png}
 \caption{AWS EC instance information page (Huizhe Su)}
 \end{figure}
+It's recommanded to use ssh to login to the remote server. First, we download our ssh key from our account, then we need to change the permission of the private key to be read-only by user only.
+\begin{lstlisting}[language=bash]
+chmod 400 ./aws-ubuntu-lab.pem
+\end{lstlisting}
+For easy access our remote server, we can edit \texttt{~/.ssh/config} and add the following configuration.
+\begin{lstlisting}
+Host aws_epita
+    HostName ec2-13-60-230-94.eu-north-1.compute.amazonaws.com
+    User ubuntu
+    IdentityFile ~/.ssh/aws-ubuntu-lab.pem
+\end{lstlisting}
 \subsection{Update the system}
 We update the server using the following command:
 \begin{lstlisting}[language=bash]
@@ -315,8 +326,40 @@ While this enables HTTPS, the browser displays a security warning because the ce
 \end{figure}
 
 \subsection{Create and Install a Certified Certificate with ZeroSSL. Test with a Web Browser}
-We explored ZeroSSL as an option for obtaining a trusted certificate. However, ZeroSSL's free tier has limitations --- it requires manual renewal every 90 days, the dashboard-based workflow is less straightforward for server-side automation, and domain verification can be cumbersome compared to other solutions. For these reasons, we opted to skip ZeroSSL and proceed directly with Let's Encrypt and Certbot, which offers a fully automated and CLI-based approach better suited for server administration.
-
+To get a ZeroSSL certificate, we need to register an account on ZeroSSL and request the certificate on the website.
+After that, we need to use CNAME verification to ensu we can install our certificate by adding the url for verification to our DNS Zone.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/cnameverification.png}
+    \caption{CName verification setting on DNS Zone (Huizhe Su)}
+\end{figure}
+Then we need to download and upload the certificate to our server, with following configuration.
+We use \texttt{scp} to upload the files to our remote instance.
+\begin{lstlisting}[language=bash]
+scp ./www.marija-epita-lab.cloud-ip.cc.zip aws_epita:/home/ubuntu
+\end{lstlisting}
+Then we will unzip it and install them into \texttt{/etc/apache2/ssl/}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/zerosslconfig.png}
+    \caption{ZeroSSL configuration (Huizhe Su)}
+\end{figure}
+Then, we restart apache service.
+\begin{lstlisting}[language=bash]
+sudo systemctl restart apache2
+\end{lstlisting}
+Then we can verify the installation on ZeroSSL website.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/zerosslverification.png}
+    \caption{Verification result on ZeroSSL (Huizhe Su)}
+\end{figure}
+Now when we can go to our website \url{www.marija-epita-lab.cloud-ip.cc}, we can see the certificate is ZeroSSL.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/zerossl.png}
+    \caption{ZeroSSL certificate (Huizhe Su)}
+\end{figure}
 \subsection{Create and Install a Certified Certificate with Let's Encrypt and Certbot. Test with a Web Browser}
 To obtain a trusted SSL certificate with automatic renewal, we used Certbot with Let's Encrypt. First, we install Certbot and its Apache plugin:
 
