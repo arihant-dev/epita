@@ -33,8 +33,8 @@ Game::~Game()
     blackPieces.clear();
     
     // Delete players
-    delete &player1;
-    delete &player2;
+    delete player1;
+    delete player2;
 }
     
 void Game::initialize()
@@ -43,9 +43,9 @@ void Game::initialize()
     King* aKing;
     Square* aSquare;
     
-    // create piece sets
-    whitePieces = *(new set<Piece*>);
-    blackPieces = *(new set<Piece*>);
+    // clear piece sets
+    whitePieces.clear();
+    blackPieces.clear();
     
     // Create each piece
     // Set their locations
@@ -181,6 +181,59 @@ Player* Game::opponentOf(Player& player)
     }
 
     return opponent;
+}
+
+bool Game::isGameOver(Player* currentPlayer)
+{
+    Player* opponent = opponentOf(*currentPlayer);
+
+    // check if the opponent has any legal moves
+    if(!opponent->hasLegalMove())
+    {
+        if(opponent->inCheck())
+        {
+            // checkmate
+            cout << "Checkmate! " << currentPlayer->getName() << " wins!" << endl;
+        }
+        else
+        {
+            // stalemate
+            cout << "Stalemate! The game is a draw." << endl;
+        }
+
+        // display final scores
+        cout << "Final Score:" << endl;
+        cout << "  White: " << player1->score() << endl;
+        cout << "  Black: " << player2->score() << endl;
+
+        return true;
+    }
+
+    return false;
+}
+
+void Game::cleanup()
+{
+    // Delete pieces
+    for (set<Piece*>::iterator itr = whitePieces.begin();
+         itr != whitePieces.end(); ++itr)
+    {
+        delete *itr;
+    }
+    whitePieces.clear();
+
+    for (set<Piece*>::iterator itr = blackPieces.begin();
+         itr != blackPieces.end(); ++itr)
+    {
+        delete *itr;
+    }
+    blackPieces.clear();
+
+    // Delete players
+    delete player1;
+    player1 = NULL;
+    delete player2;
+    player2 = NULL;
 }
 
 Player* Game::player1 = NULL;

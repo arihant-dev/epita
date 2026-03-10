@@ -46,6 +46,20 @@ class Game
     */
     static Player* opponentOf(Player& player);
 
+    /**
+    * Check the game state after a move and handle
+    * checkmate, stalemate, or continuing play.
+    *
+    * @param currentPlayer the player who just moved
+    * @return true if the game is over
+    */
+    static bool isGameOver(Player* currentPlayer);
+
+    /**
+    * Clean up all allocated memory
+    */
+    static void cleanup();
+
  private:
     
     /**
