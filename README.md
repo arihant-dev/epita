@@ -78,3 +78,6 @@ If you'd like, I can:
 - add a `CONTRIBUTING.md` template,
 - create a small script to set up the Python environment and open Jupyter, or
 - customize `.gitignore` to ignore or track the CSV files under `data_privacy_by_design/project/`.
+
+---
+By [Arihant Jain](https://arihant-jain.me)
