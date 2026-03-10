@@ -75,6 +75,7 @@ bool Board::isClearVertical(Square& from, Square& to) const
             if(squareAt(start->getX(), i)->occupied())
             {
                 valid = false;
+                break;
             }
         } 
     }
@@ -111,10 +112,11 @@ bool Board::isClearHorizontal(Square& from, Square& to) const
         // iterate over horizontal interval between squares
         for(int i = start->getX() + 1; i < end->getX(); i++)
         {
-            // if a square is occupied, the vertical is not clear
+            // if a square is occupied, the horizontal is not clear
             if(squareAt(i, start->getY())->occupied())
             {
                 valid = false;
+                break;
             }
         } 
     }
@@ -154,6 +156,7 @@ bool Board::isClearDiagonal(Square& from, Square& to) const
             if(squareAt(from.getX() + (i * xDir), from.getY() + (i * yDir))->occupied())
             {
                 valid = false;
+                break;
             }
         }
     }
