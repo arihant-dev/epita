@@ -22,7 +22,6 @@ class Square
     * @params x, y the location of the square on the board
     */
     Square(int x, int y);
-    Square();
 
     /**
      * Default destructor
