@@ -49,3 +49,8 @@ void Queen::display() const
 {
     cout << _color + "Q";
 }
+
+char Queen::symbol() const
+{
+    return 'Q';
+}

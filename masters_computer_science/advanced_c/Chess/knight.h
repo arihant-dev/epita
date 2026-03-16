@@ -38,6 +38,13 @@ class Knight : public Piece
     int value() const;
 
     /**
+    * Get the piece symbol
+    *
+    * @return the symbol character
+    */
+    char symbol() const;
+
+    /**
     * Determines if the piece can legally move to a given square
     *
     * @param square the square to move to

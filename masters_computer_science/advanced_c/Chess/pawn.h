@@ -43,7 +43,14 @@ class Pawn : public RestrictedPiece
     * @return the value
     */
     int value() const;
-    
+
+    /**
+    * Get the piece symbol
+    *
+    * @return the symbol character
+    */
+    char symbol() const;
+
     /**
      * Move the piece to another square.
      *

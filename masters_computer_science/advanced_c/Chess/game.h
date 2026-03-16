@@ -60,6 +60,18 @@ class Game
     */
     static void cleanup();
 
+    /**
+    * Increment the move counter
+    */
+    static void incrementMoveCount();
+
+    /**
+    * Get the current move count
+    *
+    * @return move count
+    */
+    static int getMoveCount();
+
  private:
     
     /**
@@ -73,6 +85,7 @@ class Game
     static Player* nextPlayer;
     static set<Piece*> whitePieces;
     static set<Piece*> blackPieces;
+    static int moveCount;
 
 }; // Game
 

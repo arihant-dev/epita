@@ -43,6 +43,13 @@ public:
      * @return if in check
      */
     bool inCheck();
+
+    /**
+     * checks if this player has any legal move available
+     *
+     * @return if has at least one legal move
+     */
+    bool hasLegalMove();
     
     /**
      * Capture another piece
@@ -85,8 +92,15 @@ public:
      * @return the king
      */
     King* myKing() const;
-    
-    
+
+    /**
+     * Get captured pieces as a formatted string
+     *
+     * @return string representation of captured pieces
+     */
+    string capturedPiecesString() const;
+
+
 private:
     
     // Private attributes

@@ -45,5 +45,10 @@ void Knight::display() const
     cout << _color + "N";
 }
 
+char Knight::symbol() const
+{
+    return 'N';
+}
+
 
 

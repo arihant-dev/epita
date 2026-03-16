@@ -36,3 +36,8 @@ void Bishop::display() const
 {
     cout << _color + "B";
 }
+
+char Bishop::symbol() const
+{
+    return 'B';
+}

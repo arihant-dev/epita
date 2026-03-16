@@ -42,10 +42,13 @@ void Game::initialize()
     Piece* aPiece;
     King* aKing;
     Square* aSquare;
-    
+
     // clear piece sets
     whitePieces.clear();
     blackPieces.clear();
+
+    // reset move counter
+    moveCount = 0;
     
     // Create each piece
     // Set their locations
@@ -241,3 +244,14 @@ Player* Game::player2 = NULL;
 Player* Game::nextPlayer = NULL;
 set<Piece*> Game::whitePieces;
 set<Piece*> Game::blackPieces;
+int Game::moveCount = 0;
+
+void Game::incrementMoveCount()
+{
+    moveCount++;
+}
+
+int Game::getMoveCount()
+{
+    return moveCount;
+}

@@ -41,3 +41,8 @@ void Rook::display() const
 {
     cout << _color + "R";
 }
+
+char Rook::symbol() const
+{
+    return 'R';
+}

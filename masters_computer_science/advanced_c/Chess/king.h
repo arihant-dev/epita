@@ -37,13 +37,30 @@ class King : public RestrictedPiece
     int value() const;
 
     /**
+    * Get the piece symbol
+    *
+    * @return the symbol character
+    */
+    char symbol() const;
+
+    /**
     * Determines if the piece can legally move to a given square
     *
     * @param square the square to move to
     * @return if move is legal
     */
     bool canMoveTo(Square& location) const;
-    
+
+    /**
+    * Move the king, handling castling if a 2-square
+    * horizontal move is detected.
+    *
+    * @param byPlayer the player making the move
+    * @param toSquare the destination square
+    * @return if legal move was made
+    */
+    bool moveTo(Player& byPlayer, Square& toSquare);
+
     /**
      * Display the piece
      * @param outStream the output stream

@@ -4,6 +4,7 @@
  *
  */
 #include <iostream>
+#include <limits>
 #include "player.h"
 #include "board.h"
 #include "game.h"
@@ -62,7 +63,7 @@ bool Player::makeMove()
     {
         cerr << "Invalid move. Try again." << endl;
         cin.clear();
-        //getline(cin, badInput); // take bad input off the stream and ignore it
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << _name << " player enter move (e.g. a2 a4): ";
         cin >> fromSquare >> toSquare;
     }
@@ -139,4 +140,53 @@ set<Piece*>* Player::myPieces() const
 King* Player::myKing() const
 {
     return &_myKing;
+}
+
+bool Player::hasLegalMove()
+{
+    // for each of this player's pieces still on the board
+    for (set<Piece*>::iterator itr = _myPieces.begin();
+         itr != _myPieces.end(); ++itr)
+    {
+        Piece* piece = *itr;
+
+        // skip pieces that have been captured (no longer on the board)
+        if(!piece->location())
+        {
+            continue;
+        }
+
+        // try moving this piece to every square on the board
+        for(int x = 0; x < 8; x++)
+        {
+            for(int y = 0; y < 8; y++)
+            {
+                Square* target = Board::getBoard()->squareAt(x, y);
+
+                // dry-run: check if this move would be legal
+                if(piece->canLegallyMoveTo(*this, *target))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+string Player::capturedPiecesString() const
+{
+    string result = "";
+
+    // build a string of captured piece symbols
+    for (set<Piece*>::const_iterator itr = _capturedPieces.begin();
+         itr != _capturedPieces.end(); ++itr)
+    {
+        Piece* piece = *itr;
+        result += piece->symbol();
+        result += " ";
+    }
+
+    return result.empty() ? "(none)" : result;
 }

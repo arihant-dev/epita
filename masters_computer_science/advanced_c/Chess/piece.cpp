@@ -128,3 +128,65 @@ Square* Piece::location() const
     return _square;
 }
 
+bool Piece::canLegallyMoveTo(Player& byPlayer, Square& toSquare)
+{
+    bool validMove = false;
+    Piece* toCapture = NULL;
+    Square* fromSquare = _square;
+
+    // check if this is being moved by its player
+    if(_isWhite == byPlayer.isWhite())
+    {
+        // check if this is moving according to the correct geometry
+        if(canMoveTo(toSquare))
+        {
+            // check if toSquare is occupied by a piece that could be captured
+            if(toSquare.occupied())
+            {
+                toCapture = toSquare.occupiedBy();
+
+                // move only valid if piece to capture is of different color
+                if(toCapture->isWhite() != byPlayer.isWhite())
+                {
+                    validMove = true;
+                }
+            }
+            else
+            {
+                validMove = true;
+            }
+
+            if(validMove)
+            {
+                // tentatively make the move
+                if(toCapture)
+                {
+                    toCapture->setLocation(NULL);
+                }
+
+                _square->setOccupier(NULL);
+                _square = &toSquare;
+                _square->setOccupier(this);
+
+                // check if the move leaves byPlayer's king in check
+                if(byPlayer.inCheck())
+                {
+                    validMove = false;
+                }
+
+                // always undo the move
+                _square = fromSquare;
+                _square->setOccupier(this);
+                toSquare.setOccupier(toCapture);
+
+                if(toCapture)
+                {
+                    toCapture->setLocation(&toSquare);
+                }
+            }
+        }
+    }
+
+    return validMove;
+}
+

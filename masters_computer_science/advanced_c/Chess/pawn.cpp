@@ -129,3 +129,15 @@ void Pawn::display() const
     }
 }
 
+char Pawn::symbol() const
+{
+    if(_delegate)
+    {
+        return _delegate->symbol();
+    }
+    else
+    {
+        return 'P';
+    }
+}
+

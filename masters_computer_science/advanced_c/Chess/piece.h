@@ -41,6 +41,16 @@ class Piece
     virtual bool moveTo(Player& byPlayer, Square& toSquare);
 
     /**
+    * Dry-run check: determines if this piece can legally move to the
+    * given square without actually making the move (always undone).
+    *
+    * @param byPlayer the player making the move
+    * @param toSquare the destination square
+    * @return if the move would be legal
+    */
+    bool canLegallyMoveTo(Player& byPlayer, Square& toSquare);
+
+    /**
     * Set which square the piece is located on
     *
     * @param location the square
@@ -48,11 +58,18 @@ class Piece
     virtual void setLocation(Square* location);
 
     /**
-    * Get the point value of the piece
+    * Get point value of the piece
     *
     * @return the value
     */
     virtual int value() const = 0;
+
+    /**
+    * Get the piece symbol (P, N, B, R, Q)
+    *
+    * @return the symbol character
+    */
+    virtual char symbol() const = 0;
 
     /**
     * Determine if the piece is white
