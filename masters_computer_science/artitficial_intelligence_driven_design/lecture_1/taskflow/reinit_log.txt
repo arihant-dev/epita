@@ -1,0 +1,20 @@
+--- INITIALIZING TERMINAL CLEANUP ---
+Purging .next and build logs...
+CRITICAL: Purging node_modules...
+Reinstalling dependencies...
+npm warn deprecated next@15.1.0: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
+
+added 446 packages, and audited 447 packages in 15s
+
+146 packages are looking for funding
+  run `npm fund` for details
+
+1 critical severity vulnerability
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Verifying environment configuration...
+Config: NOMINAL
+--- CLEANUP COMPLETE. RUN 'npm run build' TO VERIFY BINARY ---

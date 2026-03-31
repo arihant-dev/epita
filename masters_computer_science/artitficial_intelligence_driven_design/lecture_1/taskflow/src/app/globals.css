@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  /* Industrial Logic Palette */
+  --color-primary: #4b53bc;
+  --color-primary-dim: #3f46af;
+  --color-secondary: #5f5f5f;
+  --color-tertiary: #0000e1;
+  --color-surface: #faf9f9;
+  --color-surface-container-low: #f3f4f4;
+  --color-surface-container-highest: #dfe3e4;
+  --color-background: #c0c0c0;
+  
+  /* Strict Typography */
+  --font-sans: "Work Sans", sans-serif;
+  --font-mono: "Courier New", Courier, monospace;
+  
+  /* Structural Constraints */
+  --radius-none: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-full: 0px;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-black antialiased font-sans;
+    image-rendering: pixelated;
+  }
+}
+
+@layer utilities {
+  .outset-bevel {
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+  }
+
+  .inset-bevel {
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+  }
+
+  .outset-bevel-heavy {
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 3px solid #404040;
+    border-bottom: 3px solid #404040;
+  }
+
+  .active-press:active {
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: translate(1px, 1px);
+  }
+
+  .groove-line {
+    border-top: 2px solid #808080;
+    border-bottom: 2px solid #ffffff;
+    height: 0;
+    width: 100%;
+    margin: 8px 0;
+  }
+}
