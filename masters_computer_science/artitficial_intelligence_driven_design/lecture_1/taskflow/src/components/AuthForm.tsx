@@ -73,12 +73,15 @@ export default function AuthForm() {
         )}
 
         <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-black uppercase">
+          <label htmlFor="email" className="block text-[10px] font-bold text-black uppercase">
             User Identifier (Email)
           </label>
           <div className="inset-bevel bg-white p-0.5">
             <input
               type="email"
+              name="email"
+              id="email"
+              autoComplete={isLogin ? "email" : "email"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -89,12 +92,15 @@ export default function AuthForm() {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-black uppercase">
+          <label htmlFor="password" className="block text-[10px] font-bold text-black uppercase">
             Access Key (Password)
           </label>
           <div className="inset-bevel bg-white p-0.5">
             <input
               type="password"
+              name="password"
+              id="password"
+              autoComplete={isLogin ? "current-password" : "new-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
