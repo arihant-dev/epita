@@ -4,6 +4,12 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { createTask, Priority } from "@/lib/tasks";
 
+function getTodayDateString() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return now.toISOString().slice(0, 10);
+}
+
 export default function TaskForm() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -89,6 +95,7 @@ export default function TaskForm() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter record name..."
+              required
               className="w-full px-2 py-1 bg-transparent border-none focus:ring-1 focus:ring-tertiary outline-none text-xs"
               maxLength={120}
             />
@@ -142,7 +149,7 @@ export default function TaskForm() {
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
                 className="w-full px-1 py-1 bg-transparent border-none focus:ring-0 outline-none text-xs"
-                min={new Date().toISOString().split("T")[0]}
+                min={getTodayDateString()}
               />
             </div>
           </div>

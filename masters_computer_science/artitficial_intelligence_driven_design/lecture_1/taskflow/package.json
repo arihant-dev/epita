@@ -2,13 +2,17 @@
   "name": "taskflow",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "build:debug": "NODE_OPTIONS='--max-old-space-size=4096' next build --debug",
     "build:nolint": "next build --no-lint",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "firebase": "^12.11.0",

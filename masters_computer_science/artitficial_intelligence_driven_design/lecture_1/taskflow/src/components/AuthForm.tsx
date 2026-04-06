@@ -5,7 +5,12 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword 
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import ConfigNotice from "@/components/ConfigNotice";
+import {
+  getFirebaseConfigErrorMessage,
+  isFirebaseConfigured,
+  requireFirebaseAuth,
+} from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
 export default function AuthForm() {
@@ -16,12 +21,23 @@ export default function AuthForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  if (!isFirebaseConfigured) {
+    return (
+      <ConfigNotice
+        title="Authentication is unavailable"
+        body="This deployment is missing the Firebase keys required for sign in and sign up."
+      />
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
+      const auth = requireFirebaseAuth();
+
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
@@ -29,7 +45,9 @@ export default function AuthForm() {
       }
       router.push("/");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "SYSTEM_AUTH_FAILURE: Protocol invalid.";
+      const message = err instanceof Error
+        ? err.message
+        : getFirebaseConfigErrorMessage();
       console.error("AUTH_FAULT", err);
       setError(message);
     } finally {

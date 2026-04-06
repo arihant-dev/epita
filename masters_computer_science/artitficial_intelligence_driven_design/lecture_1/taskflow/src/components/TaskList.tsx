@@ -1,50 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { Task, toggleTaskStatus } from "@/lib/tasks";
+import { Task } from "@/lib/tasks";
 
 interface TaskListProps {
-  userId: string;
+  tasks: Task[];
+  loading: boolean;
+  pendingTaskId: string | null;
+  onToggle: (task: Task) => void;
 }
 
-export default function TaskList({ userId }: TaskListProps) {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [toggling, setToggling] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!userId) return;
-
-    const tasksRef = collection(db, "users", userId, "tasks");
-    const q = query(tasksRef, orderBy("createdAt", "desc"));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const taskList: Task[] = [];
-      snapshot.forEach((doc) => {
-        taskList.push({ id: doc.id, ...doc.data() } as Task);
-      });
-      setTasks(taskList);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [userId]);
-
-  const handleToggle = async (taskId: string, currentStatus: boolean) => {
-    if (!userId || toggling) return;
-    
-    setToggling(taskId);
-    try {
-      await toggleTaskStatus(userId, taskId, !currentStatus);
-    } catch (err) {
-      console.error("STDOUT::ERR", err);
-    } finally {
-      setToggling(null);
-    }
-  };
-
+export default function TaskList({
+  tasks,
+  loading,
+  pendingTaskId,
+  onToggle,
+}: TaskListProps) {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high": return "bg-red-600";
@@ -84,8 +54,8 @@ export default function TaskList({ userId }: TaskListProps) {
             <th className="p-1 font-bold border-b border-secondary">ID</th>
             <th className="p-1 font-bold border-b border-secondary">TASK_NAME</th>
             <th className="p-1 font-bold border-b border-secondary">PRIO</th>
+            <th className="p-1 font-bold border-b border-secondary">DUE</th>
             <th className="p-1 font-bold border-b border-secondary">STATUS</th>
-            <th className="p-1 font-bold border-b border-secondary text-center px-2">ACTION</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-secondary/10">
@@ -109,11 +79,14 @@ export default function TaskList({ userId }: TaskListProps) {
                 <span className={`w-2 h-2 inline-block ${getPriorityColor(task.priority)} mr-1 border border-black`}></span>
                 <span className="uppercase text-[10px]">{task.priority}</span>
               </td>
+              <td className="p-1 text-[10px] uppercase text-secondary">
+                {task.dueDate ?? "--"}
+              </td>
               <td className="p-1">
                 <button 
-                  onClick={() => handleToggle(task.id, task.completed)}
-                  disabled={toggling === task.id}
-                  className={`flex items-center gap-2 group/check ${toggling === task.id ? "cursor-wait" : "cursor-pointer"}`}
+                  onClick={() => onToggle(task)}
+                  disabled={pendingTaskId === task.id}
+                  className={`flex items-center gap-2 group/check ${pendingTaskId === task.id ? "cursor-wait" : "cursor-pointer"}`}
                 >
                   <div className="w-4 h-4 inset-bevel bg-white flex items-center justify-center relative">
                     {task.completed && (
@@ -123,11 +96,6 @@ export default function TaskList({ userId }: TaskListProps) {
                   <span className={`uppercase text-[9px] font-black ${task.completed ? "text-green-700" : "text-tertiary"}`}>
                     {task.completed ? "DONE" : "ACTIVE"}
                   </span>
-                </button>
-              </td>
-              <td className="p-1 text-center">
-                <button className="px-2 border border-secondary/40 text-[9px] font-bold hover:bg-background outset-bevel active-press">
-                  EDIT
                 </button>
               </td>
             </tr>

@@ -29,11 +29,11 @@ export default function StatusBar() {
     <footer className="fixed bottom-0 left-48 right-0 h-6 bg-background border-t-2 border-white flex items-center px-2 justify-between z-50 outset-bevel shadow-[0_-1px_0_rgba(0,0,0,0.2)]">
       <div className="flex items-center gap-4 text-[10px] font-bold uppercase overflow-hidden">
         <div className="flex items-center gap-1 truncate">
-          <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>terminal</span>
+          <span className="text-black">SYS</span>
           Connected: SRV-NODE-01
         </div>
         <div className="flex items-center gap-1 text-green-700 truncate">
-          <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>database</span>
+          <span className="text-black">DB</span>
           Sync: Nominal
         </div>
       </div>

@@ -6,7 +6,7 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { requireFirebaseDb } from "@/lib/firebase";
 
 export type Priority = "high" | "medium" | "low";
 
@@ -33,6 +33,7 @@ export async function createTask(
     dueDate: string | null;
   }
 ): Promise<string> {
+  const db = requireFirebaseDb();
   const tasksRef = collection(db, "users", uid, "tasks");
 
   const docRef = await addDoc(tasksRef, {
@@ -53,6 +54,7 @@ export async function toggleTaskStatus(
   taskId: string,
   newStatus: boolean
 ): Promise<void> {
+  const db = requireFirebaseDb();
   const taskRef = doc(db, "users", uid, "tasks", taskId);
 
   await updateDoc(taskRef, {

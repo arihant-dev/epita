@@ -7,10 +7,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { label: "Dashboard", href: "/", icon: "dashboard" },
-    { label: "Tasks", href: "/tasks", icon: "list_alt" },
-    { label: "Settings", href: "/settings", icon: "settings" },
-    { label: "Profile", href: "/profile", icon: "account_circle" },
+    { label: "Dashboard", href: "/", badge: "01" },
   ];
 
   return (
@@ -33,7 +30,7 @@ export default function Sidebar() {
                   : "border-t-2 border-l-2 border-white border-r-2 border-black border-b-2 border-black hover:bg-surface-container-highest text-black no-underline"
               }`}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>{item.icon}</span>
+              <span className="text-[9px] font-black text-secondary">{item.badge}</span>
               {item.label}
             </Link>
           );
@@ -45,6 +42,9 @@ export default function Sidebar() {
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 bg-green-500 border border-black shadow-[1px_1px_0_rgba(255,255,255,0.5)]"></div>
           <span className="text-[9px] font-black tracking-widest">ONLINE</span>
+        </div>
+        <div className="mt-2 text-[9px] uppercase text-secondary">
+          Scope locked to the completed sprint stories.
         </div>
       </div>
     </aside>
