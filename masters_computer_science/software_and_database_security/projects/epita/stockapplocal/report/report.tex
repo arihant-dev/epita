@@ -1,0 +1,431 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+
+\hypersetup{hidelinks}
+\renewcommand{\contentsname}{Index}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+\definecolor{HighRisk}{HTML}{B42318}
+\definecolor{MediumRisk}{HTML}{B54708}
+\definecolor{LowRisk}{HTML}{0E7090}
+\definecolor{PanelBorder}{HTML}{D0D5DD}
+\definecolor{PanelFill}{HTML}{F8FAFC}
+\definecolor{HeaderFill}{HTML}{E4E7EC}
+
+\newcommand{\safeimage}[2]{%
+  \begin{center}
+    \IfFileExists{#1}{%
+      \includegraphics[width=#2]{#1}%
+    }{%
+      \fcolorbox{PanelBorder}{gray!8}{%
+        \parbox{0.82\textwidth}{%
+          \centering
+          Screenshot placeholder\\[0.4em]
+          Expected file:\\
+          \path{#1}%
+        }%
+      }%
+    }%
+  \end{center}
+}
+
+\newcommand{\riskbadge}[2]{%
+  \begingroup
+  \setlength{\fboxsep}{5pt}%
+  \colorbox{#1}{\textcolor{white}{\textbf{#2}}}%
+  \endgroup
+}
+
+\newcommand{\scorebar}[2]{%
+  \begin{tikzpicture}[baseline=-0.6ex]
+    \fill[gray!20] (0,0) rectangle (8,0.24);
+    \fill[#2] (0,0) rectangle ({0.8*#1},0.24);
+    \draw[gray!45] (0,0) rectangle (8,0.24);
+  \end{tikzpicture}%
+}
+
+\newcommand{\cvsspanel}[5]{%
+  \begin{center}
+    \fcolorbox{PanelBorder}{PanelFill}{%
+      \begin{minipage}{0.94\linewidth}
+        \begin{minipage}[t]{0.22\linewidth}
+          \centering
+          {\Huge\bfseries #1}\\[-0.1em]
+          {\small Score / 10}\\[0.6em]
+          \riskbadge{#2}{#3}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{0.72\linewidth}
+          \textbf{Vector:} \path{#4}\\[0.35em]
+          \scorebar{#1}{#2}\\[0.6em]
+          \small
+          \begin{tabular}{|*{8}{>{\centering\arraybackslash}m{0.82cm}|}}
+            \hline
+            \rowcolor{HeaderFill}
+            AV & AC & PR & UI & S & C & I & A \\
+            \hline
+            #5 \\
+            \hline
+          \end{tabular}\\[0.35em]
+          \scriptsize AV Attack Vector, AC Attack Complexity, PR Privileges Required, UI User Interaction, S Scope, C Confidentiality, I Integrity, A Availability.
+        \end{minipage}
+      \end{minipage}
+    }
+  \end{center}
+}
+
+\newcommand{\risksummarychart}[3]{%
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=1cm]
+      \pgfmathsetmacro{\total}{#1 + #2 + #3}
+      \pgfmathsetmacro{\highend}{90 - 360*(#1/\total)}
+      \pgfmathsetmacro{\mediumend}{\highend - 360*(#2/\total)}
+      \def\radius{1.65}
+
+      \fill[HighRisk] (0,0) -- (90:\radius) arc (90:\highend:\radius) -- cycle;
+      \fill[MediumRisk] (0,0) -- (\highend:\radius) arc (\highend:\mediumend:\radius) -- cycle;
+      \fill[LowRisk] (0,0) -- (\mediumend:\radius) arc (\mediumend:-270:\radius) -- cycle;
+      \draw[gray!55] (0,0) circle (\radius);
+
+      \node[font=\small] at (0,-2.25) {Finding Severity Distribution};
+
+      \fill[HighRisk] (2.7,1.15) rectangle (3.1,1.55);
+      \fill[MediumRisk] (2.7,0.35) rectangle (3.1,0.75);
+      \fill[LowRisk] (2.7,-0.45) rectangle (3.1,-0.05);
+
+      \node[anchor=west] at (3.3,1.35) {\textbf{High}: #1};
+      \node[anchor=west] at (3.3,0.55) {\textbf{Medium}: #2};
+      \node[anchor=west] at (3.3,-0.25) {\textbf{Low}: #3};
+    \end{tikzpicture}
+  \end{center}
+}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+  \IfFileExists{../others/Epita.jpg}{\includegraphics[width=0.22\textwidth]{../others/Epita.jpg}\par}{}
+  \vspace{1.6cm}
+
+  {\Huge Security Assessment Report\par}
+  \vspace{0.3cm}
+  {\Large StockAppLocal\par}
+  \vspace{1cm}
+  {\large Software and Database Security\par}
+
+  \vfill
+
+  \begin{tabular}{rl}
+    Group: & Masters of Computer Science, Software Engineering \\
+    Class of: & Fall 2025 \\
+    Prepared on: & 5 April 2026 \\
+    Authors: & Su Huizhe, Nizar Soufiya, Arihant Jain \\
+  \end{tabular}
+
+  \vfill
+
+  {\large EPITA\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Synthesis}
+
+The assessment of StockAppLocal identified \textbf{ten} vulnerabilities affecting input handling, authentication, authorization, credential management, database security, and application stability. \textbf{Six} findings are high severity. They allow unauthorized disclosure of user credentials, execution of operating system commands, exposure of a privileged hardcoded password, access to restricted functionality without proper access control, and use of a database account with broader privileges than the application requires. \textbf{Four} findings are medium severity and reduce resilience through plaintext local secrets, unrestricted authentication attempts, unsafe memory handling, and an input-triggered infinite loop.
+
+The main business impact is loss of confidentiality and control. A user with limited access can retrieve account data, execute commands on the host, or reach functions that should be reserved for administrators. Separate weaknesses also make credential compromise easier by exposing secrets in a configuration file, transmitting sensitive data without protection, and allowing repeated login attempts without delay or lockout. The database findings are especially concerning because plaintext credentials can be reused outside the application and provide administrative access beyond the stock management schema.
+
+Remediation should start with the findings that expose privileged access or direct system control. Command execution and SQL query construction should be fixed first, followed by replacement of the overprivileged database account, removal of hardcoded and plaintext secrets, enforcement of authorization checks on every restricted action, and protection of credentials in transit. The remaining issues should be addressed by adding authentication throttling, strict input validation, bounded loop conditions, and safer memory handling in the native code.
+
+\risksummarychart{6}{4}{0}
+
+\clearpage
+\section{SQL Injection}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/89.html}{CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{7.1}{HighRisk}{High}{AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N}{L & L & L & N & U & H & H & N}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The application builds a SQL request with user-controlled input. A logged-in user can alter the query and read records that should remain restricted. The weakness exposes account data and weakens trust in the application data set.
+
+\subsection*{Exploitation}
+The vulnerable feature is available after a successful login with a standard user account. The first screenshot shows the session after authentication and confirms that the article-search option can be reached by an ordinary user.
+
+\safeimage{../vulnerabilities/01_CWE-089_SQL_Injection/cwe-89-step-1.png}{0.8\textwidth}
+
+After the search screen is opened, a crafted value such as \texttt{" UNION SELECT username, password, NULL FROM users; -- } is entered into the \texttt{Article's name} prompt. The second screenshot captures both the injected payload and the resulting rows returned by the database.
+
+\safeimage{../vulnerabilities/01_CWE-089_SQL_Injection/cwe-89-step-2.png}{0.8\textwidth}
+
+The returned result includes usernames and passwords belonging to other accounts, including the administrative account highlighted in the output. This confirms successful SQL injection and unauthorized data disclosure.
+
+\subsection*{Remediation}
+All database access should use parameterized queries or prepared statements. Input validation should reject unexpected characters before data reaches the SQL layer, and the database account used by the application should be limited to the minimum privileges required. Reference: \href{https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html}{OWASP SQL Injection Prevention Cheat Sheet}.
+
+\clearpage
+\section{Command Injection via Ping}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/78.html}{CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{7.8}{HighRisk}{High}{AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H}{L & L & L & N & U & H & H & H}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The connectivity test passes user input to an operating system command without neutralizing shell control characters. A low-privileged user can append a second command and run it in the context of the application. This creates a direct path to disclose host information or execute further local actions.
+
+\subsection*{Exploitation}
+The connectivity option is opened from the application menu.
+
+\safeimage{../vulnerabilities/04_CWE-078_Command_Injection_via_Ping/cwe-078-step-1.png}{0.8\textwidth}
+
+Instead of a plain host value, the input is extended with a chained command. The first test uses \texttt{127.0.0.1 \&\& net man}, which already shows that shell metacharacters are interpreted rather than rejected.
+
+\safeimage{../vulnerabilities/04_CWE-078_Command_Injection_via_Ping/cwe-078-step-2.png}{0.8\textwidth}
+
+The payload is then changed to \texttt{127.0.0.1 \&\& net user} to retrieve local account information from the host.
+
+\safeimage{../vulnerabilities/04_CWE-078_Command_Injection_via_Ping/cwe-078-step-3.png}{0.8\textwidth}
+
+The returned command output confirms arbitrary command execution through the ping feature.
+
+\subsection*{Remediation}
+Shell execution should be removed from this feature. If a system call remains necessary, the application should pass the destination as a single validated argument without invoking a command interpreter. The host field should be allowlisted, and the process should run with minimal privileges. Reference: \href{https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html}{OWASP OS Command Injection Defense Cheat Sheet}.
+
+\clearpage
+\section{Cleartext Transmission of Sensitive Information}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/319.html}{CWE-319: Cleartext Transmission of Sensitive Information}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{7.3}{HighRisk}{High}{AV:A/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N}{A & L & N & R & U & H & H & N}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:A/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+Sensitive data is transmitted without transport protection. Anyone able to observe the traffic can recover credentials directly from captured packets. The issue increases the risk of account takeover and unauthorized backend access.
+
+\subsection*{Exploitation}
+Wireshark is started on the relevant interface before the application is used.
+
+\safeimage{../vulnerabilities/03_CWE-319_Cleartext_Transmission/cwe-319-step-1.png}{0.8\textwidth}
+
+The application is then opened and the authentication flow is performed.
+
+\safeimage{../vulnerabilities/03_CWE-319_Cleartext_Transmission/cwe-319-step-2.png}{0.8\textwidth}
+
+After the administrator password is submitted, the corresponding request appears in the capture.
+
+\safeimage{../vulnerabilities/03_CWE-319_Cleartext_Transmission/cwe-319-step-3.png}{0.8\textwidth}
+
+Inspection of the packet contents shows the sensitive password value in readable form.
+
+\safeimage{../vulnerabilities/03_CWE-319_Cleartext_Transmission/cwe-319-step-4.png}{0.8\textwidth}
+
+The capture proves that the application sends credentials without effective transport encryption.
+
+\subsection*{Remediation}
+TLS should be enforced for every connection that carries credentials or sensitive business data. Certificate validation should be mandatory, and plaintext fallbacks should be removed from the deployed configuration. Reference: \href{https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html}{OWASP Transport Layer Security Cheat Sheet}.
+
+\clearpage
+\section{Hardcoded Master Password in Binary}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/259.html}{CWE-259: Use of Hard-coded Password}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{7.7}{HighRisk}{High}{AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L}{L & L & N & N & U & H & H & L}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The application binary contains a fixed master password, identified as \texttt{su*******}. A secret embedded in the executable can be recovered with basic reverse-engineering tools and cannot be rotated without rebuilding the software. This exposes privileged access to anyone who can inspect the binary.
+
+\subsection*{Exploitation}
+The executable is inspected with Detect It Easy and the embedded string \texttt{su*******} is recovered from the binary contents. The screenshot shows the hardcoded value directly inside the shipped program.
+
+\safeimage{../vulnerabilities/06_CWE-259_Hardcoded_Master_Password/cwe-259-step-1.png}{0.8\textwidth}
+
+The recovered value can then be reused in the application wherever the master password is requested, which confirms that a static privileged secret is embedded in the shipped program.
+
+\subsection*{Remediation}
+The hardcoded password should be removed from the binary and replaced with a rotatable authentication mechanism backed by protected secret storage. Recovery or administrative credentials should be provisioned per environment and managed through an operational rotation process. Reference: \href{https://cwe.mitre.org/data/definitions/259.html}{MITRE CWE-259 Guidance}.
+
+\clearpage
+\section{Hidden Menu Options Without Access Control}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/284.html}{CWE-284: Improper Access Control}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{7.1}{HighRisk}{High}{AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:L}{L & L & L & N & U & H & H & L}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:L&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+Administrative functionality is only hidden in the interface and is not protected by a real authorization check. A lower-privileged user can still call the hidden option directly. This allows access to restricted actions that should be reserved for administrators.
+
+\subsection*{Exploitation}
+An agent account is used to log in. The expected menu is displayed without the administrative option being shown.
+
+\safeimage{../vulnerabilities/07_CWE-284_Hidden_Menu_No_Access_Control/cwe-284-step-1.png}{0.8\textwidth}
+
+The hidden option \texttt{3} is then entered directly to reach the password-change function even though it is not presented in the menu for that role.
+
+\safeimage{../vulnerabilities/07_CWE-284_Hidden_Menu_No_Access_Control/cwe-284-step-2.png}{0.8\textwidth}
+
+The application accepts the hidden option and opens the restricted feature, which confirms missing access control enforcement.
+
+\subsection*{Remediation}
+Every privileged action should perform an explicit authorization check before execution. Role validation must be enforced in the application logic, and user interface hiding should be treated only as presentation logic, not as a security control. Reference: \href{https://owasp.org/www-community/Broken_Access_Control}{OWASP Broken Access Control}.
+
+\clearpage
+\section{Plaintext Credentials in \texttt{config.ini}}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/312.html}{CWE-312: Cleartext Storage of Sensitive Information}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{6.4}{MediumRisk}{Medium}{AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N}{L & L & N & N & U & H & L & N}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The application stores sensitive credentials in a readable configuration file. Any local user who can access the installation directory can recover these values and reuse them against the associated service. The weakness exposes backend credentials outside the intended application controls.
+
+\subsection*{Exploitation}
+The application configuration file \texttt{config.ini} is opened from the local installation directory.
+
+\safeimage{../vulnerabilities/05_CWE-312_Plaintext_Credentials_in_Config/cwe-312-step-1.png}{0.8\textwidth}
+
+The screenshot shows sensitive values stored in plaintext, which means they can be copied directly and reused without any further protection.
+
+\subsection*{Remediation}
+Sensitive credentials should be removed from flat configuration files and moved to a protected secret store provided by the operating system or deployment platform. Existing secrets should be rotated, and file permissions should be reduced to the minimum account that requires access. Reference: \href{https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html}{OWASP Secrets Management Cheat Sheet}.
+
+\clearpage
+\section{Database Account Uses Unnecessary Administrative Privileges}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/250.html}{CWE-250: Execution with Unnecessary Privileges}
+
+\textbf{Related weaknesses}\\
+\href{https://cwe.mitre.org/data/definitions/272.html}{CWE-272: Least Privilege Violation}; \href{https://cwe.mitre.org/data/definitions/312.html}{CWE-312: Cleartext Storage of Sensitive Information}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{7.8}{HighRisk}{High}{AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H}{L & L & N & N & U & H & H & H}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The application connects to MySQL with the account \texttt{stockapp/st*******}, and that account has administrative privileges beyond the needs of the application. The software appears to require only ordinary access to the \texttt{stockapp} schema, but the configured account can manage a wider part of the server. This violates the principle of least privilege and turns any credential disclosure into full database compromise rather than exposure limited to the application data set.
+
+\subsection*{Exploitation}
+The credentials recovered from \texttt{config.ini} are entered into HeidiSQL to establish a direct connection to the MySQL server.
+
+\safeimage{../vulnerabilities/10_CWE-250_Database_Account_With_Unnecessary_Privileges/cwe-250-step-1.png}{0.8\textwidth}
+
+Once connected, HeidiSQL shows databases and tables beyond what a restricted application account should normally be able to access.
+
+\safeimage{../vulnerabilities/10_CWE-250_Database_Account_With_Unnecessary_Privileges/cwe-250-step-2.png}{0.8\textwidth}
+
+The successful login and broad database visibility show that the service account is overprivileged and can be reused outside the application with administrative effect.
+
+\subsection*{Remediation}
+A dedicated MySQL service account should be created for the application and restricted to the minimum operations it actually needs on the \texttt{stockapp} database, such as \texttt{SELECT}, \texttt{INSERT}, and \texttt{UPDATE}. Global or administrative privileges should be revoked, the exposed credentials should be rotated, and plaintext storage in \texttt{config.ini} should be removed so that this account cannot be reused directly from the file system. Reference: \href{https://cwe.mitre.org/data/definitions/250.html}{MITRE CWE-250 Guidance}.
+
+\clearpage
+\section{No Brute Force Protection}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/307.html}{CWE-307: Improper Restriction of Excessive Authentication Attempts}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{5.3}{MediumRisk}{Medium}{AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N}{L & L & N & N & U & L & L & N}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The authentication workflow accepts repeated password attempts without lockout, throttling, or meaningful delay. This makes automated guessing practical and lowers the cost of attacking weak or reused passwords.
+
+\subsection*{Exploitation}
+The same account is tested with repeated invalid passwords through the login prompt.
+
+\safeimage{../vulnerabilities/08_CWE-307_No_Brute_Force_Protection/cwe-307-step-1.png}{0.8\textwidth}
+
+The application continues to accept new attempts immediately and does not introduce a lockout, cooldown period, or secondary challenge, which confirms the absence of brute force protection.
+
+\subsection*{Remediation}
+Authentication attempts should be rate-limited and tracked per account and per source. After a defined number of failures, the application should apply progressive delays, lockout controls, or an additional verification step. Reference: \href{https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html}{OWASP Authentication Cheat Sheet}.
+
+\clearpage
+\section{Stack-Based Buffer Overflow}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/121.html}{CWE-121: Stack-Based Buffer Overflow}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{4.0}{MediumRisk}{Medium}{AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L}{L & L & N & N & U & N & N & L}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The program copies more data into a stack buffer than the destination can hold. The observed effect is a crash, but the same class of flaw is a known path to memory corruption in native code.
+
+\subsection*{Exploitation}
+An oversized input is entered into the affected field.
+
+\safeimage{../vulnerabilities/02_CWE-121_Stack_Based_Buffer_Overflow/cwe-121-step-1.png}{0.8\textwidth}
+
+After the value is processed, the application terminates unexpectedly.
+
+\safeimage{../vulnerabilities/02_CWE-121_Stack_Based_Buffer_Overflow/cwe-121-step-2.png}{0.8\textwidth}
+
+The crash confirms that the input length is not constrained before data is copied into memory.
+
+\subsection*{Remediation}
+Every fixed-size buffer should be protected with strict length checks before copy operations occur. Unbounded copy functions should be replaced with safer alternatives that receive the destination size, and compiler defenses such as stack canaries and ASLR should remain enabled in release builds. Reference: \href{https://cwe.mitre.org/data/definitions/121.html}{MITRE CWE-121 Guidance}.
+
+\clearpage
+\section{Loop With Unreachable Exit Condition}
+
+\textbf{Common Weakness Enumeration (CWE) ID}\\
+\href{https://cwe.mitre.org/data/definitions/835.html}{CWE-835: Loop with Unreachable Exit Condition ('Infinite Loop')}
+
+\subsection*{CVSS 3.1 Base Score Metrics}
+\cvsspanel{6.2}{MediumRisk}{Medium}{AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H}{L & L & N & N & U & N & N & H}
+Calculator reference: \href{https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H&version=3.1}{NVD CVSS v3.1}.
+
+\subsection*{Description}
+The menu handling logic does not terminate safely when an unexpected value is provided. Entering an invalid choice such as \texttt{clear} causes the application to continue running without reaching a normal exit path. The result is a denial-of-service condition that requires forced termination.
+
+\subsection*{Exploitation}
+The main menu is reached and a non-numeric value is submitted instead of one of the expected options.
+
+\safeimage{../vulnerabilities/09_CWE-835_Loop_With_Unreachable_Exit_Condition/cwe-835-step-1.png}{0.8\textwidth}
+
+After the invalid value is processed, the program continues executing without returning to a safe state or rejecting the input cleanly.
+
+\safeimage{../vulnerabilities/09_CWE-835_Loop_With_Unreachable_Exit_Condition/cwe-835-step-2.png}{0.8\textwidth}
+
+The observed behavior confirms that malformed input can trap the program in a non-terminating path and block normal use.
+
+\subsection*{Remediation}
+Menu input should be validated against the allowed set before any control-flow decision is made. Invalid values should return a clear error and re-display the prompt, and loop conditions should include a guaranteed exit path for malformed input. Reference: \href{https://cwe.mitre.org/data/definitions/835.html}{MITRE CWE-835 Guidance}.
+
+\end{document}

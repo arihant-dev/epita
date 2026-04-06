@@ -1,0 +1,9 @@
+[submodule "masters_computer_science/blockchain_introductory_course"]
+	path = masters_computer_science/blockchain_introductory_course
+	url = https://github.com/sduprey/blockchain_introductory_course.git
+[submodule "masters_computer_science/ooa_and_uml_using_java/2025f-java-SE"]
+	path = masters_computer_science/ooa_and_uml_using_java/2025f-java-SE
+	url = https://github.com/arihant-dev/2025f-java-SE.git
+[submodule "masters_computer_science/android_initiation"]
+	path = masters_computer_science/android_initiation
+	url = https://github.com/arihant-dev/myclock_arihant.jain-epita.com.git

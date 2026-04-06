@@ -28,9 +28,10 @@ export default function AuthForm() {
         await createUserWithEmailAndPassword(auth, email, password);
       }
       router.push("/");
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "SYSTEM_AUTH_FAILURE: Protocol invalid.";
       console.error("AUTH_FAULT", err);
-      setError(err.message || "SYSTEM_AUTH_FAILURE: Protocol invalid.");
+      setError(message);
     } finally {
       setLoading(false);
     }

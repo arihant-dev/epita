@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{float}
+\usepackage{tocloft}
+
+% Fix TOC page number alignment
+\cftsetindents{subsection}{1.5em}{2.3em}
+\setlength{\cftsecnumwidth}{4em}
+\setlength{\cftsubsecnumwidth}{5em}
+
+% Compile-safe figure placeholder
+\newcommand{\labimage}[2]{
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{#1}
+\caption{#2}
+\end{figure}
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+
+    % EPITA Logo
+    \includegraphics[width=0.4\textwidth]{figures/lab_1/Epita.jpg} \\
+    \vspace{1.5cm}
+
+    % Program
+    {\large Master in Computer Science} \\
+    {\large Software Engineering} \\
+
+    % Main Title
+    \vspace{0.5cm}
+    {\Huge \textbf{Cloud Computing}} \\
+    \vspace{1.3cm}
+    {\huge Report 5}
+    \vspace{0.1cm}
+
+    % Team Members
+    \vspace{0.5cm}
+    {\Large \textbf{Team Members}} \\
+    \vspace{0.5cm}
+    {\large Jordy Meye} \\
+    {\large Huizhe Su} \\
+    {\large Arihant Jain} \\
+    {\large Nizar} \\
+
+    \vspace{1.5cm}
+    {\large April 2026}
+
+\end{titlepage}
+
+\newpage
+% --- Styling --- %
+\titleformat{\section}
+  {\Large\bfseries}
+  {Exercise \arabic{section}.}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {Question \arabic{subsection}.}
+  {1em}
+  {}
+
+% Code listing style
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    showstringspaces=false,
+    tabsize=4,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+}
+
+\raggedbottom
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+
+\tableofcontents
+\newpage
+
+%% ============ SECTION 1: CloudWatch Dashboard ============ %%
+\section{CloudWatch Dashboard}
+
+\subsection{Create a Dashboard for EC2 CPU and Networking Metrics}
+In this part, we created a CloudWatch dashboard to monitor one EC2 instance.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Logged in to AWS Management Console.
+    \item Opened \texttt{CloudWatch} and navigated to \texttt{Dashboards}.
+    \item Clicked \texttt{Create dashboard} and provided a dashboard name.
+    \item Selected widgets and chose \texttt{EC2 \textrightarrow{} Per-Instance Metrics}.
+    \item Added the required CPU and networking graphs for the target instance.
+\end{enumerate}
+
+\labimage{figures/lab5/cloudwatch_dashboard_created.png}{CloudWatch dashboard creation confirmation}
+
+\labimage{figures/lab5/ec2_per_instance_metrics_selected.png}{EC2 per-instance metrics selection}
+
+\labimage{figures/lab5/dashboard_cpu_network_widgets.png}{Final dashboard with CPU and network widgets}
+
+\subsection{Dashboard Verification}
+After adding the widgets, the dashboard showed the selected instance metrics correctly.
+
+\begin{itemize}
+    \item CPU utilization is visible on the graph.
+    \item Network In and Network Out are also visible.
+    \item This dashboard gives a quick view of instance health.
+\end{itemize}
+
+\labimage{figures/lab5/dashboard_runtime_view.png}{Dashboard runtime monitoring view}
+
+%% ============ SECTION 2: CloudWatch Alarm Creation ============ %%
+\section{CloudWatch Alarm Creation}
+
+\subsection{Create a Billing Alarm for Estimated Charges Above \$500}
+We created a billing alarm to monitor estimated AWS charges and trigger when the value goes above \$500.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Opened \texttt{CloudWatch \textrightarrow{} Alarms}.
+    \item Selected billing metrics and created a new alarm.
+    \item Set condition type to \texttt{Static}.
+    \item Defined threshold as \texttt{Estimated Charges > 500 USD}.
+    \item Reviewed and created the alarm.
+\end{enumerate}
+
+\labimage{figures/lab5/billing_alarm_metric_selected.png}{Billing metric selection}
+
+\labimage{figures/lab5/billing_alarm_threshold_500.png}{Billing alarm threshold configuration}
+
+\labimage{figures/lab5/billing_alarm_created.png}{Billing alarm created successfully}
+
+\subsection{Create an EC2 CPU Alarm with SNS Notification (65\% Threshold)}
+We also created a CPU utilization alarm for EC2. The alarm changes to \texttt{ALARM} when CPU usage is above 65\%, and SNS sends an email notification.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Opened \texttt{CloudWatch \textrightarrow{} Alarms} and clicked \texttt{Create Alarm}.
+    \item Selected \texttt{EC2 \textrightarrow{} Per-Instance Metrics \textrightarrow{} CPUUtilization}.
+    \item Set threshold to \texttt{Greater/Equal 65\%}.
+    \item Created (or selected) an SNS topic for email notification.
+    \item Completed alarm name, review, and alarm creation.
+\end{enumerate}
+
+\labimage{figures/lab5/cpu_alarm_metric_selected.png}{CPUUtilization metric selection}
+
+\labimage{figures/lab5/cpu_alarm_threshold_65.png}{CPU alarm threshold set to 65\%}
+
+\labimage{figures/lab5/sns_topic_configured.png}{SNS topic configuration for alarm notifications}
+
+\labimage{figures/lab5/cpu_alarm_created.png}{CPU alarm created successfully}
+
+\subsection{Email Subscription Confirmation}
+To receive SNS emails, we confirmed the subscription from the inbox.
+
+\labimage{figures/lab5/sns_email_subscription_confirmation.png}{SNS email subscription confirmation}
+
+%% ============ SECTION 3: Conclusion ============ %%
+\section{Conclusion}
+In this lab, we configured CloudWatch monitoring and alarms. We created a dashboard for EC2 CPU and network metrics, a billing alarm above \$500, and a CPU alarm with SNS email notifications.
+
+\end{document}

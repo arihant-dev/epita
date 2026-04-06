@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TaskFlow v1.0 - Industrial Task Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-dim": "#0000e1",
+                        "inverse-on-surface": "#9c9d9d",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-dim": "#535353",
+                        "on-error-container": "#782232",
+                        "on-primary-fixed": "#2a309b",
+                        "on-tertiary-container": "#d8d8ff",
+                        "on-primary-container": "#3e45ae",
+                        "secondary": "#5f5f5f",
+                        "primary-container": "#e0e0ff",
+                        "on-primary-fixed-variant": "#484fb9",
+                        "primary": "#4b53bc",
+                        "surface-container-low": "#f3f4f4",
+                        "error-dim": "#4f0116",
+                        "on-background": "#2e3334",
+                        "surface": "#faf9f9",
+                        "surface-container-highest": "#dfe3e4",
+                        "primary-dim": "#3f46af",
+                        "surface-tint": "#4b53bc",
+                        "inverse-surface": "#0d0e0f",
+                        "surface-bright": "#faf9f9",
+                        "on-secondary": "#faf8f8",
+                        "on-error": "#fff7f7",
+                        "outline-variant": "#aeb3b4",
+                        "on-tertiary-fixed-variant": "#a1a7ff",
+                        "secondary-fixed-dim": "#d5d4d4",
+                        "outline": "#767c7c",
+                        "on-secondary-container": "#515252",
+                        "tertiary-container": "#080cff",
+                        "background": "#faf9f9",
+                        "error": "#9e3f4e",
+                        "inverse-primary": "#848cf9",
+                        "on-surface": "#2e3334",
+                        "tertiary-fixed": "#080cff",
+                        "on-tertiary-fixed": "#d4d5ff",
+                        "surface-container-high": "#e5e9e9",
+                        "on-tertiary": "#c2c5ff",
+                        "surface-variant": "#dfe3e4",
+                        "surface-container": "#eceeee",
+                        "tertiary-fixed-dim": "#0000e1",
+                        "error-container": "#ff8b9a",
+                        "on-secondary-fixed-variant": "#5b5b5c",
+                        "on-surface-variant": "#5b6061",
+                        "on-primary": "#f9f6ff",
+                        "secondary-container": "#e3e2e2",
+                        "primary-fixed": "#e0e0ff",
+                        "on-secondary-fixed": "#3f3f3f",
+                        "surface-dim": "#d5dbdc",
+                        "primary-fixed-dim": "#cfd1ff",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary": "#0000e1"
+                    },
+                    fontFamily: {
+                        "headline": ["Work Sans"],
+                        "body": ["Work Sans"],
+                        "label": ["Work Sans"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .outset-bevel {
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+        }
+        .inset-bevel {
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+        }
+        .active-press:active {
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            transform: translate(1px, 1px);
+        }
+        .groove-line {
+            border-top: 2px solid #808080;
+            border-bottom: 2px solid #ffffff;
+            height: 0;
+            width: 100%;
+            margin: 8px 0;
+        }
+        .material-symbols-outlined {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-[#C0C0C0] font-body text-[#000000] selection:bg-primary selection:text-white">
+<!-- TopAppBar Execution -->
+<header class="fixed top-0 w-full h-12 z-50 flex items-center justify-between px-2 bg-[#C0C0C0] border-t-2 border-l-2 border-white border-r-2 border-b-2 border-gray-600 font-['Work_Sans',sans-serif] text-sm uppercase tracking-tighter border-b-2 border-gray-800">
+<div class="flex items-center gap-4">
+<span class="text-lg font-black text-[#000000] uppercase tracking-tight">TaskFlow v1.0</span>
+<div class="hidden md:flex inset-bevel bg-white px-2 py-0.5 items-center gap-2 w-64">
+<span class="material-symbols-outlined text-gray-500">search</span>
+<input class="bg-transparent border-none text-xs w-full focus:ring-0 p-0" placeholder="Search tasks..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="outset-bevel active-press bg-[#C0C0C0] px-3 py-1 flex items-center gap-1 hover:text-[#0000e1] hover:underline">
+<span class="material-symbols-outlined">help</span>
+<span>HELP</span>
+</button>
+<button class="outset-bevel active-press bg-[#C0C0C0] px-3 py-1 flex items-center gap-1 hover:text-[#0000e1] hover:underline">
+<span class="material-symbols-outlined">exit_to_app</span>
+<span>EXIT</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar Execution -->
+<aside class="fixed left-0 top-12 bottom-0 w-48 flex flex-col p-1 bg-[#C0C0C0] border-r-2 border-white border-b-2 border-gray-800 font-['Work_Sans',sans-serif] text-xs font-bold">
+<div class="px-2 py-3 border-b-2 border-gray-600 mb-2">
+<div class="text-md font-bold text-black">MAIN_MENU</div>
+<div class="text-[10px] text-gray-600 font-normal">v1.0.97</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-2 p-2 bg-[#faf9f9] border-t-2 border-l-2 border-gray-800 border-r-2 border-white border-b-2 border-white text-blue-700 underline" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-2 p-2 border-t-2 border-l-2 border-white border-r-2 border-gray-800 border-b-2 border-gray-800 hover:bg-[#dfe3e4]" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span>Tasks</span>
+</a>
+<a class="flex items-center gap-2 p-2 border-t-2 border-l-2 border-white border-r-2 border-gray-800 border-b-2 border-gray-800 hover:bg-[#dfe3e4]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-2 p-2 border-t-2 border-l-2 border-white border-r-2 border-gray-800 border-b-2 border-gray-800 hover:bg-[#dfe3e4]" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span>Profile</span>
+</a>
+</nav>
+<div class="mt-auto p-2 inset-bevel bg-[#dfe3e4] text-[10px] uppercase">
+            System Status: <span class="text-green-700">Online</span>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-48 mt-12 p-4 min-h-screen">
+<!-- Hero Section -->
+<section class="outset-bevel bg-[#faf9f9] p-6 mb-6 flex flex-col md:flex-row gap-8 items-start">
+<div class="flex-1 space-y-4">
+<div class="inline-block bg-[#FF0000] text-white px-2 py-0.5 text-[10px] font-black tracking-widest uppercase outset-bevel">
+                    HOT NEW RELEASE
+                </div>
+<h1 class="text-[32px] font-black leading-none uppercase tracking-tighter">Revolutionize Your Workflow</h1>
+<p class="text-sm leading-relaxed max-w-xl">
+                    TaskFlow v1.0 delivers enterprise-grade mechanical task management. Built for speed, precision, and maximum information density. No bloat, no fluff—just pure architectural efficiency.
+                </p>
+<div class="flex gap-4 pt-4">
+<button class="outset-bevel bg-primary text-white px-6 py-2 font-bold uppercase tracking-tight active-press text-sm">
+                        Get Started
+                    </button>
+<button class="outset-bevel bg-[#C0C0C0] text-black px-6 py-2 font-bold uppercase tracking-tight active-press text-sm">
+                        Watch Demo
+                    </button>
+</div>
+</div>
+<div class="w-full md:w-80 border border-blue-700 p-1 bg-white">
+<img alt="System Terminal" class="w-full grayscale contrast-125" data-alt="vintage beige personal computer monitor and keyboard on a wooden desk with harsh office lighting and technical manual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO4zutnSb5vbFPsy1tUwO8bhAh8gbS1tWaAnAfwEjmjknCPQ19rxrvkNkHVxMTk0XvbelbHBxcJTVrf91TZYJlG_RBb9FIng0SZZ_rmuZsFqUBzBs85USdAuIwDGGSLR425dTdd83uGomFH5N62bfLqQoQgYb63PdB_xE_8VpIBLWPTwQbn71UGXFwyQffm_yZqeOMM7gk_6QVeDk8WMUn1Uha1dw4Eowr0VwAveJ6qucTxtdj3lz_tCKvaMYHdr_7oA08bpid-haG"/>
+<div class="text-[10px] text-center mt-1 text-blue-700">Fig 1.1: Industrial Workstation</div>
+</div>
+</section>
+<div class="groove-line"></div>
+<!-- Bento Grid / Feature Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+<!-- Quick Stats Card -->
+<div class="outset-bevel bg-[#C0C0C0] p-0 flex flex-col">
+<div class="bg-gray-800 text-white px-2 py-1 text-[11px] font-bold flex justify-between">
+<span>SYSTEM_METRICS.EXE</span>
+<span class="material-symbols-outlined text-[14px]">close</span>
+</div>
+<div class="p-4 space-y-3 bg-[#faf9f9] flex-1">
+<div class="inset-bevel bg-white p-2">
+<div class="text-[10px] text-gray-500 uppercase">Throughput</div>
+<div class="text-xl font-black">98.4%</div>
+</div>
+<div class="inset-bevel bg-white p-2">
+<div class="text-[10px] text-gray-500 uppercase">Active Threads</div>
+<div class="text-xl font-black">1,402</div>
+</div>
+<div class="inset-bevel bg-white p-2">
+<div class="text-[10px] text-gray-500 uppercase">Memory Load</div>
+<div class="text-xl font-black">12.5 MB</div>
+</div>
+</div>
+</div>
+<!-- Main Task Board -->
+<div class="col-span-1 md:col-span-2 outset-bevel bg-[#C0C0C0] flex flex-col">
+<div class="bg-primary text-white px-2 py-1 text-[11px] font-bold flex justify-between">
+<span>ACTIVE_TASK_VIEWER</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 outset-bevel bg-[#C0C0C0]"></div>
+<div class="w-3 h-3 outset-bevel bg-[#C0C0C0]"></div>
+</div>
+</div>
+<div class="bg-white inset-bevel m-2 flex-1 overflow-x-auto">
+<table class="w-full text-xs text-left border-collapse">
+<thead>
+<tr class="bg-[#dfe3e4] border-b-2 border-gray-400">
+<th class="p-2 border-r border-gray-300 font-bold uppercase">ID</th>
+<th class="p-2 border-r border-gray-300 font-bold uppercase">Description</th>
+<th class="p-2 border-r border-gray-300 font-bold uppercase">Priority</th>
+<th class="p-2 font-bold uppercase">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-gray-200 hover:bg-blue-50 cursor-pointer">
+<td class="p-2 border-r border-gray-200 font-mono">#00452</td>
+<td class="p-2 border-r border-gray-200">Initialize kernel sub-routines</td>
+<td class="p-2 border-r border-gray-200 text-red-600 font-bold">CRITICAL</td>
+<td class="p-2"><span class="bg-green-100 text-green-800 px-1 border border-green-300">DONE</span></td>
+</tr>
+<tr class="border-b border-gray-200 hover:bg-blue-50 cursor-pointer">
+<td class="p-2 border-r border-gray-200 font-mono">#00453</td>
+<td class="p-2 border-r border-gray-200">Refactor legacy layout engine</td>
+<td class="p-2 border-r border-gray-200">MEDIUM</td>
+<td class="p-2"><span class="bg-yellow-100 text-yellow-800 px-1 border border-yellow-300">PENDING</span></td>
+</tr>
+<tr class="border-b border-gray-200 hover:bg-blue-50 cursor-pointer">
+<td class="p-2 border-r border-gray-200 font-mono">#00454</td>
+<td class="p-2 border-r border-gray-200">Database synchronization</td>
+<td class="p-2 border-r border-gray-200 text-red-600 font-bold">HIGH</td>
+<td class="p-2"><span class="bg-blue-100 text-blue-800 px-1 border border-blue-300">ACTIVE</span></td>
+</tr>
+<tr class="border-b border-gray-200 hover:bg-blue-50 cursor-pointer">
+<td class="p-2 border-r border-gray-200 font-mono">#00455</td>
+<td class="p-2 border-r border-gray-200">Audit system security logs</td>
+<td class="p-2 border-r border-gray-200">LOW</td>
+<td class="p-2 text-gray-400">QUEUED</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-2 flex justify-end gap-2">
+<button class="outset-bevel bg-[#C0C0C0] px-4 py-1 text-[10px] font-bold active-press uppercase">Add Task</button>
+<button class="outset-bevel bg-[#C0C0C0] px-4 py-1 text-[10px] font-bold active-press uppercase">Export CSV</button>
+</div>
+</div>
+</div>
+<!-- Component Showcase -->
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="outset-bevel p-4 bg-[#f3f4f4]">
+<h3 class="text-base font-black mb-4 uppercase">Interface Specifications</h3>
+<div class="space-y-4 text-xs">
+<div class="flex items-center gap-2">
+<div class="inset-bevel bg-white w-4 h-4 flex items-center justify-center">
+<span class="font-black text-[10px]">X</span>
+</div>
+<span>Deterministic Logic Engines</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="inset-bevel bg-white w-4 h-4"></div>
+<span>Floating-point Acceleration</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="inset-bevel bg-white w-4 h-4 flex items-center justify-center">
+<span class="font-black text-[10px]">X</span>
+</div>
+<span>Legacy Serial Port Support</span>
+</div>
+<div class="groove-line"></div>
+<div class="space-y-2">
+<label class="block font-bold">SYSTEM_OVERRIDE_CODE</label>
+<div class="inset-bevel bg-white p-1">
+<input class="w-full border-none p-1 text-xs focus:ring-1 focus:ring-black" type="password" value="********"/>
+</div>
+</div>
+<p class="text-[10px] text-gray-600 italic">
+                        * Note: All system changes are permanent and logged in the central mainframe.
+                    </p>
+</div>
+</div>
+<div class="outset-bevel p-4 bg-[#faf9f9]">
+<h3 class="text-base font-black mb-4 uppercase">Global Documentation</h3>
+<ul class="space-y-2 text-xs">
+<li><a class="text-tertiary underline hover:text-black" href="#">User Installation Manual (PDF, 4.2MB)</a></li>
+<li><a class="text-tertiary underline hover:text-black" href="#">API Integration Hooks v0.9</a></li>
+<li><a class="text-tertiary underline hover:text-black" href="#">Network Topology Diagrams</a></li>
+<li><a class="text-tertiary underline hover:text-black" href="#">Security Compliance Certificates</a></li>
+</ul>
+<div class="mt-8 flex justify-center">
+<img alt="Mainframe" class="w-full h-24 object-cover inset-bevel grayscale" data-alt="abstract close-up of complex server rack wiring with green and orange status LEDs glowing in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACRJd5m6BJ-kPc0e1HZPYSCMRrMmNAaa82SMFVAeOcrANaDas3FIyuRCkUKZJLOCEVd5XqmZ34IC3xAO6td5_op9vg5snweiRSzxVeaxoHXq_kE5VoKkVpaAkT69pjCWwUzfg9JddyOcjD5CyWGtI1jeQmzSVLrtzbkeCGU99tkRAsloAbH4BK0ToJg6Bw14jyWTX-AtAo7v3_DBvG5IQ3qldeULd9APjvFP58ERoDxDUWeDvGJ5tYbPOqORveu3KcvNAvklIQ7IMg"/>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-12 py-6 border-t-2 border-gray-400 text-center space-y-4">
+<div class="groove-line"></div>
+<div class="flex justify-center gap-8 text-[10px] font-bold uppercase">
+<a class="hover:underline" href="#">Privacy Policy</a>
+<a class="hover:underline" href="#">Terms of Service</a>
+<a class="hover:underline" href="#">Contact Admin</a>
+<a class="hover:underline" href="#">System Logs</a>
+</div>
+<p class="text-[10px] text-gray-500">
+                COPYRIGHT © 1997 TASKFLOW INDUSTRIAL SOLUTIONS INC. ALL RIGHTS RESERVED.<br/>
+                OPTIMIZED FOR NETSCAPE NAVIGATOR 4.0 OR HIGHER. 800x600 RESOLUTION RECOMMENDED.
+            </p>
+</footer>
+</main>
+<!-- Floating Tooltip Example -->
+<div class="fixed bottom-4 right-4 bg-[#ffffca] border border-black p-2 text-[10px] shadow-none z-50 max-w-[150px]">
+<strong>Tip:</strong> Use [ALT]+[S] to quickly save your current task buffer to the cloud server.
+    </div>
+</body></html>

@@ -1,0 +1,25 @@
+Project: stockapplocal
+Customer: epita
+Course: Software and Database Security
+Group: Masters of Computer Science, Software Engineering
+Term: Fall 2025
+Authors: Su Huizhe, Nizar Soufiya, Arihant Jain
+
+Scope
+- Local security assessment of the StockAppLocal application.
+- Focus areas: authentication, authorization, credential storage, command execution, database access, and transport security.
+
+Audit Window
+- Drafted on: 2026-04-05
+
+Contacts
+- Report authors: Su Huizhe, Nizar Soufiya, Arihant Jain
+
+Credentials and Access
+- Test accounts: [agent]
+- Master password evidence: Detect It Easy screenshot stored under CWE-259
+
+Evidence Notes
+- Raw screenshots are stored in ./screenshots
+- Selected screenshots used by the report are stored in ./vulnerabilities/<finding>/
+- Evidence is present for CWE-78, CWE-89, CWE-121, CWE-250, CWE-259, CWE-284, CWE-307, CWE-312, CWE-319, and CWE-835

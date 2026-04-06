@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TaskFlow v1.0 - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-dim": "#0000e1",
+              "inverse-on-surface": "#9c9d9d",
+              "surface-container-lowest": "#ffffff",
+              "secondary-dim": "#535353",
+              "on-error-container": "#782232",
+              "on-primary-fixed": "#2a309b",
+              "on-tertiary-container": "#d8d8ff",
+              "on-primary-container": "#3e45ae",
+              "secondary": "#5f5f5f",
+              "primary-container": "#e0e0ff",
+              "on-primary-fixed-variant": "#484fb9",
+              "primary": "#4b53bc",
+              "surface-container-low": "#f3f4f4",
+              "error-dim": "#4f0116",
+              "on-background": "#2e3334",
+              "surface": "#faf9f9",
+              "surface-container-highest": "#dfe3e4",
+              "primary-dim": "#3f46af",
+              "surface-tint": "#4b53bc",
+              "inverse-surface": "#0d0e0f",
+              "surface-bright": "#faf9f9",
+              "on-secondary": "#faf8f8",
+              "on-error": "#fff7f7",
+              "outline-variant": "#aeb3b4",
+              "on-tertiary-fixed-variant": "#a1a7ff",
+              "secondary-fixed-dim": "#d5d4d4",
+              "outline": "#767c7c",
+              "on-secondary-container": "#515252",
+              "tertiary-container": "#080cff",
+              "background": "#faf9f9",
+              "error": "#9e3f4e",
+              "inverse-primary": "#848cf9",
+              "on-surface": "#2e3334",
+              "tertiary-fixed": "#080cff",
+              "on-tertiary-fixed": "#d4d5ff",
+              "surface-container-high": "#e5e9e9",
+              "on-tertiary": "#c2c5ff",
+              "surface-variant": "#dfe3e4",
+              "surface-container": "#eceeee",
+              "tertiary-fixed-dim": "#0000e1",
+              "error-container": "#ff8b9a",
+              "on-secondary-fixed-variant": "#5b5b5c",
+              "on-surface-variant": "#5b6061",
+              "on-primary": "#f9f6ff",
+              "secondary-container": "#e3e2e2",
+              "primary-fixed": "#e0e0ff",
+              "on-secondary-fixed": "#3f3f3f",
+              "surface-dim": "#d5dbdc",
+              "primary-fixed-dim": "#cfd1ff",
+              "secondary-fixed": "#e3e2e2",
+              "tertiary": "#0000e1"
+            },
+            fontFamily: {
+              "headline": ["Work Sans", "sans-serif"],
+              "body": ["Work Sans", "sans-serif"],
+              "label": ["Work Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 18px;
+        }
+        .outset-bevel {
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+        }
+        .inset-bevel {
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+        }
+        .outset-bevel-heavy {
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 3px solid #404040;
+            border-bottom: 3px solid #404040;
+        }
+        .active-button:active {
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            transform: translate(1px, 1px);
+        }
+        body {
+            background-color: #C0C0C0;
+            image-rendering: pixelated;
+        }
+        table { border-collapse: collapse; }
+        td, th { border: 1px solid #808080; }
+        .pixel-text { font-size: 11px; letter-spacing: -0.2px; }
+    </style>
+</head>
+<body class="font-body text-on-surface">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full h-12 z-50 flex items-center justify-between px-2 bg-[#C0C0C0] border-t-2 border-l-2 border-white border-r-2 border-b-2 border-gray-600 border-b-2 border-gray-800">
+<div class="flex items-center gap-4">
+<span class="text-lg font-black text-[#000000] uppercase tracking-tighter">TaskFlow v1.0</span>
+<div class="inset-bevel bg-surface flex items-center px-1 h-7">
+<span class="material-symbols-outlined text-gray-500 mr-1" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-48 p-0 h-full" placeholder="Search tasks..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="outset-bevel bg-[#C0C0C0] px-2 py-0.5 text-sm active-button flex items-center gap-1 hover:text-[#0000e1] hover:underline">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-['Work_Sans',sans-serif] text-sm uppercase tracking-tighter">HELP</span>
+</button>
+<button class="outset-bevel bg-[#C0C0C0] px-2 py-0.5 text-sm active-button flex items-center gap-1 hover:text-[#0000e1] hover:underline">
+<span class="material-symbols-outlined" data-icon="exit_to_app">exit_to_app</span>
+<span class="font-['Work_Sans',sans-serif] text-sm uppercase tracking-tighter">EXIT</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-12 bottom-0 w-48 flex flex-col p-1 bg-[#C0C0C0] border-r-2 border-white border-b-2 border-gray-800 border-r-2 border-gray-600 outset-bevel-heavy">
+<div class="px-2 py-3 border-b-2 border-gray-400 mb-2">
+<div class="text-md font-bold text-black font-['Work_Sans',sans-serif]">MAIN_MENU</div>
+<div class="text-[10px] text-gray-600 font-bold uppercase">v1.0.97</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-2 px-2 py-1.5 font-['Work_Sans',sans-serif] text-xs font-bold bg-[#faf9f9] border-t-2 border-l-2 border-gray-800 border-r-2 border-white border-b-2 border-white text-blue-700 underline" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-2 px-2 py-1.5 font-['Work_Sans',sans-serif] text-xs font-bold border-t-2 border-l-2 border-white border-r-2 border-gray-800 border-b-2 border-gray-800 hover:bg-[#dfe3e4] text-black" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+                Tasks
+            </a>
+<a class="flex items-center gap-2 px-2 py-1.5 font-['Work_Sans',sans-serif] text-xs font-bold border-t-2 border-l-2 border-white border-r-2 border-gray-800 border-b-2 border-gray-800 hover:bg-[#dfe3e4] text-black" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-2 px-2 py-1.5 font-['Work_Sans',sans-serif] text-xs font-bold border-t-2 border-l-2 border-white border-r-2 border-gray-800 border-b-2 border-gray-800 hover:bg-[#dfe3e4] text-black" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+                Profile
+            </a>
+</nav>
+<div class="mt-auto p-2 outset-bevel bg-[#dfe3e4]">
+<div class="text-[10px] font-bold uppercase mb-1">System Status</div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-green-500 border border-black"></div>
+<span class="text-[9px] font-black">ONLINE</span>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-48 mt-12 p-3 bg-surface min-h-[calc(100vh-3rem)]">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-center mb-4 bg-surface-container-highest outset-bevel p-2">
+<h1 class="text-lg font-black uppercase tracking-tight">System Dashboard // Overview</h1>
+<button class="outset-bevel bg-primary text-on-primary px-4 py-1 text-xs font-bold active-button flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="add_box" style="font-variation-settings: 'FILL' 1;">add_box</span>
+                QUICK ADD TASK
+            </button>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
+<div class="outset-bevel bg-[#C0C0C0] p-3">
+<div class="text-[10px] font-bold text-gray-700 uppercase mb-1">Total Tasks</div>
+<div class="text-3xl font-black text-black">124</div>
+<div class="text-[9px] text-blue-700 font-bold mt-1 underline cursor-pointer hover:text-blue-900">VIEW ALL →</div>
+</div>
+<div class="outset-bevel bg-[#C0C0C0] p-3">
+<div class="text-[10px] font-bold text-gray-700 uppercase mb-1">Completed</div>
+<div class="text-3xl font-black text-green-700">89</div>
+<div class="w-full bg-white h-2 inset-bevel mt-2">
+<div class="bg-green-600 h-full" style="width: 71%;"></div>
+</div>
+</div>
+<div class="outset-bevel bg-[#C0C0C0] p-3">
+<div class="text-[10px] font-bold text-gray-700 uppercase mb-1">High Priority</div>
+<div class="text-3xl font-black text-red-600">12</div>
+<div class="text-[9px] font-bold mt-1 text-red-800 uppercase">Attention Required</div>
+</div>
+<div class="outset-bevel bg-[#C0C0C0] p-3">
+<div class="text-[10px] font-bold text-gray-700 uppercase mb-1">Work Hours</div>
+<div class="text-3xl font-black text-black">34.5</div>
+<div class="text-[9px] font-bold mt-1 text-gray-600 uppercase">This Week</div>
+</div>
+</div>
+<!-- Middle Content Area -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<!-- Task Distribution (Bar Chart) -->
+<div class="md:col-span-1 outset-bevel bg-[#C0C0C0] flex flex-col">
+<div class="bg-surface-container-highest p-1 border-b-2 border-gray-600 font-bold text-[11px] uppercase">Task Distribution</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-bold uppercase">
+<span>Development</span>
+<span>45%</span>
+</div>
+<div class="w-full h-4 bg-white border border-gray-800 p-[1px]">
+<div class="h-full bg-blue-600 border-r border-gray-800" style="width: 45%;"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-bold uppercase">
+<span>Design</span>
+<span>30%</span>
+</div>
+<div class="w-full h-4 bg-white border border-gray-800 p-[1px]">
+<div class="h-full bg-green-600 border-r border-gray-800" style="width: 30%;"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-bold uppercase">
+<span>Marketing</span>
+<span>15%</span>
+</div>
+<div class="w-full h-4 bg-white border border-gray-800 p-[1px]">
+<div class="h-full bg-yellow-500 border-r border-gray-800" style="width: 15%;"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-bold uppercase">
+<span>Other</span>
+<span>10%</span>
+</div>
+<div class="w-full h-4 bg-white border border-gray-800 p-[1px]">
+<div class="h-full bg-gray-500 border-r border-gray-800" style="width: 10%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Task Table -->
+<div class="md:col-span-2 outset-bevel bg-[#C0C0C0] flex flex-col">
+<div class="bg-surface-container-highest p-1 border-b-2 border-gray-600 font-bold text-[11px] uppercase flex justify-between items-center">
+<span>Recent Tasks Log</span>
+<span class="text-[9px] font-normal lowercase italic text-gray-600">last sync: 10:04 AM</span>
+</div>
+<div class="inset-bevel m-1 bg-white overflow-x-auto">
+<table class="w-full text-left pixel-text">
+<thead class="bg-[#dfe3e4]">
+<tr>
+<th class="p-1 font-bold">ID</th>
+<th class="p-1 font-bold">TASK_NAME</th>
+<th class="p-1 font-bold">PRIO</th>
+<th class="p-1 font-bold">STATUS</th>
+<th class="p-1 font-bold">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-300">
+<tr class="hover:bg-blue-50">
+<td class="p-1 font-bold">#4021</td>
+<td class="p-1">UI Kernel Optimization</td>
+<td class="p-1"><span class="w-2 h-2 inline-block bg-red-600 mr-1 border border-black"></span>HIGH</td>
+<td class="p-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-blue-600" data-icon="sync" style="font-size: 14px;">sync</span>
+                                    In Progress
+                                </td>
+<td class="p-1">
+<button class="px-1 border border-gray-400 hover:bg-gray-200 uppercase text-[9px] font-bold">Edit</button>
+</td>
+</tr>
+<tr class="hover:bg-blue-50">
+<td class="p-1 font-bold">#4022</td>
+<td class="p-1">Legacy Driver Cleanup</td>
+<td class="p-1"><span class="w-2 h-2 inline-block bg-blue-600 mr-1 border border-black"></span>MED</td>
+<td class="p-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-green-600" data-icon="check_circle" style="font-size: 14px; font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    Complete
+                                </td>
+<td class="p-1">
+<button class="px-1 border border-gray-400 hover:bg-gray-200 uppercase text-[9px] font-bold">Edit</button>
+</td>
+</tr>
+<tr class="hover:bg-blue-50">
+<td class="p-1 font-bold">#4023</td>
+<td class="p-1">Database Sharding Prep</td>
+<td class="p-1"><span class="w-2 h-2 inline-block bg-green-600 mr-1 border border-black"></span>LOW</td>
+<td class="p-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-gray-500" data-icon="pause_circle" style="font-size: 14px;">pause_circle</span>
+                                    Paused
+                                </td>
+<td class="p-1">
+<button class="px-1 border border-gray-400 hover:bg-gray-200 uppercase text-[9px] font-bold">Edit</button>
+</td>
+</tr>
+<tr class="hover:bg-blue-50">
+<td class="p-1 font-bold">#4024</td>
+<td class="p-1">SMTP Gateway Test</td>
+<td class="p-1"><span class="w-2 h-2 inline-block bg-red-600 mr-1 border border-black"></span>HIGH</td>
+<td class="p-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-600" data-icon="warning" style="font-size: 14px; font-variation-settings: 'FILL' 1;">warning</span>
+                                    Critical
+                                </td>
+<td class="p-1">
+<button class="px-1 border border-gray-400 hover:bg-gray-200 uppercase text-[9px] font-bold">Edit</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-1 bg-surface-container-low flex justify-end gap-1">
+<button class="px-2 border border-gray-800 outset-bevel text-[10px] font-bold bg-[#C0C0C0] active-button">&lt; PREV</button>
+<button class="px-2 border border-gray-800 outset-bevel text-[10px] font-bold bg-[#C0C0C0] active-button">NEXT &gt;</button>
+</div>
+</div>
+</div>
+<!-- User Information & Visual -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="md:col-span-1 outset-bevel bg-[#C0C0C0] p-1">
+<div class="inset-bevel bg-black overflow-hidden relative group">
+<img alt="System User Profile" class="w-full h-32 object-cover grayscale opacity-80 group-hover:grayscale-0" data-alt="Professional business woman in late 90s style office attire, slight grain filter, neutral lighting, corporate headshot aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4PlR7NbgG4JPV1ro8T_oa7S1N_qFC-_BlQ263QBYGnOGukaQLVoyBnzRp6rsDDMMd_QCSM2v137WIeb6J2pLeqQBLpW1i-KYHcnH2fHjbrvLiok2Tx-poO_duikRkPS9yBTYmtekuFT_9o8gxagkyt0R-7ydZt40iVEs-YtmcrMZryB55WiRcGpcxu-6ennxZ2B2j5KWEXMIPpA4p0sifMqMgquTmZyT-b0zzGEDwU4F7sCre-7FX2680dCNTnRxPdR5Y2xpxHupF"/>
+<div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-1 text-[10px] font-bold">SYSADM_SARAH</div>
+</div>
+<div class="mt-2 text-[10px] font-bold p-1 space-y-1">
+<div class="flex justify-between"><span>Rank:</span><span class="text-blue-700">Level 4</span></div>
+<div class="flex justify-between"><span>Dept:</span><span>Core Ops</span></div>
+</div>
+</div>
+<div class="md:col-span-3 outset-bevel bg-[#C0C0C0] p-3 flex flex-col justify-center">
+<div class="flex items-start gap-4">
+<div class="bg-[#ffffca] border border-black p-4 text-xs font-['Work_Sans'] shadow-sm max-w-sm">
+<div class="font-bold border-b border-black mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="lightbulb">lightbulb</span>
+                            System Tip #42
+                        </div>
+                        Use the <kbd class="bg-gray-200 border border-gray-400 px-1 rounded-sm text-[10px]">ALT+N</kbd> keyboard shortcut to quickly open the new task dialogue without using your mouse device.
+                    </div>
+<div class="flex-1 outset-bevel bg-surface-container-low p-2 h-full flex flex-col justify-between">
+<div class="text-[10px] font-black uppercase text-gray-500 mb-2">Network Traffic Map</div>
+<div class="flex-1 bg-black flex items-center justify-center relative overflow-hidden">
+<img alt="Abstract digital network" class="opacity-50 h-full w-full object-cover" data-alt="Abstract glowing blue network nodes and connections on a dark background, retro cyber aesthetic, digital grid lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjhimCKEzisnK-4wb68EFBWvGY_0rWKTqmbe5gZ6fUbYj9umngmxA_y0cv6N5ygZc5NpcEgZCXPX14DV3MfXeu3SVk0zEQmh4DclhsMaQ92-aiqzcGncB9YE9WdMDVfVSfrDVE75LAcvKZkvD5bICV-HDdvA5B4RK8NvauFifpY7PtXo-CoUWp91p6JAh-Fkxdfp4Lw5Hnb3DT3Z1y_OhNLKWbnMC5vG-ln2J7YZCQD4lnt8-rjFBk0-lEMYtudR1tB-KbugjrLj2f"/>
+<span class="absolute inset-0 flex items-center justify-center text-green-500 font-mono text-[9px] animate-pulse">TRANSMITTING...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer / Status Bar -->
+<footer class="fixed bottom-0 left-48 right-0 h-6 bg-[#C0C0C0] border-t-2 border-white flex items-center px-2 justify-between z-40 outset-bevel">
+<div class="flex items-center gap-4 text-[10px] font-bold uppercase">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="terminal" style="font-size: 12px;">terminal</span>
+                Connected to: SRV-NODE-01
+            </div>
+<div class="flex items-center gap-1 text-green-700">
+<span class="material-symbols-outlined" data-icon="database" style="font-size: 12px;">database</span>
+                Sync: Nominal
+            </div>
+</div>
+<div class="flex items-center gap-2 outset-bevel bg-white px-2 h-4 text-[9px] font-black italic">
+            01/15/1997 10:42:01 AM
+        </div>
+</footer>
+</body></html>
