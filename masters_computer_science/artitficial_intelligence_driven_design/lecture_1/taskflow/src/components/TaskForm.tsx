@@ -37,6 +37,12 @@ export default function TaskForm() {
     setError(null);
     setSuccess(false);
 
+    // Add timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+      setError("TIMEOUT ERROR: Request took too long. Check your Firestore security rules or network connection.");
+    }, 15000); // 15 second timeout
+
     try {
       await createTask(user.uid, {
         title,
@@ -45,6 +51,7 @@ export default function TaskForm() {
         dueDate: dueDate || null,
       });
 
+      clearTimeout(timeoutId);
       setTitle("");
       setDescription("");
       setPriority("medium");
@@ -52,9 +59,14 @@ export default function TaskForm() {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      console.error("STDOUT::ERR", err);
-      setError("SYSTEM ERROR: Storage transaction failed.");
+      clearTimeout(timeoutId);
+      console.error("Task creation error:", err);
+      const errorMessage = err instanceof Error 
+        ? `SYSTEM ERROR: ${err.message}` 
+        : "SYSTEM ERROR: Storage transaction failed. Check Firebase configuration.";
+      setError(errorMessage);
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   };
@@ -73,8 +85,13 @@ export default function TaskForm() {
       
       <form onSubmit={handleSubmit} className="p-3 bg-surface space-y-4">
         {error && (
-          <div className="p-2 text-[10px] bg-red-50 border border-red-400 text-red-700 font-bold uppercase">
-            {error}
+          <div className="p-2 text-[10px] bg-red-50 border border-red-400 text-red-700 font-bold leading-tight space-y-1">
+            <div className="uppercase">{error}</div>
+            {error.includes("TIMEOUT") && (
+              <div className="text-[9px] normal-case">
+                Tip: Check your Firestore security rules in Firebase Console
+              </div>
+            )}
           </div>
         )}
         

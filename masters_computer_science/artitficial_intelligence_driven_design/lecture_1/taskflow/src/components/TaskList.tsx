@@ -40,8 +40,8 @@ export default function TaskList({
   if (tasks.length === 0) {
     return (
       <div className="p-8 text-center bg-white border-2 border-dashed border-secondary/20 m-2">
-        <div className="text-[10px] font-bold text-secondary uppercase mb-2">Null Pointer: No tasks found.</div>
-        <div className="text-[9px] text-secondary/60">Initialize your first task sub-routine to begin.</div>
+        <div className="text-[10px] font-bold text-secondary uppercase mb-2">No Tasks Found</div>
+        <div className="text-[9px] text-secondary/60">Create your first task to get started.</div>
       </div>
     );
   }
