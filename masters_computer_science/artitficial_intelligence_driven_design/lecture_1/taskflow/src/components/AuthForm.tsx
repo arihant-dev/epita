@@ -48,7 +48,7 @@ export default function AuthForm() {
       const message = err instanceof Error
         ? err.message
         : getFirebaseConfigErrorMessage();
-      console.error("AUTH_FAULT", err);
+      console.error("AUTH FAULT", err);
       setError(message);
     } finally {
       setLoading(false);
@@ -58,7 +58,7 @@ export default function AuthForm() {
   return (
     <div className="outset-bevel bg-background p-1 w-full max-w-sm">
       <div className="bg-secondary text-white px-2 py-0.5 text-[11px] font-bold flex justify-between items-center mb-1">
-        <span>{isLogin ? "USER_SIGN_IN.EXE" : "NEW_USER_REGISTRATION.EXE"}</span>
+        <span>{isLogin ? "USER SIGN IN.EXE" : "NEW USER REGISTRATION.EXE"}</span>
         <div className="flex gap-1">
           <div className="w-3 h-3 outset-bevel bg-background"></div>
           <div className="w-3 h-3 outset-bevel bg-background"></div>
@@ -68,13 +68,13 @@ export default function AuthForm() {
       <form onSubmit={handleSubmit} className="p-4 bg-surface space-y-4">
         {error && (
           <div className="p-2 text-[10px] bg-red-50 border border-red-400 text-red-700 font-bold uppercase leading-tight">
-            CRITICAL_ERROR: {error}
+            CRITICAL ERROR: {error}
           </div>
         )}
 
         <div className="space-y-1">
           <label className="block text-[10px] font-bold text-black uppercase">
-            User_Identifier (Email)
+            User Identifier (Email)
           </label>
           <div className="inset-bevel bg-white p-0.5">
             <input
@@ -90,7 +90,7 @@ export default function AuthForm() {
 
         <div className="space-y-1">
           <label className="block text-[10px] font-bold text-black uppercase">
-            Access_Key (Password)
+            Access Key (Password)
           </label>
           <div className="inset-bevel bg-white p-0.5">
             <input
@@ -111,7 +111,7 @@ export default function AuthForm() {
             disabled={loading}
             className="w-full py-2 outset-bevel bg-background text-black font-bold uppercase tracking-tight active-press text-xs hover:text-tertiary disabled:opacity-50"
           >
-            {loading ? "INITIALIZING..." : isLogin ? "AUTHENTICATE" : "REGISTER_USER"}
+            {loading ? "INITIALIZING..." : isLogin ? "AUTHENTICATE" : "REGISTER USER"}
           </button>
           
           <div className="groove-line"></div>
@@ -122,8 +122,8 @@ export default function AuthForm() {
             className="w-full text-[10px] font-bold text-secondary uppercase hover:text-tertiary underline cursor-pointer"
           >
             {isLogin 
-              ? "No terminal access? REGISTER_NEW_USER" 
-              : "Already have a key? RETURN_TO_SIGN_IN"}
+              ? "No terminal access? REGISTER NEW USER" 
+              : "Already have a key? RETURN TO SIGN IN"}
           </button>
         </div>
       </form>

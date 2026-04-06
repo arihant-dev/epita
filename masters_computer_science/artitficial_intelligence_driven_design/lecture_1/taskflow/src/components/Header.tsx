@@ -23,7 +23,7 @@ export default function Header() {
           <div className="hidden sm:flex items-center gap-1 px-2 border-x border-secondary/20 h-full">
             <span className="text-[9px] font-black uppercase text-black">ID</span>
             <span className="text-[9px] font-bold uppercase text-secondary truncate max-w-[120px]">
-              {user.email || "GUEST_USER"}
+              {user.email || "GUEST USER"}
             </span>
           </div>
         ) : (

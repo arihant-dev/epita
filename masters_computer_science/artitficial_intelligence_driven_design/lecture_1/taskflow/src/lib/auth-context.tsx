@@ -43,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isFirebaseConfigured) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(null);
       setConfigError(getFirebaseConfigErrorMessage());
       setLoading(false);

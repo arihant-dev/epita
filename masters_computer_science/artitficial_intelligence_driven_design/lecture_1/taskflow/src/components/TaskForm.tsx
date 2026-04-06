@@ -24,12 +24,12 @@ export default function TaskForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
-      setError("AUTH_ERROR: User session required.");
+      setError("AUTH ERROR: User session required.");
       return;
     }
 
     if (!title.trim()) {
-      setError("VALIDATION_ERROR: Title cannot be null.");
+      setError("VALIDATION ERROR: Title cannot be null.");
       return;
     }
 
@@ -53,7 +53,7 @@ export default function TaskForm() {
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       console.error("STDOUT::ERR", err);
-      setError("SYSTEM_ERROR: Storage transaction failed.");
+      setError("SYSTEM ERROR: Storage transaction failed.");
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function TaskForm() {
   return (
     <div className="outset-bevel bg-background p-1 w-full max-w-sm">
       <div className="bg-secondary text-white px-2 py-0.5 text-[11px] font-bold flex justify-between items-center mb-1">
-        <span>NEW_TASK_DIALOGUE.EXE</span>
+        <span>NEW TASK DIALOGUE.EXE</span>
         <div className="flex gap-1">
           <div className="w-3 h-3 outset-bevel bg-background"></div>
           <div className="w-3 h-3 outset-bevel bg-background"></div>
@@ -80,13 +80,13 @@ export default function TaskForm() {
         
         {success && (
           <div className="p-2 text-[10px] bg-green-50 border border-green-400 text-green-700 font-bold uppercase">
-            COMMIT_SUCCESS: Sub-routine updated.
+            COMMIT SUCCESS: Sub-routine updated.
           </div>
         )}
 
         <div className="space-y-1">
           <label htmlFor="title" className="block text-[10px] font-bold text-black uppercase">
-            Task_Title_Buffer
+            Task Title Buffer
           </label>
           <div className="inset-bevel bg-white p-0.5">
             <input
@@ -104,7 +104,7 @@ export default function TaskForm() {
 
         <div className="space-y-1">
           <label htmlFor="description" className="block text-[10px] font-bold text-black uppercase">
-            Extended_Description
+            Extended Description
           </label>
           <div className="inset-bevel bg-white p-0.5">
             <textarea
@@ -122,7 +122,7 @@ export default function TaskForm() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
             <label htmlFor="priority" className="block text-[10px] font-bold text-black uppercase">
-              Priority_Lvl
+              Priority Lvl
             </label>
             <div className="inset-bevel bg-white p-0.5">
               <select
@@ -131,16 +131,16 @@ export default function TaskForm() {
                 onChange={(e) => setPriority(e.target.value as Priority)}
                 className="w-full px-2 py-1 bg-transparent border-none focus:ring-0 outline-none text-xs uppercase"
               >
-                <option value="low">03_LOW</option>
-                <option value="medium">02_MED</option>
-                <option value="high">01_HIGH</option>
+                <option value="low">03 LOW</option>
+                <option value="medium">02 MED</option>
+                <option value="high">01 HIGH</option>
               </select>
             </div>
           </div>
 
           <div className="space-y-1">
             <label htmlFor="dueDate" className="block text-[10px] font-bold text-black uppercase">
-              Deadline_Date
+              Deadline Date
             </label>
             <div className="inset-bevel bg-white p-0.5">
               <input
@@ -161,7 +161,7 @@ export default function TaskForm() {
             disabled={loading}
             className="w-full py-2 px-4 outset-bevel bg-background text-black font-bold uppercase tracking-tight active-press text-xs hover:text-tertiary"
           >
-            {loading ? "PROCESSING..." : "SUBMIT_RECORD"}
+            {loading ? "PROCESSING..." : "SUBMIT RECORD"}
           </button>
         </div>
       </form>

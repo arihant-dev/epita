@@ -8,7 +8,7 @@ import TaskForm from "@/components/TaskForm";
 import TaskList from "@/components/TaskList";
 import { useAuth } from "@/lib/auth-context";
 import { getFirebaseDb } from "@/lib/firebase";
-import { Task, toggleTaskStatus } from "@/lib/tasks";
+import { Task, toggleTaskStatus, Priority } from "@/lib/tasks";
 
 const priorityCards = [
   { label: "High", key: "high", color: "bg-red-600" },
@@ -63,16 +63,29 @@ export default function Home() {
       (snapshot) => {
         const nextTasks: Task[] = [];
         snapshot.forEach((taskDoc) => {
-          nextTasks.push({ id: taskDoc.id, ...taskDoc.data() } as Task);
+          const data = taskDoc.data();
+          // Ensure all required fields exist with safe defaults
+          if (data && data.title) {
+            nextTasks.push({
+              id: taskDoc.id,
+              title: data.title || '',
+              description: data.description || '',
+              priority: (data.priority || 'medium') as Priority,
+              dueDate: data.dueDate || null,
+              completed: data.completed ?? false,
+              createdAt: data.createdAt,
+              completedAt: data.completedAt || null,
+            } as Task);
+          }
         });
         setTaskError(null);
         setTasksLoading(false);
         setTasks(nextTasks);
       },
       (error) => {
-        console.error("TASK_SYNC_ERROR", error);
+        console.error("TASK SYNC ERROR", error);
         setTasksLoading(false);
-        setTaskError("SYNC_ERROR: Realtime task feed is unavailable.");
+        setTaskError("SYNC ERROR: Realtime task feed is unavailable.");
       }
     );
 
@@ -80,7 +93,7 @@ export default function Home() {
   }, [configError, isConfigured, loading, router, user]);
 
   const handleToggle = async (task: Task) => {
-    if (!user || pendingTaskId) {
+    if (!user || pendingTaskId || !task || !task.id) {
       return;
     }
 
@@ -102,13 +115,13 @@ export default function Home() {
     try {
       await toggleTaskStatus(user.uid, task.id, nextCompleted);
     } catch (error) {
-      console.error("TASK_STATUS_ERROR", error);
+      console.error("TASK STATUS ERROR", error);
       setTasks((currentTasks) =>
         currentTasks.map((currentTask) =>
           currentTask.id === task.id ? task : currentTask
         )
       );
-      setTaskError("STATUS_UPDATE_FAILED: Could not persist the task state.");
+      setTaskError("STATUS UPDATE FAILED: Could not persist the task state.");
     } finally {
       setPendingTaskId(null);
     }
@@ -138,7 +151,7 @@ export default function Home() {
     return (
       <div className="flex flex-1 items-center justify-center bg-surface animate-pulse">
         <div className="text-[10px] font-bold uppercase tracking-widest text-secondary">
-          Initializing_Terminal...
+          Initializing Terminal...
         </div>
       </div>
     );
@@ -211,7 +224,7 @@ export default function Home() {
         <div className="xl:col-span-8 flex flex-col gap-4">
           <div className="outset-bevel flex flex-1 flex-col bg-background">
             <div className="flex items-center justify-between border-b-2 border-secondary bg-surface-container-highest p-1 text-[11px] font-bold uppercase">
-              <span>Recent_Tasks_Log.dat</span>
+              <span>Recent Tasks Log.dat</span>
               <span className="text-[9px] font-normal italic lowercase text-secondary">
                 sync: realtime
               </span>

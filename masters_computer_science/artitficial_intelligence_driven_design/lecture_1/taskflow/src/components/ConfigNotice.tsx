@@ -15,7 +15,7 @@ export default function ConfigNotice({
   return (
     <div className="outset-bevel bg-background p-1 w-full max-w-2xl">
       <div className="bg-secondary px-2 py-1 text-[11px] font-bold uppercase text-white">
-        Deployment_Config_Check
+        Deployment Config Check
       </div>
       <div className="space-y-4 bg-surface p-4 text-sm text-black">
         <div className="space-y-1">
@@ -32,7 +32,7 @@ export default function ConfigNotice({
         {missingFirebaseEnvVars.length > 0 ? (
           <div className="space-y-2">
             <p className="text-[10px] font-bold uppercase text-secondary">
-              Add these values in Vercel Project Settings -> Environment Variables:
+              Add these values in Vercel Project Settings {'->'} Environment Variables:
             </p>
             <ul className="space-y-1 text-[11px] font-mono">
               {missingFirebaseEnvVars.map((key) => (

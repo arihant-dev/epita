@@ -13,7 +13,7 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-12 bottom-0 w-48 flex flex-col p-1 bg-background border-r-2 border-white border-b-2 border-black outset-bevel-heavy z-40">
       <div className="px-2 py-3 border-b-2 border-secondary mb-2">
-        <div className="text-md font-bold text-black uppercase tracking-tight">Main_Menu</div>
+        <div className="text-md font-bold text-black uppercase tracking-tight">Main Menu</div>
         <div className="text-[10px] text-secondary font-bold uppercase">v1.0.97</div>
       </div>
       

@@ -33,14 +33,22 @@ export async function createTask(
     dueDate: string | null;
   }
 ): Promise<string> {
+  if (!uid || typeof uid !== 'string') {
+    throw new Error('Invalid user ID');
+  }
+
+  if (!data.title || typeof data.title !== 'string' || !data.title.trim()) {
+    throw new Error('Title is required and cannot be empty');
+  }
+
   const db = requireFirebaseDb();
   const tasksRef = collection(db, "users", uid, "tasks");
 
   const docRef = await addDoc(tasksRef, {
     title: data.title.trim(),
-    description: data.description.trim(),
-    priority: data.priority,
-    dueDate: data.dueDate,
+    description: (data.description || '').trim(),
+    priority: data.priority || 'medium',
+    dueDate: data.dueDate || null,
     completed: false,
     createdAt: serverTimestamp(),
     completedAt: null,
@@ -54,6 +62,14 @@ export async function toggleTaskStatus(
   taskId: string,
   newStatus: boolean
 ): Promise<void> {
+  if (!uid || typeof uid !== 'string') {
+    throw new Error('Invalid user ID');
+  }
+
+  if (!taskId || typeof taskId !== 'string') {
+    throw new Error('Invalid task ID');
+  }
+
   const db = requireFirebaseDb();
   const taskRef = doc(db, "users", uid, "tasks", taskId);
 

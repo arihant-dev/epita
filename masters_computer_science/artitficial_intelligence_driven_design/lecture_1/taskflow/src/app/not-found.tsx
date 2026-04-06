@@ -5,7 +5,7 @@ export default function NotFound() {
     <main className="flex min-h-screen items-center justify-center p-6">
       <div className="outset-bevel bg-background p-1 w-full max-w-md">
         <div className="bg-secondary px-2 py-1 text-[11px] font-bold uppercase text-white">
-          Route_Not_Found
+          Route Not Found
         </div>
         <div className="space-y-4 bg-surface p-5">
           <div className="space-y-1">

@@ -32,7 +32,7 @@ export default function TaskList({
   if (loading) {
     return (
       <div className="p-4 text-xs font-bold uppercase italic text-secondary animate-pulse">
-        Fetching_Records...
+        Fetching Records...
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function TaskList({
   if (tasks.length === 0) {
     return (
       <div className="p-8 text-center bg-white border-2 border-dashed border-secondary/20 m-2">
-        <div className="text-[10px] font-bold text-secondary uppercase mb-2">Null_Pointer: No tasks found.</div>
+        <div className="text-[10px] font-bold text-secondary uppercase mb-2">Null Pointer: No tasks found.</div>
         <div className="text-[9px] text-secondary/60">Initialize your first task sub-routine to begin.</div>
       </div>
     );
@@ -52,7 +52,7 @@ export default function TaskList({
         <thead className="bg-surface-container-highest">
           <tr className="divide-x divide-secondary/20">
             <th className="p-1 font-bold border-b border-secondary">ID</th>
-            <th className="p-1 font-bold border-b border-secondary">TASK_NAME</th>
+            <th className="p-1 font-bold border-b border-secondary">TASK NAME</th>
             <th className="p-1 font-bold border-b border-secondary">PRIO</th>
             <th className="p-1 font-bold border-b border-secondary">DUE</th>
             <th className="p-1 font-bold border-b border-secondary">STATUS</th>
