@@ -133,18 +133,39 @@ func main() {
 			continue
 		}
 
-		// Show spinner while processing
+		// Show spinner initially
 		spinner.Start("Thinking...")
 
-		// Run the agent
-		response, err := ag.Run(input)
-		spinner.Stop()
+		// Track if we've started streaming
+		firstToken := true
+
+		// Stream callback - prints tokens as they arrive
+		streamCallback := func(token string) {
+			if firstToken {
+				spinner.Stop()
+				fmt.Print("Chamonix: ")
+				firstToken = false
+			}
+			fmt.Print(token)
+		}
+
+		// Run the agent with streaming
+		_, err := ag.RunStream(input, streamCallback)
+
+		// Ensure spinner is stopped if no tokens were received
+		if firstToken {
+			spinner.Stop()
+		}
 
 		if err != nil {
+			if !firstToken {
+				fmt.Println() // Newline after partial output
+			}
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			continue
 		}
 
-		fmt.Printf("Chamonix: %s\n\n", response)
+		fmt.Println() // Newline after response
+		fmt.Println() // Extra line for spacing
 	}
 }

@@ -38,6 +38,12 @@ func (a *Agent) SetSystemPrompt(prompt string) {
 // Run processes a user query and returns the final response.
 // It handles the complete tool invocation loop.
 func (a *Agent) Run(query string) (string, error) {
+	return a.RunStream(query, nil)
+}
+
+// RunStream processes a user query with optional streaming.
+// The callback is invoked for each content token received.
+func (a *Agent) RunStream(query string, callback llm.StreamCallback) (string, error) {
 	// Add user message to history
 	a.history = append(a.history, llm.Message{Role: "user", Content: query})
 
@@ -46,8 +52,12 @@ func (a *Agent) Run(query string) (string, error) {
 
 	// Agent loop - process until we get a final response
 	for iterations := 0; iterations < 10; iterations++ {
-		// Call LLM
-		response, err := a.client.Chat(a.history, tools)
+		// Call LLM (stream only for final response, not tool calls)
+		var response *llm.Message
+		var err error
+
+		// Use streaming callback only when we might get a final response
+		response, err = a.client.ChatStream(a.history, tools, callback)
 		if err != nil {
 			return "", fmt.Errorf("LLM call failed: %w", err)
 		}
