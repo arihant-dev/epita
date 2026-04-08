@@ -9,6 +9,27 @@ import (
 	"github.com/arihant/chamonix/pkg/registry"
 )
 
+// EventType represents the type of agent event.
+type EventType string
+
+const (
+	EventToken      EventType = "token"
+	EventToolCall   EventType = "tool_call"
+	EventToolResult EventType = "tool_result"
+)
+
+// Event represents an agent event during processing.
+type Event struct {
+	Type       EventType      `json:"type"`
+	Content    string         `json:"content,omitempty"`
+	ToolName   string         `json:"tool_name,omitempty"`
+	ToolArgs   map[string]any `json:"tool_args,omitempty"`
+	ToolResult string         `json:"tool_result,omitempty"`
+}
+
+// EventCallback is called for each event during agent processing.
+type EventCallback func(Event)
+
 // Agent is the main agent that processes queries using tools.
 type Agent struct {
 	client   *llm.Client
@@ -38,26 +59,44 @@ func (a *Agent) SetSystemPrompt(prompt string) {
 // Run processes a user query and returns the final response.
 // It handles the complete tool invocation loop.
 func (a *Agent) Run(query string) (string, error) {
-	return a.RunStream(query, nil)
+	return a.RunWithEvents(query, nil)
 }
 
-// RunStream processes a user query with optional streaming.
+// RunStream processes a user query with streaming tokens.
 // The callback is invoked for each content token received.
 func (a *Agent) RunStream(query string, callback llm.StreamCallback) (string, error) {
+	if callback == nil {
+		return a.RunWithEvents(query, nil)
+	}
+	// Wrap the token callback into an event callback
+	eventCallback := func(e Event) {
+		if e.Type == EventToken {
+			callback(e.Content)
+		}
+	}
+	return a.RunWithEvents(query, eventCallback)
+}
+
+// RunWithEvents processes a user query with full event callbacks.
+func (a *Agent) RunWithEvents(query string, callback EventCallback) (string, error) {
 	// Add user message to history
 	a.history = append(a.history, llm.Message{Role: "user", Content: query})
 
 	// Get tools in OpenAI format
 	tools := a.registry.ToOpenAITools()
 
+	// Wrap callback for LLM streaming
+	var llmCallback llm.StreamCallback
+	if callback != nil {
+		llmCallback = func(token string) {
+			callback(Event{Type: EventToken, Content: token})
+		}
+	}
+
 	// Agent loop - process until we get a final response
 	for iterations := 0; iterations < 10; iterations++ {
-		// Call LLM (stream only for final response, not tool calls)
-		var response *llm.Message
-		var err error
-
-		// Use streaming callback only when we might get a final response
-		response, err = a.client.ChatStream(a.history, tools, callback)
+		// Call LLM
+		response, err := a.client.ChatStream(a.history, tools, llmCallback)
 		if err != nil {
 			return "", fmt.Errorf("LLM call failed: %w", err)
 		}
@@ -73,9 +112,31 @@ func (a *Agent) RunStream(query string, callback llm.StreamCallback) (string, er
 
 		// Process each tool call
 		for _, toolCall := range response.ToolCalls {
+			// Parse arguments for event
+			var args map[string]any
+			json.Unmarshal([]byte(toolCall.Function.Arguments), &args)
+
+			// Emit tool call event
+			if callback != nil {
+				callback(Event{
+					Type:     EventToolCall,
+					ToolName: toolCall.Function.Name,
+					ToolArgs: args,
+				})
+			}
+
 			result, err := a.executeTool(toolCall)
 			if err != nil {
 				result = fmt.Sprintf("Error: %s", err.Error())
+			}
+
+			// Emit tool result event
+			if callback != nil {
+				callback(Event{
+					Type:       EventToolResult,
+					ToolName:   toolCall.Function.Name,
+					ToolResult: result,
+				})
 			}
 
 			// Add tool result to history

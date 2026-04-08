@@ -41,6 +41,11 @@ type StreamEvent struct {
 	Result  string         `json:"result,omitempty"`
 }
 
+// flusher interface for outputs that support flushing.
+type flusher interface {
+	Flush() error
+}
+
 // Handler processes JSON requests via stdin/stdout.
 type Handler struct {
 	agent  *agent.Agent
@@ -54,6 +59,18 @@ func NewHandler(ag *agent.Agent) *Handler {
 		agent:  ag,
 		input:  os.Stdin,
 		output: os.Stdout,
+	}
+}
+
+// flush attempts to flush the output if it supports flushing.
+func (h *Handler) flush() {
+	// For os.Stdout, we need to sync
+	if f, ok := h.output.(*os.File); ok {
+		f.Sync()
+	}
+	// For buffered writers
+	if f, ok := h.output.(flusher); ok {
+		f.Flush()
 	}
 }
 
@@ -109,9 +126,11 @@ func (h *Handler) handleNonStreaming(query string, encoder *json.Encoder) {
 	response, err := h.agent.Run(query)
 	if err != nil {
 		encoder.Encode(Response{Error: err.Error()})
+		h.flush()
 		return
 	}
 	encoder.Encode(Response{Response: response})
+	h.flush()
 }
 
 // handleStreaming processes a request with streaming output.
@@ -119,20 +138,44 @@ func (h *Handler) handleStreaming(query string) {
 	encoder := json.NewEncoder(h.output)
 	var fullResponse string
 
-	callback := func(token string) {
-		fullResponse += token
-		encoder.Encode(StreamEvent{
-			Type:    "token",
-			Content: token,
-		})
+	// Emit a "thinking" event immediately so user knows we're processing
+	encoder.Encode(StreamEvent{
+		Type:    "status",
+		Content: "thinking",
+	})
+	h.flush()
+
+	callback := func(e agent.Event) {
+		switch e.Type {
+		case agent.EventToken:
+			fullResponse += e.Content
+			encoder.Encode(StreamEvent{
+				Type:    "token",
+				Content: e.Content,
+			})
+		case agent.EventToolCall:
+			encoder.Encode(StreamEvent{
+				Type: "tool_call",
+				Name: e.ToolName,
+				Args: e.ToolArgs,
+			})
+		case agent.EventToolResult:
+			encoder.Encode(StreamEvent{
+				Type:   "tool_result",
+				Name:   e.ToolName,
+				Result: e.ToolResult,
+			})
+		}
+		h.flush()
 	}
 
-	response, err := h.agent.RunStream(query, callback)
+	response, err := h.agent.RunWithEvents(query, callback)
 	if err != nil {
 		encoder.Encode(StreamEvent{
 			Type:    "error",
 			Content: err.Error(),
 		})
+		h.flush()
 		return
 	}
 
@@ -145,6 +188,7 @@ func (h *Handler) handleStreaming(query string) {
 		Type:    "done",
 		Content: fullResponse,
 	})
+	h.flush()
 }
 
 // RunSingle processes a single request (for piped input).
