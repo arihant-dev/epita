@@ -147,6 +147,7 @@ func main() {
 				firstToken = false
 			}
 			fmt.Print(token)
+			os.Stdout.Sync() // Flush stdout immediately
 		}
 
 		// Run the agent with streaming

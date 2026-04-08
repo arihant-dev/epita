@@ -62,9 +62,20 @@ type ChatResponse struct {
 
 // StreamDelta represents a streaming chunk delta.
 type StreamDelta struct {
-	Role      string     `json:"role,omitempty"`
-	Content   string     `json:"content,omitempty"`
-	ToolCalls []ToolCall `json:"tool_calls,omitempty"`
+	Role      string            `json:"role,omitempty"`
+	Content   string            `json:"content,omitempty"`
+	ToolCalls []StreamToolCall  `json:"tool_calls,omitempty"`
+}
+
+// StreamToolCall represents a tool call in streaming mode (has index).
+type StreamToolCall struct {
+	Index    int    `json:"index"`
+	ID       string `json:"id,omitempty"`
+	Type     string `json:"type,omitempty"`
+	Function struct {
+		Name      string `json:"name,omitempty"`
+		Arguments string `json:"arguments,omitempty"`
+	} `json:"function"`
 }
 
 // StreamChoice represents a choice in a streaming response.
@@ -233,10 +244,13 @@ func (c *Client) handleStreamResponse(body io.Reader, callback StreamCallback) (
 
 		// Accumulate tool calls
 		for _, tc := range delta.ToolCalls {
-			idx := 0 // Default to index 0 for single tool calls
+			idx := tc.Index
 			if existing, ok := toolCallsMap[idx]; ok {
 				// Append to existing tool call arguments
 				existing.Function.Arguments += tc.Function.Arguments
+				if tc.Function.Name != "" {
+					existing.Function.Name = tc.Function.Name
+				}
 			} else {
 				// New tool call
 				newTC := ToolCall{
