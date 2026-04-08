@@ -3,6 +3,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/arihant/chamonix/pkg/agent"
 	"github.com/arihant/chamonix/pkg/llm"
+	"github.com/arihant/chamonix/pkg/protocol"
 	"github.com/arihant/chamonix/pkg/registry"
 	"github.com/arihant/chamonix/pkg/tools"
 )
@@ -83,6 +85,10 @@ Available tools:
 Use tools when needed to help the user. Be concise and helpful.`
 
 func main() {
+	// Parse flags
+	interactive := flag.Bool("interactive", false, "Run in interactive CLI mode")
+	flag.Parse()
+
 	// Initialize LLM client
 	client, err := llm.New()
 	if err != nil {
@@ -101,6 +107,24 @@ func main() {
 	ag := agent.New(client, reg)
 	ag.SetSystemPrompt(systemPrompt)
 
+	if *interactive {
+		runInteractive(ag, client)
+	} else {
+		runJSONMode(ag)
+	}
+}
+
+// runJSONMode runs the agent in JSON stdin/stdout mode.
+func runJSONMode(ag *agent.Agent) {
+	handler := protocol.NewHandler(ag)
+	if err := handler.Run(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+// runInteractive runs the agent in interactive CLI mode.
+func runInteractive(ag *agent.Agent, client *llm.Client) {
 	fmt.Println("🏔️  Chamonix Agent")
 	fmt.Printf("   Model: %s\n", client.Model())
 	fmt.Printf("   Tools: files, http, calc\n")
