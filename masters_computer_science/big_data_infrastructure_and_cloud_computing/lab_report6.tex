@@ -1,0 +1,288 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{float}
+\usepackage{tocloft}
+
+% Fix TOC page number alignment
+\cftsetindents{subsection}{1.5em}{2.3em}
+\setlength{\cftsecnumwidth}{4em}
+\setlength{\cftsubsecnumwidth}{5em}
+
+% Compile-safe figure placeholder
+\newcommand{\labimage}[2]{
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{#1}
+\caption{#2}
+\end{figure}
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+
+    % EPITA Logo
+    \includegraphics[width=0.4\textwidth]{figures/lab_1/Epita.jpg} \\
+    \vspace{1.5cm}
+
+    % Program
+    {\large Master in Computer Science} \\
+    {\large Software Engineering} \\
+
+    % Main Title
+    \vspace{0.5cm}
+    {\Huge \textbf{Cloud Computing}} \\
+    \vspace{1.3cm}
+    {\huge Report 6}
+    \vspace{0.1cm}
+
+    % Lab Title
+    \vspace{0.5cm}
+    {\Large \textbf{Identity and Access Management (IAM)}} \\
+
+    % Team Members
+    \vspace{1.5cm}
+    {\Large \textbf{Team Members}} \\
+    \vspace{0.5cm}
+    {\large Jordy Meye} \\
+    {\large Huizhe Su} \\
+    {\large Arihant Jain} \\
+    {\large Nizar} \\
+
+    \vspace{1.5cm}
+    {\large April 2026}
+
+\end{titlepage}
+
+\newpage
+% --- Styling --- %
+\titleformat{\section}
+  {\Large\bfseries}
+  {Part \arabic{section}.}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {Task \arabic{subsection}.}
+  {1em}
+  {}
+
+% Code listing style
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    showstringspaces=false,
+    tabsize=4,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+}
+
+\raggedbottom
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+
+\tableofcontents
+\newpage
+
+%% ============ SECTION 1: IAM Policies ============ %%
+\section{IAM Policies}
+
+\subsection{Create Policy Number 1}
+
+We create Policy Number 1 which allows:
+\begin{itemize}
+    \item Access S3 completely
+    \item Only create EC2 instances
+    \item Full access to RDS
+\end{itemize}
+
+The policy is created in JSON format:
+
+\begin{lstlisting}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "ec2:StartInstances",
+        "rds:*",
+        "s3:*",
+        "ec2:CreateTags",
+        "ec2:DescribeInstanceAttribute",
+        "ec2:DescribeRegions",
+        "ec2:DescribeInstanceTypes",
+        "ec2:RunInstances",
+        "ec2:AssociateAddress",
+        "ec2:DescribeInstanceStatus"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+\end{lstlisting}
+
+\labimage{figures/lab_6/policy1_json.png}{Policy 1 JSON configuration in AWS console}
+
+\subsection{Create Policy Number 2}
+
+We create Policy Number 2 which allows:
+\begin{itemize}
+    \item Access CloudWatch and billing completely
+    \item Can only list EC2 and S3 resources
+\end{itemize}
+
+The policy is created in JSON format:
+
+\begin{lstlisting}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "s3:ListAllMyBuckets",
+        "cloudwatch:*",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+\end{lstlisting}
+
+\labimage{figures/lab_6/policy2_json.png}{Policy 2 JSON configuration in AWS console}
+
+\subsection{Attach Policy Number 1 to Dev Team}
+
+We attach Policy Number 1 to the Dev Team group.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Navigate to IAM $\rightarrow$ User groups
+    \item Select the \texttt{DevTeam} group
+    \item Click on the \texttt{Permissions} tab
+    \item Click \texttt{Add permissions} $\rightarrow$ \texttt{Attach policies}
+    \item Search for and select \texttt{Policy1}
+    \item Click \texttt{Attach policies}
+\end{enumerate}
+
+\labimage{figures/lab_6/dev_user_group_attach_policies.png}{Attaching Policy 1 to DevTeam group}
+
+\subsection{Attach Policy Number 2 to Ops Team}
+
+We attach Policy Number 2 to the Ops Team group.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Navigate to IAM $\rightarrow$ User groups
+    \item Select the \texttt{OpsTeam} group
+    \item Click on the \texttt{Permissions} tab
+    \item Click \texttt{Add permissions} $\rightarrow$ \texttt{Attach policies}
+    \item Search for and select \texttt{Policy2}
+    \item Click \texttt{Attach policies}
+\end{enumerate}
+
+\labimage{figures/lab_6/ops_team_group_attach_policies.png}{Attaching Policy 2 to OpsTeam group}
+
+%% ============ SECTION 2: IAM Assignment ============ %%
+\section{IAM Assignment}
+
+\subsection{Create IAM Users}
+
+We create 4 IAM users: Dev1, Dev2, Test1, and Test2.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Navigate to IAM $\rightarrow$ Users
+    \item Click \texttt{Create user}
+    \item Enter the username (Dev1, Dev2, Test1, or Test2)
+    \item Proceed through the user creation wizard
+    \item Complete the user creation process
+\end{enumerate}
+
+\labimage{figures/lab_6/dev_and_test_users.png}{IAM Users dashboard showing created development and testing users}
+
+\subsection{Create User Groups}
+
+We create 2 groups: Dev Team and Ops Team.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Navigate to IAM $\rightarrow$ User groups
+    \item Click \texttt{Create group}
+    \item Enter the group name
+    \item (Optional) Attach policies during group creation
+    \item Complete the group creation
+\end{enumerate}
+
+\labimage{figures/lab_6/user_groups.png}{User groups dashboard showing DevTeam, LocalUser, and OpsTeam groups}
+
+\subsection{Add Dev1 and Dev2 to Dev Team}
+
+We add Dev1 and Dev2 to the Dev Team group.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Navigate to IAM $\rightarrow$ User groups
+    \item Select the \texttt{DevTeam} group
+    \item Click \texttt{Add user to group}
+    \item Select \texttt{Dev1} and \texttt{Dev2}
+    \item Click \texttt{Add users}
+\end{enumerate}
+
+\labimage{figures/lab_6/dev1_groups.png}{Dev1 user group membership showing association with DevTeam and OpsTeam}
+
+\subsection{Add Dev1, Test1, and Test2 to Ops Team}
+
+We add Dev1, Test1, and Test2 to the Ops Team group.
+
+\textbf{Steps performed:}
+\begin{enumerate}
+    \item Navigate to IAM $\rightarrow$ User groups
+    \item Select the \texttt{OpsTeam} group
+    \item Click \texttt{Add user to group}
+    \item Select \texttt{Dev1}, \texttt{Test1}, and \texttt{Test2}
+    \item Click \texttt{Add users}
+\end{enumerate}
+
+\labimage{figures/lab_6/test1_groups.png}{Test1 user group membership showing association with OpsTeam group}
+
+%% ============ SECTION 3: Conclusion ============ %%
+\section{Conclusion}
+
+In this lab, we accomplished the following tasks:
+
+\textbf{Part 1 - IAM Policies:}
+\begin{itemize}
+    \item Created Policy1 with S3 full access, EC2 instance creation, and RDS full access
+    \item Created Policy2 with CloudWatch and billing full access, EC2 and S3 list-only access
+    \item Attached Policy1 to the Dev Team group
+    \item Attached Policy2 to the Ops Team group
+\end{itemize}
+
+\textbf{Part 2 - IAM Assignment:}
+\begin{itemize}
+    \item Created 4 IAM users (Dev1, Dev2, Test1, Test2)
+    \item Created 2 groups (Dev Team and Ops Team)
+    \item Added Dev1 and Dev2 to the Dev Team group
+    \item Added Dev1, Test1, and Test2 to the Ops Team group
+\end{itemize}
+
+\end{document}
