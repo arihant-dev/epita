@@ -8,7 +8,7 @@ Deliver all required final project artifacts with a working prototype:
 - Deployment evidence / demo
 - Presentation slides support
 
-Budget guardrail: keep projected spend under **$50** for the lab run.
+Budget guardrail: keep projected spend under **$100** for the lab run and tear down right after the demo.
 
 ## 2) Locked decisions
 - Domain: UrbanMove smart mobility
@@ -50,7 +50,7 @@ Budget guardrail: keep projected spend under **$50** for the lab run.
 ## 4) Cost-control (mandatory first)
 1. Create AWS Budget alerts (50/75/90/100% thresholds).
 2. Tag every resource: `Project=UrbanMove-FinalLab`.
-3. Use t3.micro only; no NAT Gateway, no EKS, no managed Kafka.
+3. Use t3.micro only; no NAT Gateway for the demo setup, no EKS, no managed Kafka.
 4. Short log retention (7 days).
 5. Stop instances when not actively demoing.
 6. End-of-day cleanup script for stale volumes/snapshots/EIPs.

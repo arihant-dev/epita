@@ -1,11 +1,160 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REGION="eu-west-3"
-UI_BUCKET="${UI_BUCKET:-urbanmove-ui-private-bucket}"
+REGION="${REGION:-eu-west-3}"
+PROJECT_TAG="${PROJECT_TAG:-UrbanMove-FinalLab}"
+STATE_DIR="$(cd "$(dirname "$0")" && pwd)/.state"
+mkdir -p "${STATE_DIR}"
 
-echo "Create private S3 bucket for UI and configure CloudFront OAC."
-echo "Configure CloudFront behaviors:"
-echo "- default -> S3 UI origin"
-echo "- /api/* -> EC2 API origin"
-echo "Region: ${REGION}, Bucket: ${UI_BUCKET}"
+if [[ -f "${STATE_DIR}/ec2.env" ]]; then
+  # shellcheck source=/dev/null
+  source "${STATE_DIR}/ec2.env"
+fi
+
+ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+API_PUBLIC_DNS="${API_PUBLIC_DNS:-}"
+if [[ -z "${API_PUBLIC_DNS}" ]]; then
+  echo "API_PUBLIC_DNS is required (or run 02_create_ec2_topology.sh first)."
+  exit 1
+fi
+
+UI_BUCKET="${UI_BUCKET:-urbanmove-ui-${ACCOUNT_ID}-eu-west-3}"
+
+aws s3api create-bucket \
+  --region "${REGION}" \
+  --bucket "${UI_BUCKET}" \
+  --create-bucket-configuration "LocationConstraint=${REGION}" >/dev/null 2>&1 || true
+
+aws s3api put-public-access-block \
+  --region "${REGION}" \
+  --bucket "${UI_BUCKET}" \
+  --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+
+aws s3api put-bucket-tagging \
+  --region "${REGION}" \
+  --bucket "${UI_BUCKET}" \
+  --tagging "TagSet=[{Key=Project,Value=${PROJECT_TAG}}]" >/dev/null
+
+OAC_ID="$(aws cloudfront create-origin-access-control \
+  --origin-access-control-config "Name=urbanmove-oac,Description=OAC for urbanmove UI,SigningProtocol=sigv4,SigningBehavior=always,OriginAccessControlOriginType=s3" \
+  --query 'OriginAccessControl.Id' \
+  --output text 2>/dev/null || true)"
+
+if [[ -z "${OAC_ID}" || "${OAC_ID}" == "None" ]]; then
+  OAC_ID="$(aws cloudfront list-origin-access-controls --query 'OriginAccessControlList.Items[?Name==`urbanmove-oac`].Id | [0]' --output text)"
+fi
+
+DISTRIBUTION_CONFIG_FILE="${STATE_DIR}/distribution-config.json"
+cat > "${DISTRIBUTION_CONFIG_FILE}" <<JSON
+{
+  "CallerReference": "urbanmove-$(date +%s)",
+  "Comment": "UrbanMove final lab distribution",
+  "Enabled": true,
+  "Origins": {
+    "Quantity": 2,
+    "Items": [
+      {
+        "Id": "ui-s3-origin",
+        "DomainName": "${UI_BUCKET}.s3.${REGION}.amazonaws.com",
+        "S3OriginConfig": { "OriginAccessIdentity": "" },
+        "OriginAccessControlId": "${OAC_ID}"
+      },
+      {
+        "Id": "api-origin",
+        "DomainName": "${API_PUBLIC_DNS}",
+        "CustomOriginConfig": {
+          "HTTPPort": 8080,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "http-only",
+          "OriginSslProtocols": {
+            "Quantity": 1,
+            "Items": ["TLSv1.2"]
+          }
+        }
+      }
+    ]
+  },
+  "DefaultRootObject": "index.html",
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "ui-s3-origin",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "TrustedSigners": { "Enabled": false, "Quantity": 0 },
+    "TrustedKeyGroups": { "Enabled": false, "Quantity": 0 },
+    "AllowedMethods": { "Quantity": 2, "Items": ["GET", "HEAD"], "CachedMethods": { "Quantity": 2, "Items": ["GET", "HEAD"] } },
+    "Compress": true,
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": { "Forward": "none" }
+    },
+    "MinTTL": 0
+  },
+  "CacheBehaviors": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "PathPattern": "/api/*",
+        "TargetOriginId": "api-origin",
+        "ViewerProtocolPolicy": "redirect-to-https",
+        "TrustedSigners": { "Enabled": false, "Quantity": 0 },
+        "TrustedKeyGroups": { "Enabled": false, "Quantity": 0 },
+        "AllowedMethods": {
+          "Quantity": 7,
+          "Items": ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"],
+          "CachedMethods": { "Quantity": 2, "Items": ["GET", "HEAD"] }
+        },
+        "Compress": true,
+        "ForwardedValues": {
+          "QueryString": true,
+          "Headers": { "Quantity": 1, "Items": ["Authorization"] },
+          "Cookies": { "Forward": "all" }
+        },
+        "MinTTL": 0
+      }
+    ]
+  },
+  "PriceClass": "PriceClass_100",
+  "ViewerCertificate": { "CloudFrontDefaultCertificate": true }
+}
+JSON
+
+DISTRIBUTION_ID="$(aws cloudfront create-distribution \
+  --distribution-config file://"${DISTRIBUTION_CONFIG_FILE}" \
+  --query 'Distribution.Id' \
+  --output text)"
+
+DISTRIBUTION_DOMAIN="$(aws cloudfront get-distribution --id "${DISTRIBUTION_ID}" --query 'Distribution.DomainName' --output text)"
+
+cat > "${STATE_DIR}/ui-bucket-policy.json" <<JSON
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudFrontServicePrincipalReadOnly",
+      "Effect": "Allow",
+      "Principal": { "Service": "cloudfront.amazonaws.com" },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::${UI_BUCKET}/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:cloudfront::${ACCOUNT_ID}:distribution/${DISTRIBUTION_ID}"
+        }
+      }
+    }
+  ]
+}
+JSON
+
+aws s3api put-bucket-policy \
+  --region "${REGION}" \
+  --bucket "${UI_BUCKET}" \
+  --policy file://"${STATE_DIR}/ui-bucket-policy.json"
+
+cat >> "${STATE_DIR}/ec2.env" <<EOF
+UI_BUCKET=${UI_BUCKET}
+CLOUDFRONT_DISTRIBUTION_ID=${DISTRIBUTION_ID}
+CLOUDFRONT_DOMAIN=${DISTRIBUTION_DOMAIN}
+EOF
+
+echo "S3 + CloudFront configured."
+echo "UI bucket: ${UI_BUCKET}"
+echo "CloudFront domain: https://${DISTRIBUTION_DOMAIN}"
