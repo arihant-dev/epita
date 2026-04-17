@@ -6,8 +6,14 @@ Public API facade service.
 - `POST /api/v1/auth/login`
 - `GET /api/v1/congestion?limit=5` (Bearer token)
 - `GET /api/v1/routes/recommendation?origin=A&destination=B` (Bearer token)
+- `POST /api/v1/routes/recommendation` with `{ "origin": "...", "destination": "..." }` (Bearer token)
 - `POST /api/v1/events` (Bearer token, `admin`/`operator`)
 - `GET /healthz`
+
+Compatibility aliases are also available for routing setups that strip or keep prefixes:
+- `/v1/*`
+- `/api/*`
+- unprefixed paths (`/auth/login`, `/congestion`, `/routes/recommendation`, `/events`)
 
 ## Run
 ```bash
