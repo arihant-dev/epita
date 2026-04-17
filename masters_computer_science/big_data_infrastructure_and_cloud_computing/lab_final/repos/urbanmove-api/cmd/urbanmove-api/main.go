@@ -43,14 +43,19 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) {
+	healthHandler := func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]any{"status": "ok", "service": "urbanmove-api"})
-	})
+	}
+	for _, path := range []string{"/healthz", "/health", "/api/healthz", "/api/health", "/api/v1/healthz", "/v1/healthz"} {
+		registerRoute(mux, path, healthHandler)
+	}
 
-	mux.HandleFunc("/api/v1/auth/login", a.handleLogin)
-	mux.HandleFunc("/api/v1/congestion", a.withAuth(a.handleCongestion))
-	mux.HandleFunc("/api/v1/routes/recommendation", a.withAuth(a.handleRouteRecommendation))
-	mux.HandleFunc("/api/v1/events", a.withAuth(a.handleIngestEvent))
+	for _, prefix := range []string{"/api/v1", "/v1", "/api", ""} {
+		registerRoute(mux, routePath(prefix, "/auth/login"), a.handleLogin)
+		registerRoute(mux, routePath(prefix, "/congestion"), a.withAuth(a.handleCongestion))
+		registerRoute(mux, routePath(prefix, "/routes/recommendation"), a.withAuth(a.handleRouteRecommendation))
+		registerRoute(mux, routePath(prefix, "/events"), a.withAuth(a.handleIngestEvent))
+	}
 
 	log.Printf("urbanmove-api HTTP listening on %s", httpAddr)
 	if err := http.ListenAndServe(httpAddr, mux); err != nil {
@@ -89,6 +94,11 @@ func (a *app) handleLogin(w http.ResponseWriter, r *http.Request) {
 
 func (a *app) handleCongestion(w http.ResponseWriter, r *http.Request, principal *urbanmovev1.TokenValidationResponse) {
 	_ = principal
+	if r.Method != http.MethodGet {
+		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "method not allowed"})
+		return
+	}
+
 	limit := int32(5)
 	if raw := r.URL.Query().Get("limit"); raw != "" {
 		v, err := strconv.Atoi(raw)
@@ -109,8 +119,29 @@ func (a *app) handleCongestion(w http.ResponseWriter, r *http.Request, principal
 
 func (a *app) handleRouteRecommendation(w http.ResponseWriter, r *http.Request, principal *urbanmovev1.TokenValidationResponse) {
 	_ = principal
+	if r.Method != http.MethodGet && r.Method != http.MethodPost {
+		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "method not allowed"})
+		return
+	}
+
 	origin := r.URL.Query().Get("origin")
 	destination := r.URL.Query().Get("destination")
+	if (origin == "" || destination == "") && r.Method == http.MethodPost {
+		var body struct {
+			Origin      string `json:"origin"`
+			Destination string `json:"destination"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
+			return
+		}
+		if origin == "" {
+			origin = body.Origin
+		}
+		if destination == "" {
+			destination = body.Destination
+		}
+	}
 	if origin == "" || destination == "" {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "origin and destination are required"})
 		return
@@ -187,6 +218,20 @@ func getenvDefault(key, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+func routePath(prefix, suffix string) string {
+	if prefix == "" {
+		return suffix
+	}
+	return prefix + suffix
+}
+
+func registerRoute(mux *http.ServeMux, path string, handler http.HandlerFunc) {
+	mux.HandleFunc(path, handler)
+	if path != "/" {
+		mux.HandleFunc(path+"/", handler)
+	}
 }
 
 func writeJSON(w http.ResponseWriter, code int, v any) {
