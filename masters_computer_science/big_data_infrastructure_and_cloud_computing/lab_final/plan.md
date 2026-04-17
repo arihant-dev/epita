@@ -39,7 +39,8 @@ Budget guardrail: keep projected spend under **$100** for the lab run and tear d
 ## 3.2 Edge + static frontend
 - CloudFront distribution:
   - origin A: private S3 bucket (frontend)
-  - origin B: EC2-API (`/api/*`)
+  - origin B: API Gateway HTTP API (`/api/*`)
+- API Gateway routes requests to EC2 services (`/api/*`, `/gov-feed/*`, `/health/*`)
 
 ## 3.3 Security baseline
 - Least-privilege IAM users/roles
