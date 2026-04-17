@@ -1,0 +1,389 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{float}
+\usepackage{tocloft}
+
+% Fix TOC page number alignment
+\cftsetindents{subsection}{1.5em}{2.3em}
+\setlength{\cftsecnumwidth}{4em}
+\setlength{\cftsubsecnumwidth}{5em}
+
+% Figure helper
+\newcommand{\labimage}[2]{
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{#1}
+\caption{#2}
+\end{figure}
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+
+    % EPITA Logo
+    \includegraphics[width=0.4\textwidth]{figures/lab_1/Epita.jpg} \\
+    \vspace{1.5cm}
+
+    % Program
+    {\large Master in Computer Science} \\
+    {\large Software Engineering} \\
+
+    % Main title
+    \vspace{0.5cm}
+    {\Huge \textbf{Cloud Computing}} \\
+    \vspace{1.3cm}
+    {\huge Report 7}
+    \vspace{0.3cm}
+
+    % Lab title
+    {\Large \textbf{LAB 07 -- AWS-GitLab Orchestration}} \\
+    {\large GitLab + Lambda, GitLab + AWS SAM, GitLab + ECS/Fargate}
+
+    % Team members
+    \vspace{1.5cm}
+    {\Large \textbf{Team Members}} \\
+    \vspace{0.5cm}
+    {\large Jordy Meye} \\
+    {\large Huizhe Su} \\
+    {\large Arihant Jain} \\
+    {\large Nizar} \\
+
+    \vspace{1.5cm}
+    {\large April 2026}
+\end{titlepage}
+
+\newpage
+% --- Styling --- %
+\titleformat{\section}
+  {\Large\bfseries}
+  {Exercise \arabic{section}.}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {Question \arabic{subsection}.}
+  {1em}
+  {}
+
+% Code listing style
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    showstringspaces=false,
+    tabsize=2,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+}
+
+\raggedbottom
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+
+\tableofcontents
+\newpage
+
+%% ============ SECTION 1: GitLab + Lambda ============ %%
+\section{GitLab + Lambda}
+
+\subsection{LAB 07 required steps and execution}
+LAB 07 defines this flow for GitLab + Lambda: create project from template, create IAM deployment user, attach required permissions, add AWS credentials to CI/CD variables, run pipeline, read endpoint, test endpoint.
+
+\textbf{Exact identifiers used in our run:}
+\begin{itemize}
+    \item GitLab project: \texttt{iarihanti/aws-lambda-demo}
+    \item IAM user: \texttt{gitlab\_demo\_lambda}
+    \item IAM policies: \texttt{AWSCloudFormationFullAccess} and \texttt{AWSLambda\_FullAccess}
+    \item Region: \texttt{us-east-1}
+    \item Deployed endpoint: \url{https://lcqn6muh65.execute-api.us-east-1.amazonaws.com/production/hello}
+\end{itemize}
+
+\textbf{Execution steps:}
+\begin{enumerate}
+    \item Created the GitLab serverless project template.
+    \item Created IAM deployment user and attached Lambda/CloudFormation permissions.
+    \item Added \texttt{AWS\_ACCESS\_KEY\_ID} and \texttt{AWS\_SECRET\_ACCESS\_KEY} in GitLab CI/CD variables.
+    \item Triggered pipeline and verified all jobs finished in success state.
+    \item Opened generated API endpoint and validated response with Postman.
+\end{enumerate}
+
+\labimage{figures/lab_7/gitlab_lambda_creation_from_template.png}{Project creation from serverless template}
+\labimage{figures/lab_7/gitlab_lambda_user_created.png}{IAM user creation: \texttt{gitlab\_demo\_lambda}}
+\labimage{figures/lab_7/gitlab_lambda_user_permissions.png}{IAM permissions attached to deployment user}
+\labimage{figures/lab_7/gitlab_lambda_user.png}{IAM user summary and access-key setup}
+\labimage{figures/lab_7/aws_ci_cd_keys_gitlab.png}{GitLab CI/CD variables for AWS credentials}
+\labimage{figures/lab_7/gitlab_lambda_pipeline_running.png}{Lambda pipeline running state}
+\labimage{figures/lab_7/gitlab_lambda_all_jobs_passed.png}{Lambda pipeline all jobs passed}
+\labimage{figures/lab_7/gitlab_lambda_endpoint.png}{Generated Lambda endpoint after deployment}
+\labimage{figures/lab_7/gitlab_lambda_postman.png}{Endpoint validation from Postman}
+
+\vspace{7cm}
+\subsection{Exact .gitlab-ci.yml used (GitLab + Lambda)}
+\begin{lstlisting}
+image: node:18
+
+variables:
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: $AWS_REGION
+
+stages:
+  - test
+  - deploy_function
+  - test_deployed_function
+  - deploy_pages
+
+test:
+  stage: test
+  script:
+    - npm install
+    - npm test
+
+production:
+  stage: deploy_function
+  before_script:
+    - FAILURE_MESSAGE="Must define $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY. Add keys to $CI_PROJECT_URL/-/settings/ci_cd"
+    - test -z "$AWS_SECRET_ACCESS_KEY" && echo $FAILURE_MESSAGE && exit 1
+    - test -z "$AWS_ACCESS_KEY_ID" && echo $FAILURE_MESSAGE && exit 1
+    - export AWS_DEFAULT_REGION="$AWS_REGION"
+  script:
+    - npm install
+    - npm run deploy -- --stage production --verbose
+  environment: production
+  only:
+     - master
+  artifacts:
+    paths:
+      - stack.json
+    expire_in: 2 weeks
+
+postdeploy_test:
+  stage: test_deployed_function
+  only:
+    - master
+  script:
+    - npm install
+    - STACK_JSON_FILE=./stack.json npm test featureTests
+
+pages:
+  stage: deploy_pages
+  script:
+    - cp stack.json ./public/stack.json
+  environment: production_pages
+  only:
+    - master
+  artifacts:
+    paths:
+      - ./public/
+\end{lstlisting}
+
+%% ============ SECTION 2: GitLab + AWS SAM ============ %%
+\section{GitLab + AWS SAM}
+
+\subsection{LAB 07 required steps and execution}
+LAB 07 SAM flow requires SAM CLI setup, \texttt{sam init} hello-world project, CI file creation, push to GitLab, pipeline deployment, and endpoint test with curl.
+
+\textbf{Exact identifiers used in our run:}
+\begin{itemize}
+    \item GitLab project: \texttt{gitlab-aws-sam-demo}
+    \item Region: \texttt{us-east-2}
+    \item CloudFormation stack name: \texttt{gitlabpoc}
+    \item Endpoint tested by curl: \url{https://vf4y4grte8.execute-api.us-east-2.amazonaws.com/Prod/hello/}
+    \item Lambda code path: \texttt{hello\_world/app.py}
+\end{itemize}
+
+\textbf{Execution steps:}
+\begin{enumerate}
+    \item Initialized AWS SAM hello-world project.
+    \item Prepared \texttt{.gitlab-ci.yml} with build, package, and deploy commands.
+    \item Initialized Git repository and pushed code to remote GitLab project.
+    \item Followed pipeline from running to passed state.
+    \item Tested final API endpoint using curl.
+\end{enumerate}
+
+\begin{lstlisting}[language=bash]
+sam init
+curl -fs https://vf4y4grte8.execute-api.us-east-2.amazonaws.com/Prod/hello/
+\end{lstlisting}
+
+\labimage{figures/lab_7/aws_sam_cli_hello_world_setup.png}{AWS SAM CLI hello-world initialization}
+\labimage{figures/lab_7/aws_sam_gitlab_ci_yml.png}{SAM deployment CI file in repository}
+\labimage{figures/lab_7/aws_sam_gitlab_pushed_to_remote.png}{SAM project pushed to GitLab remote}
+\labimage{figures/lab_7/aws_sam_gitlab_pipeline_running.png}{SAM pipeline running state}
+\labimage{figures/lab_7/aws_sam_gitlab_pipeline_passed.png}{SAM pipeline passed state}
+\labimage{figures/lab_7/aws_sam_gitlab_cURL_to_lambda.png}{curl validation of SAM endpoint response}
+
+\subsection{Exact .gitlab-ci.yml used (GitLab + AWS SAM)}
+\begin{lstlisting}
+image: python:3.13
+
+stages:
+  - deploy
+
+variables:
+  AWS_DEFAULT_REGION: us-east-2
+  AWS_REGION: us-east-2
+  SAM_CLI_TELEMETRY: "0"
+
+production:
+  stage: deploy
+  before_script:
+    - pip3 install awscli --upgrade
+    - pip3 install aws-sam-cli --upgrade
+  script:
+    - sam build
+    - sam package --resolve-s3 --output-template-file packaged.yaml --region "$AWS_DEFAULT_REGION"
+    - sam deploy --template-file packaged.yaml --stack-name gitlabpoc --capabilities CAPABILITY_IAM --region "$AWS_DEFAULT_REGION" --no-confirm-changeset
+  environment: production
+\end{lstlisting}
+
+%% ============ SECTION 3: GitLab + ECS/Fargate ============ %%
+\vspace{5cm}
+\section{GitLab + ECS/Fargate}
+
+\subsection{LAB 07 required steps and execution}
+LAB 07 defines these prerequisites for Fargate deployment: ECS cluster, ECS service, container registry, task definition, load balancer, and target group; then CI pipeline updates service with new task revision.
+
+\textbf{Exact identifiers used in our run:}
+\begin{itemize}
+    \item AWS region: \texttt{us-east-2}
+    \item ECS cluster: \texttt{gitlab-aws-ecs-fargate-demo}
+    \item ECS service: \texttt{gitlab-aws-ecs-fargate-demo}
+    \item Task definition revision observed: \texttt{iarihanti-gitlab-aws-ecs-fargate-demo:2}
+    \item ECS execution role ARN: \texttt{arn:aws:iam::419453210951:role/ecsTaskExecutionRole}
+    \item CI variable \texttt{ECS\_SERVICE}: \texttt{gitlab-aws-ecs-fargate-demo}
+\end{itemize}
+
+\textbf{Execution steps:}
+\begin{enumerate}
+    \item Confirmed ECS cluster and task definitions exist.
+    \item Verified running Fargate services and rolling update behavior.
+    \item Prepared CI pipeline for build, image push to ECR, task-definition render/register, and service update.
+    \item Ran pipeline and confirmed passed status in GitLab.
+\end{enumerate}
+
+\labimage{figures/lab_7/aws_ecs_fargate_cluster.png}{ECS cluster: \texttt{gitlab-aws-ecs-fargate-demo}}
+\labimage{figures/lab_7/aws_ecs_fargate_task_definitions.png}{Task definition list including deployed family/revisions}
+\labimage{figures/lab_7/aws_ecs_fargate_two_services_running.png}{Two Fargate services in running state}
+\labimage{figures/lab_7/aws_fargate_one_service_deprovising.png}{Service transition during deployment (deprovisioning)}
+\labimage{figures/lab_7/aws_ecs_fargate_gitlab_yml.png}{ECS/Fargate .gitlab-ci.yml in GitLab project}
+\labimage{figures/lab_7/aws_ecs_fargate_pipeline_passed.png}{ECS/Fargate pipeline passed}
+
+\subsection{Exact .gitlab-ci.yml used (GitLab + ECS/Fargate)}
+\begin{lstlisting}
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  APP_PORT: "8080"
+  AWS_PAGER: ""
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+
+test:
+  stage: test
+  image: golang:1.22-alpine
+  script:
+    - go test ./...
+
+build-image:
+  stage: build
+  image: docker:24.0.7
+  services:
+    - name: docker:24.0.7-dind
+      command: ["--tls=false"]
+  needs:
+    - test
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  before_script:
+    - apk add --no-cache aws-cli
+  script:
+    - ': "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"'
+    - ': "${AWS_REGION:?AWS_REGION is required}"'
+    - export ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    - export IMAGE_REPOSITORY="${ECR_REPOSITORY:-$CI_PROJECT_PATH_SLUG}"
+    - export IMAGE_URI="${ECR_REGISTRY}/${IMAGE_REPOSITORY}"
+    - |
+      if ! aws ecr describe-repositories --region "$AWS_REGION" --repository-names "$IMAGE_REPOSITORY" >/dev/null 2>&1; then
+        echo "Creating missing ECR repository: ${IMAGE_REPOSITORY}"
+        aws ecr create-repository --region "$AWS_REGION" --repository-name "$IMAGE_REPOSITORY" >/dev/null
+      fi
+    - aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+    - docker build --pull -t "${IMAGE_URI}:${CI_COMMIT_SHORT_SHA}" .
+    - docker push "${IMAGE_URI}:${CI_COMMIT_SHORT_SHA}"
+    - |
+      if [ "${CI_COMMIT_BRANCH}" = "${CI_DEFAULT_BRANCH}" ]; then
+        docker tag "${IMAGE_URI}:${CI_COMMIT_SHORT_SHA}" "${IMAGE_URI}:latest"
+        docker push "${IMAGE_URI}:latest"
+      fi
+
+deploy-ecs:
+  stage: deploy
+  image: alpine:3.20
+  before_script:
+    - apk add --no-cache aws-cli
+  needs:
+    - build-image
+  environment:
+    name: ecs-fargate
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - ': "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"'
+    - ': "${AWS_REGION:?AWS_REGION is required}"'
+    - ': "${ECS_EXECUTION_ROLE_ARN:?ECS_EXECUTION_ROLE_ARN is required}"'
+    - export ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    - export IMAGE_REPOSITORY="${ECR_REPOSITORY:-$CI_PROJECT_PATH_SLUG}"
+    - export IMAGE_URI="${ECR_REGISTRY}/${IMAGE_REPOSITORY}:${CI_COMMIT_SHORT_SHA}"
+    - export TASK_FAMILY="${ECS_TASK_FAMILY:-$CI_PROJECT_PATH_SLUG}"
+    - export CONTAINER_NAME="${ECS_CONTAINER_NAME:-app}"
+    - export CONTAINER_PORT="${APP_PORT:-8080}"
+    - export CPU="${ECS_CPU:-256}"
+    - export MEMORY="${ECS_MEMORY:-512}"
+    - export ECS_CLUSTER_NAME="${ECS_CLUSTER:-${CI_PROJECT_NAME:-$CI_PROJECT_PATH_SLUG}}"
+    - export ECS_SERVICE_NAME="${ECS_SERVICE:-${CI_PROJECT_NAME:-$CI_PROJECT_PATH_SLUG}}"
+    - |
+      case "$CONTAINER_PORT" in
+        ''|*[!0-9]*)
+          echo "APP_PORT must be numeric, got '$CONTAINER_PORT'"
+          exit 1
+          ;;
+      esac
+    - |
+      CLUSTER_STATUS="$(aws ecs describe-clusters --clusters "$ECS_CLUSTER_NAME" --query 'clusters[0].status' --output text 2>/dev/null || true)"
+      if [ -z "$CLUSTER_STATUS" ] || [ "$CLUSTER_STATUS" = "None" ]; then
+        echo "ECS cluster '${ECS_CLUSTER_NAME}' not found. Set ECS_CLUSTER to an existing cluster."
+        exit 1
+      fi
+      SERVICE_STATUS="$(aws ecs describe-services --cluster "$ECS_CLUSTER_NAME" --services "$ECS_SERVICE_NAME" --query 'services[0].status' --output text 2>/dev/null || true)"
+      if [ -z "$SERVICE_STATUS" ] || [ "$SERVICE_STATUS" = "None" ]; then
+        echo "ECS service '${ECS_SERVICE_NAME}' not found in cluster '${ECS_CLUSTER_NAME}'. Set ECS_SERVICE to an existing service."
+        exit 1
+      fi
+    - echo "Deploying ${IMAGE_URI} to ECS service ${ECS_SERVICE_NAME} in cluster ${ECS_CLUSTER_NAME}"
+    - sed -e "s|__TASK_FAMILY__|${TASK_FAMILY}|g" -e "s|__EXECUTION_ROLE_ARN__|${ECS_EXECUTION_ROLE_ARN}|g" -e "s|__IMAGE_URI__|${IMAGE_URI}|g" -e "s|__CONTAINER_NAME__|${CONTAINER_NAME}|g" -e "s|__CONTAINER_PORT__|${CONTAINER_PORT}|g" -e "s|__CPU__|${CPU}|g" -e "s|__MEMORY__|${MEMORY}|g" deploy/ecs-task-definition.json.tpl > rendered-task-definition.json
+    - TASK_DEF_ARN="$(aws ecs register-task-definition --cli-input-json file://rendered-task-definition.json --query 'taskDefinition.taskDefinitionArn' --output text)"
+    - aws ecs update-service --cluster "$ECS_CLUSTER_NAME" --service "$ECS_SERVICE_NAME" --task-definition "$TASK_DEF_ARN" --force-new-deployment
+    - aws ecs wait services-stable --cluster "$ECS_CLUSTER_NAME" --services "$ECS_SERVICE_NAME"
+\end{lstlisting}
+
+%% ============ SECTION 4: Conclusion ============ %%
+\section{Conclusion}
+This report covers the first three LAB 07 tracks completed in our environment with full screenshot evidence and exact deployment identifiers: GitLab + Lambda, GitLab + AWS SAM, and GitLab + ECS/Fargate.
+
+\end{document}
