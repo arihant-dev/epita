@@ -335,3 +335,6 @@ lab_final/infra/deploy/.tmp/
 
 # Ignore the Guideline/Task PDF file of the final project report
 Cloud\ computing\ Final\ project\ S25.pdf
+
+# Ignore the bin/ directory which may contain compiled binaries from the final project
+bin/
