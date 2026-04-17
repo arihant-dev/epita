@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package urbanmove.v1;
+
+option go_package = "github.com/urbanmove/contracts/gen/go/urbanmove/v1;urbanmovev1";
+
+message Empty {}
+
+message TokenValidationRequest {
+  string token = 1;
+}
+
+message TokenValidationResponse {
+  bool valid = 1;
+  string user_id = 2;
+  string role = 3;
+}
+
+message RouteRequest {
+  string origin = 1;
+  string destination = 2;
+}
+
+message RouteResponse {
+  string route_id = 1;
+  string summary = 2;
+  int32 score = 3;
+}
+
+service AuthService {
+  rpc ValidateToken(TokenValidationRequest) returns (TokenValidationResponse);
+}
+
+service MobilityService {
+  rpc GetBestRoute(RouteRequest) returns (RouteResponse);
+}
