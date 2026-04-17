@@ -1,0 +1,23 @@
+services:
+  nats:
+    image: nats:2.10-alpine
+    container_name: urbanmove-nats
+    ports:
+      - "4222:4222"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: urbanmove-postgres
+    environment:
+      POSTGRES_DB: urbanmove
+      POSTGRES_USER: urbanmove
+      POSTGRES_PASSWORD: urbanmove
+    ports:
+      - "5432:5432"
+    volumes:
+      - urbanmove_pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  urbanmove_pgdata:
