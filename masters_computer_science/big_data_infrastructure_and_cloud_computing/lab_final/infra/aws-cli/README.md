@@ -11,11 +11,13 @@
    Creates/updates SNS + Budget alerts.
 2. `02_create_ec2_topology.sh`  
    Creates SGs and launches 3 EC2 instances (api/auth/ingest).
-3. `03_s3_cloudfront_setup.sh`  
-   Creates private UI bucket + OAC + CloudFront distribution (`/api/*` to API origin).
-4. `04_cloudwatch_setup.sh`  
+3. `03a_api_gateway_setup.sh`  
+   Creates HTTP API Gateway routes across EC2 services (`/api/*`, `/gov-feed/*`, `/health/*`).
+4. `03_s3_cloudfront_setup.sh`  
+   Creates private UI bucket + OAC + CloudFront distribution (`/api/*` to API Gateway if configured).
+5. `04_cloudwatch_setup.sh`  
    Creates dashboard and instance alarms.
-5. `05_daily_cleanup.sh`  
+6. `05_daily_cleanup.sh`  
    Dry-run by default; pass `APPLY=true` to apply stop/cleanup actions.
 
 ## Environment variables
@@ -26,7 +28,10 @@
 - `KEY_NAME` (required before EC2 creation)
 - `AMI_ID` (optional, default Ubuntu 22.04 eu-west-3 public AMI)
 - `ADMIN_CIDR` (default: your current public IP `/32`)
-- `API_PUBLIC_DNS` (required for CloudFront `/api/*` origin)
+- `EXPOSE_SERVICE_HTTP_FOR_APIGW` (default: `true`, opens demo HTTP ports 8081/8082 for API Gateway routing)
+- `API_HTTP_API_NAME` (default: `urbanmove-routing-http-api`)
+- `API_PUBLIC_DNS` (fallback CloudFront `/api/*` origin when API Gateway is not configured)
+- `API_GW_ENDPOINT` (used by CloudFront `/api/*` origin when present)
 
 ## Script outputs
 - `./.state/ec2.env` with instance IDs and public DNS values.
