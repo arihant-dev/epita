@@ -328,5 +328,10 @@ TSWLatexianTemp*
 # keys - ignore keys stored in .ssh folder
 .ssh/
 
+# lab_final runtime artifacts and local secrets
+lab_final/infra/aws-cli/.state/
+lab_final/infra/aws-cli/.ssh/
+lab_final/infra/deploy/.tmp/
+
 # Ignore the Guideline/Task PDF file of the final project report
 Cloud\ computing\ Final\ project\ S25.pdf
