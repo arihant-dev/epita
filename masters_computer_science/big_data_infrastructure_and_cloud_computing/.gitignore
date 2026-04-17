@@ -327,3 +327,6 @@ TSWLatexianTemp*
 
 # keys - ignore keys stored in .ssh folder
 .ssh/
+
+# Ignore the Guideline/Task PDF file of the final project report
+Cloud\ computing\ Final\ project\ S25.pdf
