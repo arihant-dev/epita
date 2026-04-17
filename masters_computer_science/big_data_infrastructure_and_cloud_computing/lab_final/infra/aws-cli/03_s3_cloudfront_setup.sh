@@ -13,9 +13,25 @@ fi
 
 ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
 API_PUBLIC_DNS="${API_PUBLIC_DNS:-}"
-if [[ -z "${API_PUBLIC_DNS}" ]]; then
-  echo "API_PUBLIC_DNS is required (or run 02_create_ec2_topology.sh first)."
+API_GW_ENDPOINT="${API_GW_ENDPOINT:-}"
+if [[ -z "${API_PUBLIC_DNS}" && -z "${API_GW_ENDPOINT}" ]]; then
+  echo "Either API_PUBLIC_DNS or API_GW_ENDPOINT is required."
+  echo "Run 02_create_ec2_topology.sh and optionally 03a_api_gateway_setup.sh first."
   exit 1
+fi
+
+if [[ -n "${API_GW_ENDPOINT}" ]]; then
+  API_ORIGIN_DOMAIN="${API_GW_ENDPOINT#https://}"
+  API_ORIGIN_DOMAIN="${API_ORIGIN_DOMAIN#http://}"
+  API_ORIGIN_DOMAIN="${API_ORIGIN_DOMAIN%/}"
+  API_HTTP_PORT=80
+  API_HTTPS_PORT=443
+  API_ORIGIN_PROTOCOL_POLICY="https-only"
+else
+  API_ORIGIN_DOMAIN="${API_PUBLIC_DNS}"
+  API_HTTP_PORT=8080
+  API_HTTPS_PORT=443
+  API_ORIGIN_PROTOCOL_POLICY="http-only"
 fi
 
 UI_BUCKET="${UI_BUCKET:-urbanmove-ui-${ACCOUNT_ID}-eu-west-3}"
@@ -61,11 +77,11 @@ cat > "${DISTRIBUTION_CONFIG_FILE}" <<JSON
       },
       {
         "Id": "api-origin",
-        "DomainName": "${API_PUBLIC_DNS}",
+        "DomainName": "${API_ORIGIN_DOMAIN}",
         "CustomOriginConfig": {
-          "HTTPPort": 8080,
-          "HTTPSPort": 443,
-          "OriginProtocolPolicy": "http-only",
+          "HTTPPort": ${API_HTTP_PORT},
+          "HTTPSPort": ${API_HTTPS_PORT},
+          "OriginProtocolPolicy": "${API_ORIGIN_PROTOCOL_POLICY}",
           "OriginSslProtocols": {
             "Quantity": 1,
             "Items": ["TLSv1.2"]
@@ -158,3 +174,8 @@ EOF
 echo "S3 + CloudFront configured."
 echo "UI bucket: ${UI_BUCKET}"
 echo "CloudFront domain: https://${DISTRIBUTION_DOMAIN}"
+if [[ -n "${API_GW_ENDPOINT}" ]]; then
+  echo "CloudFront API origin: ${API_GW_ENDPOINT}"
+else
+  echo "CloudFront API origin: http://${API_PUBLIC_DNS}:8080"
+fi

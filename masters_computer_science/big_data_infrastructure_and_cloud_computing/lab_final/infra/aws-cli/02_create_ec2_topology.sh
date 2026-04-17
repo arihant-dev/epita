@@ -7,6 +7,7 @@ INSTANCE_TYPE="${INSTANCE_TYPE:-t3.micro}"
 KEY_NAME="${KEY_NAME:-}"
 AMI_ID="${AMI_ID:-}"
 ADMIN_CIDR="${ADMIN_CIDR:-}"
+EXPOSE_SERVICE_HTTP_FOR_APIGW="${EXPOSE_SERVICE_HTTP_FOR_APIGW:-true}"
 STATE_DIR="$(cd "$(dirname "$0")" && pwd)/.state"
 mkdir -p "${STATE_DIR}"
 
@@ -73,6 +74,12 @@ aws ec2 authorize-security-group-ingress --region "${REGION}" --group-id "${SG_I
 # Public API entry and CloudFront origin access (for demo simplicity).
 aws ec2 authorize-security-group-ingress --region "${REGION}" --group-id "${SG_API}" --ip-permissions '[{"IpProtocol":"tcp","FromPort":8080,"ToPort":8080,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}]' >/dev/null 2>&1 || true
 
+if [[ "${EXPOSE_SERVICE_HTTP_FOR_APIGW}" == "true" ]]; then
+  # Demo-only: expose health/mock HTTP ports for API Gateway route distribution.
+  aws ec2 authorize-security-group-ingress --region "${REGION}" --group-id "${SG_AUTH}" --ip-permissions '[{"IpProtocol":"tcp","FromPort":8081,"ToPort":8081,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}]' >/dev/null 2>&1 || true
+  aws ec2 authorize-security-group-ingress --region "${REGION}" --group-id "${SG_INGEST}" --ip-permissions '[{"IpProtocol":"tcp","FromPort":8082,"ToPort":8082,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}]' >/dev/null 2>&1 || true
+fi
+
 # Internal RPC: API -> AUTH/INGEST.
 aws ec2 authorize-security-group-ingress --region "${REGION}" --group-id "${SG_AUTH}" --ip-permissions "[{\"IpProtocol\":\"tcp\",\"FromPort\":50051,\"ToPort\":50051,\"UserIdGroupPairs\":[{\"GroupId\":\"${SG_API}\"}]}]" >/dev/null 2>&1 || true
 aws ec2 authorize-security-group-ingress --region "${REGION}" --group-id "${SG_INGEST}" --ip-permissions "[{\"IpProtocol\":\"tcp\",\"FromPort\":50052,\"ToPort\":50052,\"UserIdGroupPairs\":[{\"GroupId\":\"${SG_API}\"}]}]" >/dev/null 2>&1 || true
@@ -102,6 +109,8 @@ INGEST_INSTANCE_ID="$(create_instance urbanmove-ingest-ec2 "${SG_INGEST}")"
 aws ec2 wait instance-running --region "${REGION}" --instance-ids "${API_INSTANCE_ID}" "${AUTH_INSTANCE_ID}" "${INGEST_INSTANCE_ID}"
 
 API_PUBLIC_DNS="$(aws ec2 describe-instances --region "${REGION}" --instance-ids "${API_INSTANCE_ID}" --query 'Reservations[0].Instances[0].PublicDnsName' --output text)"
+AUTH_PUBLIC_DNS="$(aws ec2 describe-instances --region "${REGION}" --instance-ids "${AUTH_INSTANCE_ID}" --query 'Reservations[0].Instances[0].PublicDnsName' --output text)"
+INGEST_PUBLIC_DNS="$(aws ec2 describe-instances --region "${REGION}" --instance-ids "${INGEST_INSTANCE_ID}" --query 'Reservations[0].Instances[0].PublicDnsName' --output text)"
 AUTH_PRIVATE_IP="$(aws ec2 describe-instances --region "${REGION}" --instance-ids "${AUTH_INSTANCE_ID}" --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)"
 INGEST_PRIVATE_IP="$(aws ec2 describe-instances --region "${REGION}" --instance-ids "${INGEST_INSTANCE_ID}" --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)"
 
@@ -113,6 +122,8 @@ API_INSTANCE_ID=${API_INSTANCE_ID}
 AUTH_INSTANCE_ID=${AUTH_INSTANCE_ID}
 INGEST_INSTANCE_ID=${INGEST_INSTANCE_ID}
 API_PUBLIC_DNS=${API_PUBLIC_DNS}
+AUTH_PUBLIC_DNS=${AUTH_PUBLIC_DNS}
+INGEST_PUBLIC_DNS=${INGEST_PUBLIC_DNS}
 AUTH_PRIVATE_IP=${AUTH_PRIVATE_IP}
 INGEST_PRIVATE_IP=${INGEST_PRIVATE_IP}
 SG_API=${SG_API}
@@ -123,4 +134,6 @@ EOF
 echo "EC2 topology created."
 echo "State file: ${STATE_DIR}/ec2.env"
 echo "API public DNS: ${API_PUBLIC_DNS}"
+echo "AUTH public DNS: ${AUTH_PUBLIC_DNS}"
+echo "INGEST public DNS: ${INGEST_PUBLIC_DNS}"
 echo "AMI used: ${AMI_ID}"
