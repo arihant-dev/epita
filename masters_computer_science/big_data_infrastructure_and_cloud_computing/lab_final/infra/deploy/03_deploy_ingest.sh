@@ -31,7 +31,11 @@ sudo chmod +x "${APP_DIR}/bin/${SERVICE_NAME}"
 sudo cp /tmp/docker-compose.infra.yml "${INFRA_DIR}/docker-compose.yml"
 
 cd "${INFRA_DIR}"
-sudo docker compose up -d
+if sudo docker compose version >/dev/null 2>&1; then
+  sudo docker compose up -d
+else
+  sudo docker-compose up -d
+fi
 
 sudo tee "/etc/urbanmove/${SERVICE_NAME}.env" >/dev/null <<ENV
 MOBILITY_GRPC_ADDR=:50052
