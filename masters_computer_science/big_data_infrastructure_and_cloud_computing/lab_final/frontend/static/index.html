@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UrbanMove Demo</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>UrbanMove Smart Mobility Demo</h1>
+    <p class="muted">Bare-minimum UI for final lab demo</p>
+
+    <section class="card">
+      <h2>1) Login</h2>
+      <form id="login-form">
+        <label>Username <input id="username" value="operator1" required></label>
+        <label>Password <input id="password" type="password" value="operator123" required></label>
+        <button type="submit">Login</button>
+      </form>
+      <div id="login-result" class="result"></div>
+    </section>
+
+    <section class="card">
+      <h2>2) Congestion Summary</h2>
+      <form id="congestion-form">
+        <label>Limit <input id="congestion-limit" type="number" value="5" min="1" max="20"></label>
+        <button type="submit">Fetch</button>
+      </form>
+      <pre id="congestion-result" class="result"></pre>
+    </section>
+
+    <section class="card">
+      <h2>3) Route Recommendation</h2>
+      <form id="route-form">
+        <label>Origin <input id="origin" value="Station-A" required></label>
+        <label>Destination <input id="destination" value="Station-B" required></label>
+        <button type="submit">Recommend</button>
+      </form>
+      <pre id="route-result" class="result"></pre>
+    </section>
+
+    <section class="card">
+      <h2>4) Inject Event (operator/admin)</h2>
+      <form id="event-form">
+        <label>Segment <input id="segment-id" value="seg-a" required></label>
+        <label>Congestion (0-100) <input id="congestion-level" type="number" value="65" min="0" max="100"></label>
+        <label>Incident <input id="incident" type="checkbox"></label>
+        <button type="submit">Send Event</button>
+      </form>
+      <pre id="event-result" class="result"></pre>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
