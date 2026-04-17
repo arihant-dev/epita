@@ -69,16 +69,32 @@ fi
 
 create_integration() {
   local uri="$1"
-  aws apigatewayv2 create-integration \
-    --region "${REGION}" \
-    --api-id "${API_GW_ID}" \
-    --integration-type HTTP_PROXY \
-    --integration-method ANY \
-    --integration-uri "${uri}" \
-    --payload-format-version "1.0" \
-    --timeout-in-millis 30000 \
-    --query 'IntegrationId' \
-    --output text
+  local request_parameters="${2:-}"
+
+  if [[ -n "${request_parameters}" ]]; then
+    aws apigatewayv2 create-integration \
+      --region "${REGION}" \
+      --api-id "${API_GW_ID}" \
+      --integration-type HTTP_PROXY \
+      --integration-method ANY \
+      --integration-uri "${uri}" \
+      --payload-format-version "1.0" \
+      --request-parameters "${request_parameters}" \
+      --timeout-in-millis 30000 \
+      --query 'IntegrationId' \
+      --output text
+  else
+    aws apigatewayv2 create-integration \
+      --region "${REGION}" \
+      --api-id "${API_GW_ID}" \
+      --integration-type HTTP_PROXY \
+      --integration-method ANY \
+      --integration-uri "${uri}" \
+      --payload-format-version "1.0" \
+      --timeout-in-millis 30000 \
+      --query 'IntegrationId' \
+      --output text
+  fi
 }
 
 upsert_route() {
@@ -101,11 +117,11 @@ upsert_route() {
   fi
 }
 
-API_INT_ID="$(create_integration "http://${API_PUBLIC_DNS}:8080")"
+API_INT_ID="$(create_integration "http://${API_PUBLIC_DNS}:8080" '{"overwrite:path":"/$request.path.proxy"}')"
 upsert_route "ANY /api/{proxy+}" "${API_INT_ID}"
 
 if [[ -n "${INGEST_PUBLIC_DNS}" && "${INGEST_PUBLIC_DNS}" != "None" ]]; then
-  INGEST_INT_ID="$(create_integration "http://${INGEST_PUBLIC_DNS}:8082")"
+  INGEST_INT_ID="$(create_integration "http://${INGEST_PUBLIC_DNS}:8082" '{"overwrite:path":"/gov-feed/$request.path.proxy"}')"
   upsert_route "ANY /gov-feed/{proxy+}" "${INGEST_INT_ID}"
   INGEST_HEALTH_INT_ID="$(create_integration "http://${INGEST_PUBLIC_DNS}:8082/healthz")"
   upsert_route "GET /health/ingest" "${INGEST_HEALTH_INT_ID}"
