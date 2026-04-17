@@ -1,0 +1,40 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "title": "EC2 CPU Utilization (%)",
+        "region": "eu-west-3",
+        "metrics": [
+          ["AWS/EC2", "CPUUtilization", "InstanceId", "i-0e770372ad3c9b5e7"],
+          [".", ".", ".", "i-04a63c103db3133d9"],
+          [".", ".", ".", "i-064df822774086349"]
+        ],
+        "stat": "Average",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "title": "EC2 Status Check Failed",
+        "region": "eu-west-3",
+        "metrics": [
+          ["AWS/EC2", "StatusCheckFailed", "InstanceId", "i-0e770372ad3c9b5e7"],
+          [".", ".", ".", "i-04a63c103db3133d9"],
+          [".", ".", ".", "i-064df822774086349"]
+        ],
+        "stat": "Maximum",
+        "period": 60
+      }
+    }
+  ]
+}
