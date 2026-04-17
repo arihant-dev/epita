@@ -6,6 +6,17 @@ option go_package = "github.com/urbanmove/contracts/gen/go/urbanmove/v1;urbanmov
 
 message Empty {}
 
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string role = 2;
+  int64 expires_at_unix = 3;
+}
+
 message TokenValidationRequest {
   string token = 1;
 }
@@ -25,12 +36,45 @@ message RouteResponse {
   string route_id = 1;
   string summary = 2;
   int32 score = 3;
+  repeated string segments = 4;
+}
+
+message MobilityEvent {
+  string segment_id = 1;
+  int32 congestion_level = 2;
+  bool incident = 3;
+  string source = 4;
+  int64 timestamp_unix = 5;
+}
+
+message IngestEventResponse {
+  bool accepted = 1;
+  string message = 2;
+}
+
+message CongestionSummaryRequest {
+  int32 limit = 1;
+}
+
+message CongestionSegment {
+  string segment_id = 1;
+  int32 congestion_level = 2;
+  bool incident = 3;
+  int64 timestamp_unix = 4;
+}
+
+message CongestionSummaryResponse {
+  repeated CongestionSegment segments = 1;
+  int64 generated_at_unix = 2;
 }
 
 service AuthService {
+  rpc IssueToken(LoginRequest) returns (LoginResponse);
   rpc ValidateToken(TokenValidationRequest) returns (TokenValidationResponse);
 }
 
 service MobilityService {
+  rpc IngestEvent(MobilityEvent) returns (IngestEventResponse);
   rpc GetBestRoute(RouteRequest) returns (RouteResponse);
+  rpc GetCongestionSummary(CongestionSummaryRequest) returns (CongestionSummaryResponse);
 }

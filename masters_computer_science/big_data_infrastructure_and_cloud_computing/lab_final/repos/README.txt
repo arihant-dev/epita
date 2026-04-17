@@ -5,3 +5,4 @@ This folder stores templates and contract files for three separate repositories:
 3) urbanmove-ingestion-routing
 
 Each repo has its own CI file and deploy script targeting its own EC2 instance.
+contracts/ contains shared protobuf and generated stubs.
