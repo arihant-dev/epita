@@ -9,6 +9,9 @@ if [[ -n "${CLOUDFRONT_DOMAIN:-}" ]]; then
   BASE_URL="https://${CLOUDFRONT_DOMAIN}"
 elif [[ -n "${API_GW_ENDPOINT:-}" ]]; then
   BASE_URL="${API_GW_ENDPOINT}"
+elif [[ "${PRIVATE_NETWORK_MODE:-false}" == "true" ]]; then
+  echo "PRIVATE_NETWORK_MODE requires CLOUDFRONT_DOMAIN or API_GW_ENDPOINT for smoke tests."
+  exit 1
 elif [[ -z "${CLOUDFRONT_DOMAIN:-}" ]]; then
   BASE_URL="http://${API_HOST}:8080"
 fi
