@@ -1,0 +1,334 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{float}
+\usepackage{tocloft}
+\usepackage{array}
+\usepackage{needspace}
+
+% TOC alignment
+\cftsetindents{subsection}{1.5em}{2.3em}
+\setlength{\cftsecnumwidth}{4em}
+\setlength{\cftsubsecnumwidth}{5em}
+
+% Figure helper
+\newcommand{\labimage}[2]{
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{#1}
+\caption{#2}
+\end{figure}
+}
+
+% Compile-safe placeholder for missing screenshots
+\newcommand{\placeholderimage}[2]{
+\begin{figure}[H]
+\centering
+\fbox{
+  \parbox[c][0.30\textheight][c]{0.86\textwidth}{
+    \centering
+    Placeholder screenshot\\[0.4em]
+    #1\\[0.4em]
+    Expected file: \path{#2}
+  }
+}
+\caption{#1}
+\end{figure}
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+    \centering
+
+    \includegraphics[width=0.4\textwidth]{../../figures/lab_1/Epita.jpg} \\
+    \vspace{1.5cm}
+
+    {\large Master in Computer Science} \\
+    {\large Software Engineering} \\
+
+    \vspace{0.5cm}
+    {\Huge \textbf{Cloud Computing}} \\
+    \vspace{1.2cm}
+    {\huge Final Report}
+    \vspace{0.5cm}
+
+    {\Large \textbf{Final Lab -- UrbanMove Smart Mobility on AWS}} \\
+
+    \vspace{1.5cm}
+    {\Large \textbf{Team Members}} \\
+    \vspace{0.5cm}
+    {\large Jordy Meye} \\
+    {\large Huizhe Su} \\
+    {\large Arihant Jain} \\
+    {\large Nizar} \\
+
+    \vspace{1.5cm}
+    {\large April 2026}
+\end{titlepage}
+
+\clearpage
+\pagenumbering{arabic}
+\titleformat{\section}
+  {\Large\bfseries}
+  {Exercise \arabic{section}.}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {Question \arabic{subsection}.}
+  {1em}
+  {}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    showstringspaces=false,
+    tabsize=2,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+}
+
+\raggedbottom
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+
+\tableofcontents
+\newpage
+
+%% ============ SECTION 1 ============ %%
+\section{Objective and Scope}
+
+\subsection{Final lab objective}
+Implement and deploy a 3-service mobility platform on AWS with:
+\begin{itemize}
+    \item private runtime network for services,
+    \item controlled outbound traffic through NAT,
+    \item IAM baseline for deploy/runtime identities,
+    \item WAF protection at CloudFront edge,
+    \item API entry through API Gateway to private services.
+\end{itemize}
+
+\subsection{Implemented repositories and components}
+\begin{itemize}
+    \item \texttt{lab\_final/repos/urbanmove-auth}
+    \item \texttt{lab\_final/repos/urbanmove-ingestion-routing}
+    \item \texttt{lab\_final/repos/urbanmove-api}
+    \item \texttt{lab\_final/frontend/static} (multi-page UI: home, login, operations, control)
+    \item \texttt{lab\_final/infra/aws-cli} (infra provisioning)
+    \item \texttt{lab\_final/infra/deploy} (service deployment and smoke test)
+\end{itemize}
+
+%% ============ SECTION 2 ============ %%
+\section{Architecture and Traffic Flow}
+
+\subsection{Architecture diagram}
+\labimage{../architecture/exports/architecture_design.png}{Final architecture exported from Eraser}
+
+\subsection{Request path}
+\begin{enumerate}
+    \item User requests UI/API via CloudFront.
+    \item CloudFront routes:
+    \begin{itemize}
+        \item default path to S3 frontend bucket,
+        \item \texttt{/api/*} path to API Gateway.
+    \end{itemize}
+    \item API Gateway forwards private integration traffic through VPC Link to internal NLB.
+    \item Internal NLB forwards to API service in private subnet.
+    \item API service calls Auth and Ingestion/Routing over gRPC.
+\end{enumerate}
+
+\subsection{Outbound external feed path}
+Traffic to the government transport API is initiated by private services and exits via NAT Gateway and Internet Gateway.
+
+%% ============ SECTION 3 ============ %%
+\section{Infrastructure Provisioning (AWS CLI)}
+
+\subsection{Provisioning command sequence}
+\Needspace{12\baselineskip}
+\begin{lstlisting}[language=bash]
+cd lab_final/infra/aws-cli
+
+./01_budget_and_tags.sh
+./01a_identity_iam_setup.sh
+./02a_create_vpc_private_network.sh
+./02_create_ec2_topology.sh
+./03a_api_gateway_setup.sh
+./03_s3_cloudfront_setup.sh
+./04_cloudwatch_setup.sh
+./06_waf_setup.sh
+\end{lstlisting}
+
+\subsection{Provisioning evidence}
+\labimage{../evidence/screenshots/01-budget/budget.png}{AWS Budget alert configuration}
+\labimage{../evidence/screenshots/02-infra/vpc_with_subnets_and_routes.png}{VPC with public/private subnets and routes}
+\labimage{../evidence/screenshots/02-infra/nat_gateway.png}{NAT Gateway created in public subnet}
+\labimage{../evidence/screenshots/02-infra/ec2_instances.png}{EC2 topology (bastion + service hosts)}
+\labimage{../evidence/screenshots/02-infra/ec2_security_groups.png}{Security groups for bastion and services}
+\labimage{../evidence/screenshots/02-infra/iam_users.png}{IAM users and identity artifacts}
+\labimage{../evidence/screenshots/02-infra/s3_bucket.png}{S3 frontend bucket}
+\labimage{../evidence/screenshots/02-infra/cloudfront.png}{CloudFront distribution}
+\labimage{../evidence/screenshots/02-infra/waf.png}{WAF Web ACL associated with CloudFront}
+
+%% ============ SECTION 4 ============ %%
+\section{Service Deployment and API Flow}
+
+\subsection{Deployment command sequence}
+\Needspace{12\baselineskip}
+\begin{lstlisting}[language=bash]
+cd lab_final/infra/deploy
+
+./01_bootstrap_hosts.sh
+./02_deploy_auth.sh
+./03_deploy_ingest.sh
+./04_deploy_api.sh
+./05_upload_frontend.sh
+./06_smoke_test.sh
+\end{lstlisting}
+
+\subsection{Routing and access model implemented}
+\begin{itemize}
+    \item API routing exposed through API Gateway path \texttt{/api/*}.
+    \item API Gateway private integration configured to internal NLB listeners.
+    \item Deploy scripts use bastion tunnel for private hosts.
+    \item Smoke test validates login, congestion, route recommendation, and event APIs.
+\end{itemize}
+
+\labimage{../evidence/screenshots/04-api-flow/api_gateway_routes.png}{API Gateway route and integration view}
+\labimage{../evidence/screenshots/04-api-flow/smoke_test_success.png}{Smoke test terminal output with successful checks}
+
+%% ============ SECTION 5 ============ %%
+\section{Frontend Implementation}
+
+\subsection{UI files deployed}
+\Needspace{10\baselineskip}
+\begin{lstlisting}[language=bash]
+lab_final/frontend/static/index.html
+lab_final/frontend/static/login.html
+lab_final/frontend/static/operations.html
+lab_final/frontend/static/admin.html
+lab_final/frontend/static/app.js
+lab_final/frontend/static/styles.css
+\end{lstlisting}
+
+\subsection{UI flow}
+\begin{enumerate}
+    \item Home page introduces platform flow.
+    \item Login page authenticates and stores token for session usage.
+    \item Operations page fetches congestion summary and route recommendation.
+    \item Control page sends event-injection requests.
+\end{enumerate}
+
+\labimage{../evidence/screenshots/04-api-flow/frontend_login.png}{Frontend login page}
+\labimage{../evidence/screenshots/04-api-flow/frontend_operations.png}{Frontend operations/control page}
+
+%% ============ SECTION 6 ============ %%
+\section{Observability, Cost Control, and Cleanup}
+
+\subsection{Commands used}
+\Needspace{10\baselineskip}
+\begin{lstlisting}[language=bash]
+cd lab_final/infra/aws-cli
+
+# CloudWatch dashboard and alarms
+./04_cloudwatch_setup.sh
+
+# Daily cleanup dry run
+bash ./05_daily_cleanup.sh
+
+# Apply cleanup actions
+APPLY=true bash ./05_daily_cleanup.sh
+\end{lstlisting}
+
+\subsection{Evidence screenshots}
+\labimage{../evidence/screenshots/05-observability/cloudwatch_dashboard.png}{CloudWatch dashboard and alarm evidence}
+\labimage{../evidence/screenshots/07-pipelines/pipelines_passed.png}{CI/CD pipeline run evidence for services}
+
+\subsection{Backup and restore drill (non-destructive)}
+\Needspace{16\baselineskip}
+\begin{lstlisting}[language=bash]
+# SSH to ingest host
+cd lab_final/infra/deploy
+source ./common.sh
+ssh "${SSH_OPTS[@]}" "${SSH_USER}@${INGEST_HOST}"
+
+# Backup production database
+sudo docker exec urbanmove-postgres pg_dump -U urbanmove -d urbanmove > /tmp/urbanmove_backup.sql
+
+# Restore into separate database
+sudo docker exec -i urbanmove-postgres psql -U urbanmove -d postgres -c "DROP DATABASE IF EXISTS urbanmove_restore;"
+sudo docker exec -i urbanmove-postgres psql -U urbanmove -d postgres -c "CREATE DATABASE urbanmove_restore;"
+cat /tmp/urbanmove_backup.sql | sudo docker exec -i urbanmove-postgres psql -U urbanmove -d urbanmove_restore
+
+# Verify restored schema
+sudo docker exec -i urbanmove-postgres psql -U urbanmove -d urbanmove_restore -c "\dt"
+\end{lstlisting}
+
+\Needspace{10\baselineskip}
+\begin{lstlisting}
+NOTICE:  database "urbanmove_restore" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+SET
+SET
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+...
+               List of relations
+ Schema |       Name        | Type  |  Owner
+--------+-------------------+-------+----------
+ public | congestion_events | table | urbanmove
+ public | routes_cache      | table | urbanmove
+ public | routing_metrics   | table | urbanmove
+(3 rows)
+\end{lstlisting}
+
+%% ============ SECTION 7 ============ %%
+\section{Evidence Mapping}
+
+\subsection{Requirement to evidence map}
+\begin{center}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{0.38\textwidth}|>{\raggedright\arraybackslash}p{0.52\textwidth}|}
+\hline
+Requirement & Evidence \\
+\hline
+Architecture design & \texttt{architecture/exports/architecture\_design.png} \\
+\hline
+Budget control & \texttt{evidence/screenshots/01-budget/budget.png} \\
+\hline
+Private VPC + NAT + private subnets & \texttt{vpc\_with\_subnets\_and\_routes.png}, \texttt{nat\_gateway.png} \\
+\hline
+Identity and access setup & \texttt{iam\_users.png} \\
+\hline
+Edge protection and API entry & \texttt{cloudfront.png}, \texttt{waf.png}, \texttt{api\_gateway\_routes.png} \\
+\hline
+Service deployment + API validation & \texttt{smoke\_test\_success.png} \\
+\hline
+Observability + pipelines + DR evidence & \texttt{cloudwatch\_dashboard.png}, \texttt{pipelines\_passed.png}, backup/restore command output in Section 6 \\
+\hline
+\end{tabular}
+\end{center}
+
+%% ============ SECTION 8 ============ %%
+\section{Conclusion}
+This report records:
+\begin{itemize}
+    \item implemented architecture,
+    \item exact infrastructure and deployment commands,
+    \item screenshot evidence currently available in repository,
+    \item backup/restore drill commands and sample terminal output.
+\end{itemize}
+
+\end{document}
