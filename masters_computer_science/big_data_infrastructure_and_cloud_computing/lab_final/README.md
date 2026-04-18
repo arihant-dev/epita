@@ -7,6 +7,6 @@ Use `plan.md` as execution source of truth.
 ## Current implementation assets
 - Backend services: `repos/urbanmove-*`
 - Shared protobuf: `repos/contracts`
-- Frontend (bare minimum): `frontend/static`
+- Frontend (multi-page presentation UI): `frontend/static`
 - Infra provisioning scripts: `infra/aws-cli`
 - Deployment scripts: `infra/deploy`

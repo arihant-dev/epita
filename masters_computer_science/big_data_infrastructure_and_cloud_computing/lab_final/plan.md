@@ -1,4 +1,4 @@
-# Final Lab Plan — UrbanMove Smart Mobility (3 EC2 / 3 Repos)
+# Final Lab Plan — UrbanMove Smart Mobility (Private VPC + 3 Services)
 
 ## 1) Objective
 Deliver all required final project artifacts with a working prototype:
@@ -21,40 +21,49 @@ Budget guardrail: keep projected spend under **$100** for the lab run and tear d
 - UI: static HTML/JS on private S3 + CloudFront (OAC)
 - Auth: JWT + role checks
 - CI/CD: separate GitLab CI per repository
+- Network model: private VPC subnets for services with egress via NAT Gateway
+- Ingress model: CloudFront + WAF -> API Gateway -> VPC Link -> internal NLB -> private services
+- Access model: bastion host for operational SSH to private instances
 
 ## 3) Runtime architecture (implemented)
-## 3.1 EC2 layout (required)
-1. **EC2-API** (`urbanmove-api`)
-   - Public entry for REST endpoints (fronted by CloudFront `/api/*`)
+## 3.1 EC2 layout (implemented)
+1. **EC2-API** (`urbanmove-api`, private subnet)
+   - No public ingress; reached via API Gateway VPC Link + internal NLB
    - Calls auth and ingestion-routing via gRPC
-2. **EC2-AUTH** (`urbanmove-auth`)
+2. **EC2-AUTH** (`urbanmove-auth`, private subnet)
    - JWT issue/validate/refresh
    - gRPC auth service
-3. **EC2-INGEST** (`urbanmove-ingestion-routing` + PostgreSQL + NATS)
+3. **EC2-INGEST** (`urbanmove-ingestion-routing` + PostgreSQL + NATS, private subnet)
    - mock government API feed
    - simulator fallback producer
    - route recommendation logic
    - event stream + persistence
+4. **EC2-BASTION** (public subnet)
+   - admin SSH jump host for private service instances only
 
 ## 3.2 Edge + static frontend
 - CloudFront distribution:
   - origin A: private S3 bucket (frontend)
   - origin B: API Gateway HTTP API (`/api/*`)
-- API Gateway routes requests to EC2 services (`/api/*`, `/gov-feed/*`, `/health/*`)
+- WAF Web ACL associated with CloudFront
+- API Gateway routes requests to private services via VPC Link + internal NLB (`/api/*`, `/gov-feed/*`, `/health/*`)
 
 ## 3.3 Security baseline
-- Least-privilege IAM users/roles
-- SG rules: allow only required service-to-service ports
+- IAM baseline: strong account password policy + deploy group/policy + EC2 instance role/profile
+- SG rules: bastion-only SSH to private instances; least-privilege service-to-service ports
 - Private S3 bucket with OAC
+- Private subnets for service runtime
+- NAT Gateway for controlled outbound internet access from private subnets
+- WAF in front of API entry path at CloudFront edge
 - JWT auth and role-based route guards
 
 ## 4) Cost-control (mandatory first)
 1. Create AWS Budget alerts (50/75/90/100% thresholds).
 2. Tag every resource: `Project=UrbanMove-FinalLab`.
-3. Use t3.micro only; no NAT Gateway for the demo setup, no EKS, no managed Kafka.
+3. Use t3.micro only; single NAT Gateway + single internal NLB only for secured demo setup; no EKS, no managed Kafka.
 4. Short log retention (7 days).
 5. Stop instances when not actively demoing.
-6. End-of-day cleanup script for stale volumes/snapshots/EIPs.
+6. End-of-day cleanup + teardown for NAT Gateway, NLB, VPC Link, and stale volumes/snapshots/EIPs.
 
 ## 5) Folder source-of-truth (this `lab_final/` directory)
 - `architecture/` diagram source + exports
@@ -67,8 +76,11 @@ Budget guardrail: keep projected spend under **$100** for the lab run and tear d
 ## Phase A — AWS baseline
 1. IAM deployment user + local AWS CLI profile
 2. Budget + SNS email alerts
-3. EC2 instances + SG topology
-4. S3 buckets + CloudFront + OAC
+3. IAM hardening baseline (password policy, deploy group/policy, EC2 role/profile)
+4. Private VPC + subnets + IGW + NAT + route tables
+5. EC2 instances + SG topology (private services + bastion)
+6. API Gateway VPC Link + internal NLB integration
+7. S3 buckets + CloudFront + OAC + WAF
 
 ## Phase B — Service implementation
 1. Build `urbanmove-auth`
