@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UrbanMove | Operations</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-page="operations">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="./index.html">UrbanMove</a>
+      <nav class="nav">
+        <a data-nav="home" href="./index.html">Home</a>
+        <a data-nav="login" href="./login.html">Login</a>
+        <a data-nav="operations" href="./operations.html">Operations</a>
+        <a data-nav="admin" href="./admin.html">Control</a>
+      </nav>
+      <div class="session-actions">
+        <span id="session-chip" class="session-chip">Guest session</span>
+        <button id="logout-btn" class="ghost-btn hidden" type="button">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <section class="card">
+      <h1>Operations Dashboard</h1>
+      <p class="muted">Monitor current traffic conditions and validate route recommendations.</p>
+      <div id="page-gate" class="alert"></div>
+    </section>
+
+    <section class="two-col">
+      <article class="card">
+        <h2>Congestion Summary</h2>
+        <form id="congestion-form">
+          <label>Limit <input id="congestion-limit" type="number" value="5" min="1" max="20"></label>
+          <button type="submit">Fetch Summary</button>
+        </form>
+        <pre id="congestion-result" class="result"></pre>
+      </article>
+
+      <article class="card">
+        <h2>Route Recommendation</h2>
+        <form id="route-form">
+          <label>Origin <input id="origin" value="Station-A" required></label>
+          <label>Destination <input id="destination" value="Station-B" required></label>
+          <button type="submit">Recommend Route</button>
+        </form>
+        <pre id="route-result" class="result"></pre>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>UrbanMove Final Lab | Analytics and routing</p>
+    </div>
+  </footer>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UrbanMove | Control</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-page="admin">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="./index.html">UrbanMove</a>
+      <nav class="nav">
+        <a data-nav="home" href="./index.html">Home</a>
+        <a data-nav="login" href="./login.html">Login</a>
+        <a data-nav="operations" href="./operations.html">Operations</a>
+        <a data-nav="admin" href="./admin.html">Control</a>
+      </nav>
+      <div class="session-actions">
+        <span id="session-chip" class="session-chip">Guest session</span>
+        <button id="logout-btn" class="ghost-btn hidden" type="button">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <section class="card">
+      <h1>Operator Control Panel</h1>
+      <p class="muted">Inject synthetic events to simulate congestion and incident scenarios.</p>
+      <div id="page-gate" class="alert"></div>
+    </section>
+
+    <section class="card">
+      <h2>Inject Event</h2>
+      <form id="event-form">
+        <label>Segment <input id="segment-id" value="seg-a" required></label>
+        <label>Congestion (0-100) <input id="congestion-level" type="number" value="65" min="0" max="100"></label>
+        <label class="inline-check"><input id="incident" type="checkbox"> Incident detected</label>
+        <button type="submit">Send Event</button>
+      </form>
+      <pre id="event-result" class="result"></pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>UrbanMove Final Lab | Operator simulation controls</p>
+    </div>
+  </footer>
+  <script src="./app.js"></script>
+</body>
+</html>

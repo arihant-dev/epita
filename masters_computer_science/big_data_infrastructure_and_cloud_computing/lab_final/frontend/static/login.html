@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UrbanMove | Login</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-page="login">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="./index.html">UrbanMove</a>
+      <nav class="nav">
+        <a data-nav="home" href="./index.html">Home</a>
+        <a data-nav="login" href="./login.html">Login</a>
+        <a data-nav="operations" href="./operations.html">Operations</a>
+        <a data-nav="admin" href="./admin.html">Control</a>
+      </nav>
+      <div class="session-actions">
+        <span id="session-chip" class="session-chip">Guest session</span>
+        <button id="logout-btn" class="ghost-btn hidden" type="button">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <section class="card">
+      <h1>Sign in</h1>
+      <p class="muted">Use your operator credentials to unlock all demo actions.</p>
+      <form id="login-form">
+        <label>Username <input id="username" value="operator1" required></label>
+        <label>Password <input id="password" type="password" value="operator123" required></label>
+        <button type="submit">Login</button>
+      </form>
+      <div id="login-result" class="result"></div>
+      <a id="login-next" class="button button-secondary hidden" href="./operations.html">Continue to Operations</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>UrbanMove Final Lab | Authentication flow</p>
+    </div>
+  </footer>
+  <script src="./app.js"></script>
+</body>
+</html>
