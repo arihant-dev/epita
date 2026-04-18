@@ -338,3 +338,6 @@ Cloud\ computing\ Final\ project\ S25.pdf
 
 # Ignore the bin/ directory which may contain compiled binaries from the final project
 bin/
+
+// Ignore any zip files that may be generated during the project
+*.zip
