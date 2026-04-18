@@ -1,5 +1,5 @@
 {
-  "CallerReference": "urbanmove-1776436527",
+  "CallerReference": "urbanmove-1776496715",
   "Comment": "UrbanMove final lab distribution",
   "Enabled": true,
   "Origins": {
@@ -13,11 +13,11 @@
       },
       {
         "Id": "api-origin",
-        "DomainName": "ec2-13-36-236-177.eu-west-3.compute.amazonaws.com",
+        "DomainName": "rwtrwjp4fb.execute-api.eu-west-3.amazonaws.com",
         "CustomOriginConfig": {
-          "HTTPPort": 8080,
+          "HTTPPort": 80,
           "HTTPSPort": 443,
-          "OriginProtocolPolicy": "http-only",
+          "OriginProtocolPolicy": "https-only",
           "OriginSslProtocols": {
             "Quantity": 1,
             "Items": ["TLSv1.2"]

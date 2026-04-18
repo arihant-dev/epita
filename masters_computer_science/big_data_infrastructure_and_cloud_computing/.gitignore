@@ -332,8 +332,7 @@ TSWLatexianTemp*
 lab_final/infra/aws-cli/.state/
 lab_final/infra/aws-cli/.ssh/
 lab_final/infra/deploy/.tmp/
-lab_final/infra/deploy/*
-lab_final/infra/aws-cli/*
+lab_final/infra/
 
 # Ignore the Guideline/Task PDF file of the final project report
 Cloud\ computing\ Final\ project\ S25.pdf

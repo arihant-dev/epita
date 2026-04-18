@@ -9,7 +9,7 @@
       "Resource": "arn:aws:s3:::urbanmove-ui-419453210951-eu-west-3/*",
       "Condition": {
         "StringEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::419453210951:distribution/ENML0AGR7KI1K"
+          "AWS:SourceArn": "arn:aws:cloudfront::419453210951:distribution/E3M7VK31H5701I"
         }
       }
     }
