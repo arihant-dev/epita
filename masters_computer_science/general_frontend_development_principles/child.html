@@ -1,0 +1,41 @@
+<!-- This document is a template and should be edited -->
+<!-- Behaviour of extracting child nodes using JavaScript -->>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Nodes Example</title>
+</head>
+<body>
+    <h1>Parent Node</h1>
+    <div id="parent">
+        <p>Child Node 1</p>
+        <p>Child Node 2</p>
+        <p>Child Node 3</p>
+    </div>
+    <script>
+        // Get the parent element
+        const parent = document.getElementById('parent');
+
+        // Get the child nodes of the parent element
+        const childNodes = parent.childNodes;
+
+        //Clone the child nodes and see that if they have the same parent node
+        // TypeError: childNodes.cloneNode is not a function. (In 'childNodes.cloneNode(true)', 'childNodes.cloneNode' is undefined)
+
+        const clonedChildNodes = childNodes;
+
+        // Log the child nodes to the console
+        console.log('Child Nodes:', childNodes);
+        console.log('Cloned Child Nodes:', clonedChildNodes);
+
+        // Iterate through the child nodes and log their text content
+        childNodes.forEach(node => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                console.log('Child Node Text:', node.textContent);
+            }
+        });
+    </script>
+</body>
+</html>
