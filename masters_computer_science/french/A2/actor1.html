@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devinez qui c'est ? - Actor 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 40px;
+            border: 2px solid #333;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        .hint-box {
+            background-color: #ffffcc;
+            border: 1px solid #999;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 24px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hint-empty {
+            color: #999;
+            font-style: italic;
+        }
+        .actor-reveal {
+            margin: 30px 0;
+        }
+        .actor-name {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .actor-image {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            margin: 10px 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .hint-counter {
+            font-size: 14px;
+            color: #666;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Devinez qui c'est ?</h1>
+
+        <div class="hint-counter">Indice <span id="current">0</span> / 5</div>
+
+        <div class="hint-box" id="hintBox">
+            <span class="hint-empty">Clique "Indice suivant" pour commencer</span>
+        </div>
+
+        <div id="reveal" class="actor-reveal" style="display: none;">
+            <div class="actor-name" id="actorName"></div>
+            <div class="actor-image">
+                <img id="actorImage" src="" alt="Actor" width="300" height="300">
+            </div>
+        </div>
+
+        <button onclick="alert('Premier acteur')">← Acteur précédent</button>
+        <button onclick="nextHint()">Indice suivant</button>
+        <button onclick="goToActor2()">Acteur suivant →</button>
+    </div>
+
+    <script>
+        const hints = [
+            "C'est un acteur qui est très célèbre dans le monde.",
+            "Mumbai est la ville où il habite.",
+            "C'est un homme que beaucoup de gens aiment.",
+            "Il a commencé sa carrière à la télévision.",
+            "Il est devenu le « Roi de Bollywood »."
+        ];
+
+        let currentHint = 0;
+
+        function nextHint() {
+            const hintBox = document.getElementById('hintBox');
+            const counter = document.getElementById('current');
+            const reveal = document.getElementById('reveal');
+
+            if (currentHint < hints.length) {
+                hintBox.innerHTML = hints[currentHint];
+                hintBox.classList.remove('hint-empty');
+                currentHint++;
+                counter.textContent = currentHint;
+            } else if (currentHint === hints.length) {
+                hintBox.style.display = 'none';
+                reveal.style.display = 'block';
+                document.getElementById('actorName').textContent = 'Shah Rukh Khan';
+                document.getElementById('actorImage').src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Shah_Rukh_Khan_2001.jpg/250px-Shah_Rukh_Khan_2001.jpg';
+                currentHint++;
+            }
+        }
+
+        function goToActor2() {
+            window.location.href = 'actor2.html';
+        }
+    </script>
+</body>
+</html>
