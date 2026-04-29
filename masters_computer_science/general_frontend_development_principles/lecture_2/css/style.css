@@ -1,0 +1,179 @@
+:root {
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * 0.7);
+    --x-color: #ef4444;
+    --o-color: #3b82f6;
+    --x-hover: #dc2626;
+    --o-hover: #2563eb;
+}
+
+body{
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f5f9;
+    display: grid;
+    place-items: center;
+}
+
+.players{
+    width: min(700px, 95vw);
+    display: flex;
+    gap: 20px;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.player1, .player2{
+    background: #fff;
+    border: 1px solid #d9dfeb;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+}
+
+.image img{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+}
+
+.name{
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.score{    
+    font-size: 24px;
+    font-weight: 600;    
+    margin-top: 10px;
+}
+
+.tictactoe{
+    width: min(360px, 90vw);
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+}
+
+.board-cell{
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-size: calc(var(--cell-size) * 0.5);
+    border: 2px solid #d1d5db;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background 0.2s;
+}
+
+.board-cell:nth-child(3n+1){
+    border-left: none;
+}
+
+.board-cell:nth-child(-n+3){
+    border-top: none;
+}
+.board-cell:nth-child(2),
+.board-cell:nth-child(3){
+    border-top: none;
+}
+.board-cell:nth-child(3n){
+    border-right: none;
+}
+.board-cell:nth-child(4),
+.board-cell:nth-child(7){
+    border-left: none;
+}
+.board-cell:nth-child(7),
+.board-cell:nth-child(8),
+.board-cell:nth-child(9){
+    border-bottom: none;
+}
+
+/* Only allow hover effect on empty cells */
+.board-cell:not(.x):not(.o):hover {
+    background: #e2e8f0;
+}
+
+/* Styles for X mark */
+.board-cell.x {
+    color: var(--x-color);
+    position: relative;
+    cursor: not-allowed;
+}
+.board-cell.x::before,
+.board-cell.x::after {
+    content: "";
+    position: absolute;
+    width: calc(var(--mark-size) * 0.15);
+    height: var(--mark-size);
+    background: var(--x-color);
+    left: 50%;
+    top: 50%;
+    border-radius: 3px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: background 0.2s;
+}
+.board-cell.x::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+.board-cell.x:hover::before,
+.board-cell.x:hover::after {
+    background: var(--x-hover);
+}
+
+/* Styles for O mark */
+.board-cell.o {
+    color: var(--o-color);
+    position: relative;
+    cursor: not-allowed;
+}
+.board-cell.o::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--mark-size);
+    height: var(--mark-size);
+    border-radius: 50%;
+    border: 6px solid var(--o-color);
+    background: transparent;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    transition: border-color 0.2s;
+}
+.board-cell.o:hover::before {
+    border-color: var(--o-hover);
+}
+
+/* Winning message and restart button styles */
+.winning-msg{
+    text-align: center;
+}
+
+#restart-btn{
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.hide{
+    display: none !important;
+}
+#restart-btn:hover{
+    background: #1d4ed8;
+}
+
+.board-cell.x{
+    color: var(--x-color);
+}
+.board-cell.o{
+    color: var(--o-color);
+}

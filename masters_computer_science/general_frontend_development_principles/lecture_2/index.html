@@ -1,0 +1,41 @@
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="players">
+        <div class="player1">
+            <div class="image">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Player 1 Image">
+            </div>
+            <div class="name">Player 1</div>
+            <div class="score" id="score_1">Score: 0</div>
+        </div>
+        <div class="player2">
+            <div class="image">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Player 2 Image">
+            </div>
+            <div class="name">Player 2</div>
+            <div class="score" id="score_2">Score: 0</div>
+        </div>
+    </div>
+    <div class="tictactoe" id="board">
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+        <div class="board-cell" data-cell></div>
+    </div>
+    <div class="winning-msg" id="msg">
+        <div data-winning-msg></div>
+    </div>
+    <button id="restart-btn" class="hide">Restart</button>
+</body>
+<script src="js/main.js"></script>
+</html>
