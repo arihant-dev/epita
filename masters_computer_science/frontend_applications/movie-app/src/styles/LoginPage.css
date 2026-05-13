@@ -1,0 +1,158 @@
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../assets/Login_Background.jpeg");
+  background-size: cover;
+  background-position: center center;
+}
+
+#loginButton, #registerButton{
+    color: white;
+}
+
+.login-wrapper {
+  height: 560px;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2em;
+  border-radius: 5px;
+  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  color: white;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 39, 38, 1) 0%,
+    rgba(2, 75, 77, 1) 51%,
+    rgba(253, 255, 255, 0) 100%
+  );
+}
+
+.nav-buttons {
+  width: 100%;
+  height: 100px;
+  padding-top: 40px;
+  opacity: 1;
+  margin-bottom: 3em;
+}
+
+.nav-buttons button {
+  background-color: inherit;
+}
+
+.nav-buttons button {
+  font-size: 1.5em;
+  margin-right: 1em;
+  border: 0px;
+  cursor: pointer;
+}
+
+.nav-buttons button:focus {
+  outline: 0px;
+}
+
+.nav-buttons button:active {
+  padding-bottom: 10px;
+  border-bottom: solid 2px #024b4d;
+}
+
+.panel {
+  position: relative;
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-top: 24px;
+  border-top: solid1px rgba(255, 255, 255, 0.3);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  height: 35px;
+  padding-left: 15px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.form-group select option {
+  color: black;
+}
+
+.form-group label {
+  text-transform: none;
+}
+
+.submit {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1em;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  padding: 8px 0px;
+  width: 100%;
+  height: 35px;
+  border: none;
+  border-radius: 20px;
+  margin-top: 23px;
+  background-color: #055d5d;
+}
+
+form#registerform {
+  left: 500px;
+  top: -230px;
+  position: relative;
+}
+
+.panel {
+  margin-top: -300px;
+  color: gray;
+}
+
+form,
+.panel {
+  position: relative;
+  transition: all 0.1s ease;
+}
+
+#loginButton,
+#registerButton {
+  transition: all 0.5s ease;
+}
+
+.customIcon {
+  position: absolute;
+  left: auto;
+  right: 10px;
+  text-indent: 32px;
+  top: 102px;
+}
+
+.inputs-container {
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+.input-container {
+  flex: 1;
+}
+
+.phone::placeholder {
+  color: white;
+  opacity: 0.7; /* Firefox */
+}
+
+button {
+  cursor: pointer;
+}
+
+.form-message {
+  display: flex;
+  justify-content:center;
+  margin-top: 20px;
+}

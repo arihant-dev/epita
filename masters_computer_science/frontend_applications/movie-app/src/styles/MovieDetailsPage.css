@@ -1,0 +1,31 @@
+.movie-page {
+  background-color: #111;
+}
+
+.reviews {
+  margin-left: 20px;
+  color: white;
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.no-comments-message {
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.no-comments-message span {
+  font-size: 24px;
+  color: white;
+}
+
+.movie-page-bottom {
+  display: flex;
+}
+
+.comments {
+  flex: 2;
+}
