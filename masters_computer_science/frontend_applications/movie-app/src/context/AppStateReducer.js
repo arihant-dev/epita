@@ -1,3 +1,5 @@
+import {isAuthenticated} from './AppStateProvider';
+
 export const AppStateReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
@@ -21,3 +23,5 @@ export const AppStateReducer = (state, action) => {
       return state;
   }
 }
+
+export default AppStateReducer;
