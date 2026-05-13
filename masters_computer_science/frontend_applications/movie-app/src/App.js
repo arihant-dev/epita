@@ -5,6 +5,7 @@ import MovieDetails from './pages/MovieDetailsPage';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './routes/PrivateRoute';
+import PublicRoute from './routes/PublicRoute';
 
 function App() {
   return (
@@ -15,7 +16,9 @@ function App() {
 
         </Route>
         <Route path="/movie/:id" element={<MovieDetails />} />
-        <Route path="/login" element={<Login />} />
+        <Route element={<PublicRoute />} >
+          <Route path="/login" element={<Login />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
