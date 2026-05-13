@@ -1,9 +1,21 @@
+import React from 'react';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import Home from './pages/Home';
+import MovieDetails from './pages/MovieDetailsPage';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+
 function App() {
-  // add routing for the home page, movie details page and not found page
   return (
-    <div className="App">
-      Hello World
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+    
   );
 }
 
