@@ -1,0 +1,1 @@
+- use .env.example to have a template for environment variables
