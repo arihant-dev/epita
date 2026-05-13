@@ -1,0 +1,24 @@
+## LaTex and Babel
+*.aux
+*.bbl
+*.blg
+*.brf
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.gz
+*.idx
+*.ilg
+*.ind
+*.maf
+*.mtc
+*.mtc0
+*.nav
+*.pdf
