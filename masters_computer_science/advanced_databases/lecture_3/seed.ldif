@@ -1,0 +1,24 @@
+dn: ou=people,dc=epita,dc=fr
+objectClass: organizationalUnit
+ou: people
+
+dn: uid=alice,ou=people,dc=epita,dc=fr
+objectClass: inetOrgPerson
+uid: alice
+cn: Alice Martin
+sn: Martin
+mail: alice@epita.fr
+
+dn: uid=bob,ou=people,dc=epita,dc=fr
+objectClass: inetOrgPerson
+uid: bob
+cn: Bob Durand
+sn: Durand
+mail: bob@epita.fr
+
+dn: uid=chen,ou=people,dc=epita,dc=fr
+objectClass: inetOrgPerson
+uid: chen
+cn: Chen Wang
+sn: Wang
+mail: chen@epita.fr
