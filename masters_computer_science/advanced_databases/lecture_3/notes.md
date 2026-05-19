@@ -115,3 +115,33 @@ dc=epita,dc=fr                                  <- root
 }
 ```
 A document = a JSON-like object stored as BSON (binary JSON).
+
+### Vocabulary mapping
+| Relational Model | Document Model |
+|------------------|----------------|
+| Table            | Collection     |
+| Row              | Document       |
+| Column           | Field          |
+| Primary Key      | _id            |
+| Foreign Key      | Embedded Document or Reference |
+| Index            | Index          |
+| Join             | Embedded Document or $lookup (aggregation) |
+| Transaction       | Multi-document ACID transactions (since MongoDB 4.0) |
+
+### BSON not JSON
+- BSON adds types JSON lacks
+- Binary data- ObjectId - 12 byte timestamp + 5 byte random + 3 byte incrementing counter
+- Date - stored as milliseconds since epoch
+- Decimal128, Binary, Regular Expression, JavaScript code, etc.
+
+
+### Architecture
+_________________________________________
+| Driver (e.g., MongoDB Shell, Mongoose) |
+|----------------------------------------|
+| MongoDB Server (mongod)                |
+|----------------------------------------|
+| Storage Engine (e.g., WiredTiger)      |
+|----------------------------------------|
+| Operating System                       |
+|----------------------------------------|
