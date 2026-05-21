@@ -1,0 +1,419 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\pgfplotsset{compat=1.18}
+
+\title{Green IT}
+\subtitle{Reducing digital environmental impact}
+\author{Hakeem Ullah \and Ayooluwatomi Aiyeniko \and Arihant Jain}
+\institute{EPITA -- Master in Computer Science\\Software Engineering -- Fall 2025}
+\date{}
+\titlegraphic{\includegraphics[height=1.3cm]{images/Epita.jpg}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Three Actions for Green IT}
+\Large
+\begin{enumerate}
+  \vspace{0.3cm}
+  \item Arihant Jain: Avoid Software Obsolescence
+  \vspace{0.3cm}
+  \item Hakeem Ullah: Repair our Equipment
+  \vspace{0.3cm}
+  \item Ayooluwatomi Aiyeniko: Buy second-hand / refurbished products
+\end{enumerate}
+\end{frame}
+
+%% ============ ACTION 1: STRATEGIC THEORETICAL ANALYSIS ============
+
+\begin{frame}{Slide 1: Strategic Theoretical Analysis}
+\scriptsize
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\textbf{Implementation steps (condensed)}
+\begin{enumerate}
+  \item Audit lifecycle risk in current software portfolio.
+  \item Adopt a measurable framework (SCI, Blue Angel, ISO 14044).
+  \item Redesign for modularity and backward compatibility.
+  \item Commit to long support windows (target: 7+ years).
+  \item Remove repair blockers (locks, pairing, contractual limits).
+\end{enumerate}
+
+\textbf{Cost-benefit (short vs long term)}
+\begin{tabular}{p{1.9cm}p{2.6cm}}
+\toprule
+Cost now & Benefit later \\
+\midrule
+Support effort & Lower device-replacement CapEx \\
+Refactor cost & Lower maintenance/rebuild cost \\
+\bottomrule
+\end{tabular}
+
+\column{0.49\textwidth}
+\textbf{SWOT (action-specific)}
+\begin{itemize}
+  \item \textbf{Strength}: regulatory readiness, brand credibility
+  \item \textbf{Weakness}: legacy refactor and retraining effort
+  \item \textbf{Opportunity}: EU right-to-repair pressure and demand shift
+  \item \textbf{Threat}: greenwashing competitors, chipset EOL dependence
+\end{itemize}
+
+\textbf{Impact on IT performance}
+\begin{itemize}
+  \item \textbf{Energy}: lean software lowers CPU/RAM use.
+  \item \textbf{Security}: longer patch windows reduce EOL exposure.
+  \item \textbf{Resilience}: modular systems are easier to update and audit.
+\end{itemize}
+\end{columns}
+\vspace{0.1cm}
+\tiny Sources: \href{https://greensoftware.foundation}{Green Software Foundation}, \href{https://www.blauer-engel.de/en}{Blue Angel}, \href{https://www.europarl.europa.eu/news/en/press-room/20240419IPR20590/right-to-repair-rules-adopted}{EU Right-to-Repair (Parliament)}.
+\end{frame}
+
+%% ============ ACTION 1: KAYA / ECOLOGICAL ANALYSIS ============
+
+\begin{frame}{Slide 2: KAYA / Ecological Theoretical Analysis}
+\tiny
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.39\textwidth}
+\textbf{KAYA notation}
+\[
+\text{CO}_2 = \frac{\text{CO}_2}{Energy}\times\frac{Energy}{GDP}\times\frac{GDP}{Pop}\times Pop
+\]
+\[
+\text{GHG}_{mfg} = Pop \times \frac{Devices}{Pop} \times \frac{New}{Devices} \times \frac{GHG}{New\ Device}
+\]
+\textbf{Scenario setup}
+\begin{itemize}
+  \item \textbf{A (BAU)}: accelerated replacement behavior.
+  \item \textbf{B (Intervention)}: software longevity + keep-in-use policies.
+\end{itemize}
+\textbf{Rebound check (manufacturing totals)}
+\begin{itemize}
+  \item A: 179 $\rightarrow$ 195 $\rightarrow$ 195 Mt.
+  \item B: 82 $\rightarrow$ 63 $\rightarrow$ 30 Mt.
+  \item 2025 baseline (estimated): 120 Mt.
+\end{itemize}
+\textbf{Result}: B stays below baseline, A stays above baseline.
+
+\column{0.61\textwidth}
+\textbf{Variable decomposition by horizon}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cc|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{2030} & \multicolumn{2}{c|}{2040} & \multicolumn{2}{c}{2050} \\
+Metric & A & B & A & B & A & B \\
+\midrule
+Population (bn) & 8.1 & 8.1 & 8.2 & 8.2 & 8.3 & 8.3 \\
+Devices/person $\rightarrow$ total devices (bn) & 4.5 $\rightarrow$ 36.5 & 4.2 $\rightarrow$ 34.0 & 5.2 $\rightarrow$ 42.6 & 3.8 $\rightarrow$ 31.2 & 5.8 $\rightarrow$ 48.1 & 3.2 $\rightarrow$ 26.6 \\
+\% new / kept-in-use & 60 / 40 & 35 / 65 & 65 / 35 & 30 / 70 & 70 / 30 & 18 / 82 \\
+New devices/year (bn) & 2.1 & 1.0 & 2.6 & 0.9 & 3.0 & 0.5 \\
+Impact per new device (kg CO2e) & 85 & 82 & 75 & 70 & 65 & 60 \\
+\textbf{Total manufacturing impact (Mt CO2e)} & \textbf{179} & \textbf{82} & \textbf{195} & \textbf{63} & \textbf{195} & \textbf{30} \\
+\bottomrule
+\end{tabular}
+}
+\end{columns}
+\vspace{0.08cm}
+\tiny Formula used in total row: \textit{new devices/year $\times$ impact per new device}. Sources: \href{https://ewastemonitor.info/the-global-e-waste-monitor-2024/}{Global E-waste Monitor 2024}, \href{https://librairie.ademe.fr/}{ADEME publications}, \href{https://www.iea.org/reports/digitalisation-and-energy}{IEA digitalisation and energy}.
+\end{frame}
+
+%% ============ ACTION 1: OTHER ECOLOGICAL + SOCIAL ============
+
+\begin{frame}{Slide 3: Other Ecological (Planetary Boundaries) + Social Benefits}
+\scriptsize
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.55\textwidth}
+\textbf{Ecological links (strongest first)}
+\begin{tabular}{p{2.4cm}p{4.8cm}}
+\toprule
+Boundary & Why software obsolescence matters \\
+\midrule
+Climate change & More replacements => more embodied emissions from manufacturing. \\
+Novel entities & E-waste toxicity (lead, cadmium, mercury) dominates landfill toxicity. \\
+Biosphere integrity & Mining pressure for cobalt, lithium, coltan. \\
+Freshwater use & Semiconductor production and e-waste contaminate water systems. \\
+Biogeochemical flows & Informal e-waste handling releases pollutants into soil/water. \\
+\bottomrule
+\end{tabular}
+
+\column{0.43\textwidth}
+\textbf{Social benefits}
+\begin{itemize}
+  \item \textbf{Environmental justice}: less toxic burden exported to the Global South.
+  \item \textbf{Digital inclusion}: longer support keeps lower-cost devices usable.
+  \item \textbf{Supply-chain ethics}: lower extraction demand in conflict-affected regions.
+\end{itemize}
+
+\textbf{Confidence note}
+\begin{itemize}
+  \item Direction of impact: high confidence.
+  \item Exact magnitude: medium confidence (context-dependent).
+\end{itemize}
+\end{columns}
+\vspace{0.08cm}
+\tiny Sources: \href{https://www.stockholmresilience.org/research/planetary-boundaries.html}{Stockholm Resilience Centre}, \href{https://ewastemonitor.info/the-global-e-waste-monitor-2024/}{Global E-waste Monitor}, \href{https://www.unep.org}{UNEP}.
+\end{frame}
+
+%% ============ ACTION 1: REAL WORLD ============
+
+\begin{frame}{Slide 4: Real World Comparison (Companies + Outcomes)}
+\scriptsize
+\begin{tabular}{p{2.1cm}p{2.8cm}p{2.4cm}p{3.3cm}}
+\toprule
+Actor & What is implemented & Strategic outcome & Ecological outcome \\
+\midrule
+Fairphone & Modular phones, long support, spare parts & Commercial viability in premium niche & 60.9\% active after 4+ years; avg life 4.7 years \\
+Framework & Repairable/upgradeable laptop architecture & Replacement avoided via part upgrades & Fewer full-laptop renewals (upgrade path) \\
+LineageOS and /e/OS & Community support beyond vendor EOL & Longevity without vendor lock-in & 3-5 years extra use for abandoned devices \\
+Blue Angel (DE) & Third-party software sustainability certification & Procurement leverage for compliant vendors & Hardware and energy requirements become auditable \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.15cm}
+\textbf{Data quality legend}: measured (Fairphone), observed practice (Framework/ROM communities), policy-backed criteria (Blue Angel).
+\vspace{0.08cm}
+\tiny Sources: \href{https://www.fairphone.com/en/impact-report/}{Fairphone Impact Report}, \href{https://frame.work}{Framework}, \href{https://lineageos.org}{LineageOS}, \href{https://e.foundation}{/e/OS}, \href{https://www.blauer-engel.de/en}{Blue Angel}.
+\end{frame}
+
+%% ============ ACTION 1: GREENWASHING ============
+
+\begin{frame}{Slide 5: Greenwashing Case Study (Apple)}
+\scriptsize
+\begin{tabular}{p{2.5cm}p{5.6cm}p{2.2cm}}
+\toprule
+Claim & Evidence snapshot & Verdict \\
+\midrule
+``100\% renewable operations'' & Valid for all corporate operations (stores, offices, data centers in 44 countries), but manufacturing/Scope 3 remains dominant. & Partial \\
+``Carbon-neutral products'' & Offset-heavy claims are legally and methodologically contested in multiple jurisdictions. & Contested \\
+``USB-C is eco-forward'' & Standardization helps future waste, but legacy Lightning accessories became stranded rapidly. & Mixed / contested \\
+``Updates extend lifespan'' & Support exists for newer models, but HOP complaint on parts pairing/repair barriers triggered a Paris prosecutor-led investigation. & Inconsistent \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.15cm}
+\textbf{How to test any sustainability claim}
+\begin{itemize}
+  \item Ask if lifecycle emissions (Scope 3) are included.
+  \item Distinguish actual reductions from offsets.
+  \item Check right-to-repair behavior and third-party certification.
+\end{itemize}
+\vspace{0.05cm}
+\tiny Sources: \href{https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2024.pdf}{Apple Environmental Progress Report 2024}, \href{https://www.halteobsolescence.org/plainte-contre-apple-le-procureur-de-la-republique-ouvre-lenquete/}{HOP: prosecutor investigation on Apple complaint}, \href{https://www.halteobsolescence.org/nouvelle-plainte-de-hop-contre-apple-pour-obsolescence-programmee-et-entraves-a-la-reparation/}{HOP: complaint filing details}.
+\end{frame}
+
+%% ============ ACTION 2 & 3 PLACEHOLDERS ============
+
+\begin{frame}{Action 2: Repair our Equipment}
+\large
+\textbf{Placeholder for Hakeem Ullah}
+\vspace{0.5cm}
+
+Please structure your 5 slides as:
+\begin{enumerate}
+  \item \textbf{Strategic}: what repair means, steps, cost-benefit, SWOT, IT impact
+  \item \textbf{KAYA/Ecological}: decomposition, scenario table, rebound check
+  \item \textbf{Other ecological + Social}: 9 boundaries + equity/inclusion impacts
+  \item \textbf{Real world}: companies/initiatives doing this; measured outcomes
+  \item \textbf{Greenwashing check}: one actor claimed to repair but didn't
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Action 3: Buy second-hand / refurbished products}
+\large
+\textbf{Ayooluwatomi Aiyeniko}
+\vspace{0.5cm}
+
+\end{frame}
+
+%% ============ ACTION 3: STRATEGIC THEORETICAL ANALYSIS ============
+
+\begin{frame}{Slide 1: Strategic Theoretical Analysis}
+\scriptsize
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\textbf{Implementation steps (condensed)}
+\begin{enumerate}
+  \item Audit current device procurement and replacement cycles.
+  \item Establish refurbishment grading criteria (e.g., ISO/IEC 15408, EPEAT).
+  \item Partner with certified refurbishers (R2v3, e-Stewards standards).
+  \item Update procurement policy to mandate second-hand-first for eligible categories.
+  \item Train IT staff to assess, deploy, and support refurbished equipment.
+\end{enumerate}
+
+\textbf{Cost-benefit (short vs long term)}
+\begin{tabular}{p{1.9cm}p{2.6cm}}
+\toprule
+Cost now & Benefit later \\
+\midrule
+Vetting \& sourcing effort & 30--70\% lower acquisition cost \\
+Potential shorter warranty & Avoided manufacturing GHG emissions \\
+\bottomrule
+\end{tabular}
+
+\column{0.49\textwidth}
+\textbf{SWOT (action-specific)}
+\begin{itemize}
+  \item \textbf{Strength}: immediate cost savings; lower embodied carbon
+  \item \textbf{Weakness}: perception of lower reliability; limited bulk supply
+  \item \textbf{Opportunity}: growing certified refurb market; EU Ecodesign regulation
+  \item \textbf{Threat}: planned obsolescence limiting parts availability; greenwashing by resellers
+\end{itemize}
+
+\textbf{Impact on IT performance}
+\begin{itemize}
+  \item \textbf{Energy}: modern refurb units often match new device efficiency.
+  \item \textbf{Security}: certified refurbishers wipe and re-image to known-good state.
+  \item \textbf{Resilience}: spare-parts availability extends asset lifetime further.
+\end{itemize}
+\end{columns}
+\vspace{0.1cm}
+\tiny Sources: \href{https://www.epeat.net}{EPEAT}, \href{https://sustainableelectronics.org/r2-standard/}{R2v3 Standard}, \href{https://commission.europa.eu/law/law-topic/consumer-protection-law/directive-repair-goods_en}{EU Right-to-Repair}.
+\end{frame}
+
+%% ============ ACTION 3: KAYA / ECOLOGICAL ANALYSIS ============
+
+\begin{frame}{Slide 2: KAYA / Ecological Theoretical Analysis}
+\tiny
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.39\textwidth}
+\textbf{KAYA notation}
+\[
+\text{CO}_2 = \frac{\text{CO}_2}{Energy}\times\frac{Energy}{GDP}\times\frac{GDP}{Pop}\times Pop
+\]
+\[
+\text{GHG}_{mfg} = Pop \times \frac{Devices}{Pop} \times \frac{New}{Devices} \times \frac{GHG}{New\ Device}
+\]
+\textbf{Scenario setup}
+\begin{itemize}
+  \item \textbf{A (BAU)}: new-device-first procurement; refurb share stays $<$10\%.
+  \item \textbf{B (Intervention)}: second-hand/refurb-first policy; refurb share rises to 45\%+ by 2050.
+\end{itemize}
+\textbf{Rebound check (manufacturing totals)}
+\begin{itemize}
+  \item A: 179 $\rightarrow$ 195 $\rightarrow$ 195 Mt.
+  \item B: 78 $\rightarrow$ 57 $\rightarrow$ 26 Mt.
+  \item 2025 baseline (estimated): 120 Mt.
+\end{itemize}
+\textbf{Result}: B consistently below baseline; A stays well above.
+
+\column{0.61\textwidth}
+\textbf{Variable decomposition by horizon}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|cc|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{2030} & \multicolumn{2}{c|}{2040} & \multicolumn{2}{c}{2050} \\
+Metric & A & B & A & B & A & B \\
+\midrule
+Population (bn) & 8.1 & 8.1 & 8.2 & 8.2 & 8.3 & 8.3 \\
+Devices/person $\rightarrow$ total devices (bn) & 4.5 $\rightarrow$ 36.5 & 4.3 $\rightarrow$ 34.8 & 5.2 $\rightarrow$ 42.6 & 3.9 $\rightarrow$ 32.0 & 5.8 $\rightarrow$ 48.1 & 3.3 $\rightarrow$ 27.4 \\
+\% new / second-hand or refurb & 92 / 8 & 65 / 35 & 92 / 8 & 55 / 45 & 90 / 10 & 45 / 55 \\
+New devices/year (bn) & 2.1 & 0.9 & 2.6 & 0.8 & 3.0 & 0.4 \\
+Impact per new device (kg CO2e) & 85 & 82 & 75 & 70 & 65 & 60 \\
+\textbf{Total manufacturing impact (Mt CO2e)} & \textbf{179} & \textbf{78} & \textbf{195} & \textbf{57} & \textbf{195} & \textbf{26} \\
+\bottomrule
+\end{tabular}
+}
+\end{columns}
+\vspace{0.08cm}
+\tiny Formula: \textit{new devices/year $\times$ impact per new device}. Refurbished devices carry $<$5\% of new-device manufacturing GHG (cleaning, testing, minor parts). Sources: \href{https://ewastemonitor.info/the-global-e-waste-monitor-2024/}{Global E-waste Monitor 2024}, \href{https://librairie.ademe.fr/}{ADEME}, \href{https://www.iea.org/reports/digitalisation-and-energy}{IEA Digitalisation and Energy}.
+\end{frame}
+
+%% ============ ACTION 3: OTHER ECOLOGICAL + SOCIAL ============
+
+\begin{frame}{Slide 3: Other Ecological (Planetary Boundaries) + Social Benefits}
+\scriptsize
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.55\textwidth}
+\textbf{Ecological links (strongest first)}
+\begin{tabular}{p{2.4cm}p{4.8cm}}
+\toprule
+Boundary & Why second-hand/refurb matters \\
+\midrule
+Climate change & Fewer new devices manufactured $\Rightarrow$ lower embodied emissions. \\
+Novel entities & Less e-waste; hazardous materials kept in use longer, then properly recycled. \\
+Biosphere integrity & Reduced mining pressure for cobalt, lithium, tantalum. \\
+Freshwater use & Semiconductor fabs are water-intensive; fewer new units = lower water draw. \\
+Biogeochemical flows & Less informal e-waste processing reduces soil and water contamination. \\
+\bottomrule
+\end{tabular}
+
+\column{0.43\textwidth}
+\textbf{Social benefits}
+\begin{itemize}
+  \item \textbf{Digital inclusion}: affordable refurb devices widen access for low-income users and schools.
+  \item \textbf{Environmental justice}: fewer new devices means less toxic mining burden on Global South communities.
+  \item \textbf{Local employment}: refurbishment creates skilled technical jobs in repair and logistics.
+\end{itemize}
+
+\textbf{Confidence note}
+\begin{itemize}
+  \item Direction of impact: high confidence.
+  \item Exact magnitude: medium confidence (depends on refurb quality and end-of-life handling).
+\end{itemize}
+\end{columns}
+\vspace{0.08cm}
+\tiny Sources: \href{https://www.stockholmresilience.org/research/planetary-boundaries.html}{Stockholm Resilience Centre}, \href{https://ewastemonitor.info/the-global-e-waste-monitor-2024/}{Global E-waste Monitor}, \href{https://www.unep.org}{UNEP}.
+\end{frame}
+
+%% ============ ACTION 3: REAL WORLD ============
+
+\begin{frame}{Slide 4: Real World Comparison (Companies + Outcomes)}
+\scriptsize
+\begin{tabular}{p{2.1cm}p{2.8cm}p{2.4cm}p{3.3cm}}
+\toprule
+Actor & What is implemented & Strategic outcome & Ecological outcome \\
+\midrule
+Back Market & Marketplace certifying refurbished electronics with graded quality levels & Scaled refurb to mainstream consumer market & Avg. 91.5\% lower carbon footprint vs new equivalent device \\
+Recommerce (ADEME) & French government-backed refurb certification and public procurement guideline & Public sector adoption of refurb-first policy & Estimated 2--4x extension of device active lifetime \\
+Dell Reconnect & Take-back + certified refurb/resale program for consumer hardware & Circular loop within brand ecosystem & Over 2 million lbs of equipment diverted from landfill annually \\
+Circular Computing & PAS 2060-certified laptop refurbishment & Carbon-neutral refurb certification achieved & 316 kg CO2e saved per unit vs new equivalent \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.15cm}
+\textbf{Data quality legend}: LCA-measured (Back Market, Circular Computing), policy-backed (ADEME), reported corporate figures (Dell).
+\vspace{0.08cm}
+\tiny Sources: \href{https://assets.ctfassets.net/mmeshd7gafk1/5A4644sbPjCAjENnnu91Vy/deda4195892315a31307337ce1932ca1/BM-IMPACTREPORT-USA.pdf}{Back Market Impact Report}, \href{https://librairie.ademe.fr/economie-circulaire-et-dechets/5833-assessment-of-the-environmental-impact-of-a-set-of-refurbished-products.html}{ADEME Refurb Study}, \href{https://www.dell.com/en-us/dfh/lp/outlet-why-refurbished}{Dell Reconnect}, \href{https://circularcomputing.com/news/carbon-footprint-laptop/}{Circular Computing LCA}.
+\end{frame}
+
+%% ============ ACTION 3: GREENWASHING ============
+
+\begin{frame}{Slide 5: Greenwashing Case Study (Amazon Renewed)}
+\scriptsize
+\begin{tabular}{p{2.5cm}p{5.6cm}p{2.2cm}}
+\toprule
+Claim & Evidence snapshot & Verdict \\
+\midrule
+``Certified refurbished'' label & No single external standard; sellers self-certify under Amazon's internal checklist. No independent audit required. & Misleading \\
+``Like new'' condition guarantee & Consumer complaints document functional defects, missing accessories, and incorrect grading at significant rates. & Inconsistent \\
+``Sustainable choice'' badge & Badge applied algorithmically based on Amazon's own criteria; no lifecycle emissions data published per product. & Unverified \\
+``Supports circular economy'' & Amazon's core business model drives new-product sales; Renewed is a secondary channel with no explicit take-back or end-of-life commitment. & Partial / contested \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.15cm}
+\textbf{How to test any second-hand/refurb claim}
+\begin{itemize}
+  \item Check for third-party certification (R2v3, e-Stewards, PAS 2060).
+  \item Ask whether a lifecycle carbon assessment (LCA) exists for the refurb process.
+  \item Verify that end-of-life take-back is included, not just resale.
+\end{itemize}
+\vspace{0.05cm}
+\tiny Sources: \href{https://medium.com/@blakewhole/my-amazon-renewed-laptop-nightmare-as-told-through-the-works-of-vincent-van-gogh-a3d52ce31922}{Amazon Renewed "Nightmare"}, \href{https://www.reddit.com/r/amazonprime/comments/1qx8q6d/dont_order_refurbished_devices_from_amazon/}{Reddit: word of mouth}
+\end{frame}
+
+\end{document}
