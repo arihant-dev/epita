@@ -16,8 +16,11 @@ function normalizeTags(tags) {
 }
 
 function nextSequence(name) {
-  counters.updateOne({ _id: name }, { $inc: { seq: 1 } }, { upsert: true });
-  const doc = counters.findOne({ _id: name });
+  const doc = counters.findOneAndUpdate(
+    { _id: name },
+    { $inc: { seq: 1 } },
+    { returnNewDocument: true, upsert: true }
+  );
   return doc.seq;
 }
 
