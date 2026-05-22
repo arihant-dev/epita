@@ -185,9 +185,8 @@ function getProfile(username) {
 
 function follow(userId, targetId) {
   if (userId === targetId) return false;
-  const userExists = users.findOne({ _id: userId }, { _id: 1 });
   const targetExists = users.findOne({ _id: targetId }, { _id: 1 });
-  if (!userExists || !targetExists) return false;
+  if (!targetExists) return false;
   const result = users.updateOne(
     { _id: userId },
     { $addToSet: { following: targetId } }
