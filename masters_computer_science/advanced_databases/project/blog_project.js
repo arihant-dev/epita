@@ -207,8 +207,6 @@ function unfollow(userId, targetId) {
 }
 
 function createPost(authorId, { title, body, tags }) {
-  const authorExists = users.findOne({ _id: authorId }, { _id: 1 });
-  if (!authorExists) return null;
   const postId = `p${nextSequence("postId")}`;
   posts.insertOne({
     _id: postId,
@@ -226,8 +224,6 @@ function createPost(authorId, { title, body, tags }) {
 function addComment(postId, authorId, text) {
   const post = posts.findOne({ _id: postId }, { _id: 1 });
   if (!post) return null;
-  const authorExists = users.findOne({ _id: authorId }, { _id: 1 });
-  if (!authorExists) return null;
   const commentId = `c${nextSequence("commentId")}`;
   comments.insertOne({
     _id: commentId,
