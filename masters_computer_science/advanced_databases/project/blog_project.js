@@ -235,13 +235,12 @@ function addComment(postId, authorId, text) {
 }
 
 function likePost(postId) {
-  const result = posts.updateOne(
+  const post = posts.findOneAndUpdate(
     { _id: postId },
-    { $inc: { likeCount: 1 } }
+    { $inc: { likeCount: 1 } },
+    { returnNewDocument: true }
   );
-  if (result.matchedCount === 0) return null;
-  const post = posts.findOne({ _id: postId }, { likeCount: 1 });
-  return post.likeCount;
+  return post ? post.likeCount : null;
 }
 
 function getFeed(userId, { limit = 20, skip = 0 } = {}) {

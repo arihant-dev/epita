@@ -7,4 +7,4 @@
    - Index on `posts` `{ authorId, createdAt, _id }` for feed queries and deterministic order.
    - Index on `posts.tags` for tag aggregation.
    - Index on `comments.postId` for comment lookups.
-4. **Like count limitation:** A single `likeCount` does not prevent the same user from liking multiple times. A better fix is a `postLikes` collection with a unique `(postId, userId)` constraint and derive counts from it.
+4. **Like count limitation:** A single `likeCount` cannot prevent duplicate likes because `likePost(postId)` lacks a `userId` parameter. To fix this, change the function signature to `likePost(postId, userId)` and store likes in a separate `likes` collection with a unique compound index on `{ postId, userId }`.
