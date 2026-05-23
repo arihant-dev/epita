@@ -14,6 +14,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState("")
   const [showPass, setShowPass] = useState(false)
 
   const authentication = (event) => {
@@ -21,13 +22,14 @@ const LoginForm = () => {
 
     if (!email || !password) {
       setMessage("Please fill all required fields")
+      setMessageType("error")
     } else {
-      // MAKE AN API CALL
       movieApi.post(userRequests.login, {
         email,
         password
       }).then((response) => {
-        console.log(response)
+        setMessage("Login successful! Redirecting...")
+        setMessageType("success")
         dispatch({
           type: "Login",
           payload: {
@@ -36,9 +38,10 @@ const LoginForm = () => {
             username: response.data.username
           }
         })
-        navigate("/home")
+        setTimeout(() => navigate("/home"), 500)
       }).catch((error) => {
-        setMessage(error.response.data.message)
+        setMessage(error.response?.data?.message || "Login failed")
+        setMessageType("error")
       })
     }
   }
@@ -63,7 +66,7 @@ const LoginForm = () => {
         </span>
       </span>
       <button className='submit' onClick={(e) => authentication(e)}>submit</button>
-      <span style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <span style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', color: messageType === "success" ? "green" : "red" }}>
         {message}
       </span>
     </>

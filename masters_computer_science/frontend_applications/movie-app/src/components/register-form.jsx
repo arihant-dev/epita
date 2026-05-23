@@ -10,6 +10,7 @@ const RegisterForm = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const [user, setUser] = useState({
     email: "",
@@ -27,15 +28,18 @@ const RegisterForm = () => {
   const registerUser = (event) => {
     event.preventDefault()
 
-    if (!user.email || !user.username) {
+    if (!user.email || !user.username || !user.password) {
       setMessage("Please fill all required fields")
+      setMessageType("error")
     } else {
       movieApi.post(userRequests.register, {
         email: user.email,
         password: user.password,
         username: user.username
       }).then((response) => {
-        console.log(response)
+        setMessage("Registration successful! You can now login.")
+        setMessageType("success")
+        setUser({ email: "", username: "", password: "" })
         dispatch({
           type: "Register",
           payload: {
@@ -44,7 +48,8 @@ const RegisterForm = () => {
           }
         })
       }).catch((error) => {
-        // display message
+        setMessage(error.response?.data?.message || "Registration failed")
+        setMessageType("error")
       })
     }
   };
@@ -88,7 +93,9 @@ const RegisterForm = () => {
           <button className="submit" onClick={(e) => registerUser(e)}>
             submit
           </button>
-          <span className="form-message">{message}</span>
+          <span className="form-message" style={{ color: messageType === "success" ? "green" : "red" }}>
+            {message}
+          </span>
         </div>
       </div>
     </div>
