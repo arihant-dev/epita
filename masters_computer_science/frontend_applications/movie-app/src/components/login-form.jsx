@@ -38,7 +38,7 @@ const LoginForm = () => {
             username: response.data.username
           }
         })
-        setTimeout(() => navigate("/home"), 500)
+        navigate("/home")
       }).catch((error) => {
         setMessage(error.response?.data?.message || "Login failed")
         setMessageType("error")

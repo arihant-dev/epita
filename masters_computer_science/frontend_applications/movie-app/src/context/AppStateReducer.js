@@ -1,18 +1,17 @@
 export const AppStateReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-      localStorage.setItem('token', action.payload.token);
+      const userData = { ...action.payload.user, token: action.payload.token };
+      localStorage.setItem('user', JSON.stringify(userData));
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload.user,
+        user: userData,
         token: action.payload.token,
       };
 
     case 'LOGOUT':
       localStorage.removeItem('user');
-      localStorage.removeItem('token');
       return {
         ...state,
         isAuthenticated: false,
