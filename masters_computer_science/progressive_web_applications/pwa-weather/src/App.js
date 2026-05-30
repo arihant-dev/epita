@@ -9,6 +9,10 @@ const App = () => {
     const saved = localStorage.getItem('lastSearchedCities')
     return saved ? JSON.parse(saved) : []
   })
+  const [temperatureUnit, setTemperatureUnit] = useState(() => {
+    const savedUnit = localStorage.getItem('temperatureUnit')
+    return savedUnit ? savedUnit : 'C'
+  })
 
   const fetchData = async (e) => {
     if (e.key === 'Enter') {
@@ -44,6 +48,10 @@ const App = () => {
       setError(err.message)
     }
   }
+  function tempUnitChangeButtonClicked() {
+    setTemperatureUnit(temperatureUnit === 'C' ? 'F' : 'C')
+    localStorage.setItem('temperatureUnit', temperatureUnit === 'C' ? 'F' : 'C')
+  }
   return (
     <div>
       <input
@@ -57,7 +65,7 @@ const App = () => {
       {weather && (
         <div>
           <h2>{weather.location.name}, {weather.location.country}</h2>
-          <p>Temperature: {weather.current.temp_c ?? 'N/A'}°C</p>
+          <p>Temperature: {temperatureUnit === 'C' ? weather.current.temp_c ?? 'N/A' :weather.current.temp_f ?? 'N/A'}°{temperatureUnit}</p>
           <p>Latitude: {weather.location.lat ?? 'N/A'}</p>
           <p>Longitude: {weather.location.lon ?? 'N/A'}</p>
           <p>Condition: {weather.current.condition?.text}</p>
@@ -78,6 +86,11 @@ const App = () => {
             ))}
           </ul>
         </div>
+    <div>
+            <button onClick={tempUnitChangeButtonClicked}>
+              Toggle Temperature Unit 
+            </button>
+    </div>
     </div>
   )
 }
