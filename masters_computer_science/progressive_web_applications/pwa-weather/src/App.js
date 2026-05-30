@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { fetchWeather } from './api/fetchWeather'
 
 const App = () => {
   const [cityname, setCityname] = useState('')
-  const [weather, setWeather] = useState(null)
+  const [weather, setWeather] = useState(() => {
+    const saved = localStorage.getItem('lastApiResponse')
+    return saved ? JSON.parse(saved) : null
+  })
   const [error, setError] = useState(null)
   const [lastSearchedCities, setLastSearchedCities] = useState(() => {
     const saved = localStorage.getItem('lastSearchedCities')
@@ -35,11 +38,8 @@ const App = () => {
   const fetchData = async (e) => {
     if (e.key === 'Enter') {
       try {
+        saveLastSearches()
         const data = await fetchWeather(cityname)
-        if (!lastSearchedCities.includes(cityname)) {
-          setLastSearchedCities([...lastSearchedCities, cityname])
-          localStorage.setItem('lastSearchedCities', JSON.stringify([...lastSearchedCities, cityname]))
-        }
         if (data.error) {
           setError(data.error.message)
         } else {
@@ -51,6 +51,13 @@ const App = () => {
         setError(err.message)
       }
     }
+  }
+
+  function saveLastSearches() {
+            if (!lastSearchedCities.includes(cityname)) {
+          setLastSearchedCities([...lastSearchedCities, cityname])
+          localStorage.setItem('lastSearchedCities', JSON.stringify([...lastSearchedCities, cityname]))
+        }
   }
   const listClik = async (city) => {
     try {
@@ -70,6 +77,16 @@ const App = () => {
     setTemperatureUnit(temperatureUnit === 'C' ? 'F' : 'C')
     localStorage.setItem('temperatureUnit', temperatureUnit === 'C' ? 'F' : 'C')
   }
+
+  useEffect(() => {
+    const handleWeatherSynced = (e) => {
+      setWeather(e.detail)
+    }
+    window.addEventListener('apiResponseUpdated', handleWeatherSynced)
+    return () => {
+      window.removeEventListener('apiResponseUpdated', handleWeatherSynced)
+    }
+  }, [])
   return (
     <div>
       <input
@@ -82,10 +99,10 @@ const App = () => {
       {error && <p style={{color: 'red'}}>{error}</p>}
       {weather && (
         <div>
-          <h2>{weather.location.name}, {weather.location.country}</h2>
+          <h2>{weather.location?.name}, {weather.location?.country}</h2>
           <p>Temperature: {temperatureUnit === 'C' ? weather.current.temp_c ?? 'N/A' :weather.current.temp_f ?? 'N/A'}°{temperatureUnit}</p>
-          <p>Latitude: {weather.location.lat ?? 'N/A'}</p>
-          <p>Longitude: {weather.location.lon ?? 'N/A'}</p>
+          <p>Latitude: {weather.location?.lat ?? 'N/A'}</p>
+          <p>Longitude: {weather.location?.lon ?? 'N/A'}</p>
           <p>Condition: {weather.current.condition?.text}</p>
           <img src={weather.current.condition?.icon} alt={weather.current.condition?.text} />
           <p>Humidity: {weather.current.humidity ?? 'N/A'}%</p>
