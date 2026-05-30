@@ -5,11 +5,19 @@ const App = () => {
   const [cityname, setCityname] = useState('')
   const [weather, setWeather] = useState(null)
   const [error, setError] = useState(null)
+  const [lastSearchedCities, setLastSearchedCities] = useState(() => {
+    const saved = localStorage.getItem('lastSearchedCities')
+    return saved ? JSON.parse(saved) : []
+  })
 
   const fetchData = async (e) => {
     if (e.key === 'Enter') {
       try {
         const data = await fetchWeather(cityname)
+        if (!lastSearchedCities.includes(cityname)) {
+          setLastSearchedCities([...lastSearchedCities, cityname])
+          localStorage.setItem('lastSearchedCities', JSON.stringify([...lastSearchedCities, cityname]))
+        }
         if (data.error) {
           setError(data.error.message)
         } else {
@@ -20,6 +28,20 @@ const App = () => {
       } catch (err) {
         setError(err.message)
       }
+    }
+  }
+  const listClik = async (city) => {
+    try {
+      const data = await fetchWeather(city)
+      if (data.error) {
+        setError(data.error.message)
+      } else {
+        setWeather(data)
+        setCityname('')
+        setError(null)
+      }
+    } catch (err) {
+      setError(err.message)
     }
   }
   return (
@@ -46,6 +68,16 @@ const App = () => {
           <p>Last Updated: {weather.current.last_updated}</p>
         </div>
       )}
+      <div>
+          <h3>Last Searched Cities</h3>
+          <ul>
+            {lastSearchedCities.map((city, index) => (
+              <li key={index} onClick={() => listClik(city)}>
+                {city}
+              </li>
+            ))}
+          </ul>
+        </div>
     </div>
   )
 }
