@@ -1,9 +1,11 @@
 const urlsToCache = [
   '/index.html',
   '/offline.html',
+  './assets/logo.png',
+  './manifest.json'
 ];
 
-const CACHE_NAME = 'weather-app-cache-v1';
+const CACHE_NAME = 'weather-app-cache-v2';
 
 const self = this;
 
