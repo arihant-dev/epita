@@ -13,6 +13,24 @@ const App = () => {
     const savedUnit = localStorage.getItem('temperatureUnit')
     return savedUnit ? savedUnit : 'C'
   })
+  const [userLocation, setUserLocation] = useState(() => {
+    const savedLocation = localStorage.getItem('userLocation')
+    return savedLocation ? JSON.parse(savedLocation) : null
+  });
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+          localStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }))
+        },
+      );
+    }
+    else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  };
 
   const fetchData = async (e) => {
     if (e.key === 'Enter') {
@@ -90,6 +108,22 @@ const App = () => {
             <button onClick={tempUnitChangeButtonClicked}>
               Toggle Temperature Unit 
             </button>
+    </div>
+    <div>
+      <h1>Geolocation App</h1>
+      <button onClick={() => {
+        getUserLocation();
+        localStorage.setItem('userLocation', JSON.stringify(userLocation));
+        listClik(userLocation.latitude + ',' + userLocation.longitude);
+      }}>
+        Get User Location
+      </button>
+      {userLocation && (
+        <div>
+          <p>Latitude: {userLocation.latitude}</p>
+          <p>Longitude: {userLocation.longitude}</p>
+        </div>
+      )}
     </div>
     </div>
   )
