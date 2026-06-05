@@ -1,0 +1,38 @@
+# C# gitignore file for Visual Studio projects
+# Ignore build output directories
+bin/
+obj/
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+# Ignore NuGet packages
+packages/
+# Ignore ReSharper files
+_ReSharper*/
+*.ReSharper
+# Ignore Rider files
+.idea/
+# Ignore Visual Studio Code files
+.vscode/
+# Ignore test results
+TestResults/
+# Ignore publish output
+publish/
+# Ignore logs
+*.log
+# Ignore temporary files
+*.tmp
+*.temp
+# Ignore generated files
+Generated/  
+# Ignore database files
+*.mdf
+*.ldf
+# Ignore ASP.NET temporary files
+Temporary ASP.NET Files/
+# Ignore IIS Express files
+IISExpress/
+# Ignore Resharper files
+*.resharper
