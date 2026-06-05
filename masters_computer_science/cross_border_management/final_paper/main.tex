@@ -1,0 +1,294 @@
+\documentclass[12pt, a4paper]{article}
+
+% Encoding and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx} % Times New Roman equivalent
+
+% Layout
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{parskip}
+
+% Graphics
+\usepackage{graphicx}
+
+% Lists
+\usepackage{enumitem}
+
+% Headers and page numbering
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% Section formatting
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{1.5em}{0.5em}
+\titlespacing*{\subsection}{0pt}{1em}{0.3em}
+
+% Hyperlinks (for PDF metadata, no colored links)
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+% ============================================================
+% COVER PAGE
+% ============================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+
+\vspace*{1cm}
+
+\includegraphics[width=0.30\textwidth]{images/Epita.jpg}
+
+\vspace{1.5cm}
+
+{\Large \textbf{Cross-Border Management}}
+
+\vspace{0.4cm}
+
+{\large Professor: Sylvie TOURNIER}
+
+\vspace{0.3cm}
+
+{\large Team 3 \quad|\quad AIS-SE Gr1}
+
+\vspace{2cm}
+
+{\LARGE \textbf{Managing Cultural Tensions\\ in a Franco-Indian IT Team}}
+
+\vspace{2.5cm}
+
+{\large
+Mr.\ Arihant JAIN\\[0.2cm]
+Mr.\ Rajamanikam GANESAN\\[0.2cm]
+Mr.\ Muhammad Danish JAVED\\[0.2cm]
+Mr.\ Hemanth Kumar KOKUTAM\\[0.2cm]
+Mr.\ Poorna Sai Kishore MARISETTI
+}
+
+\vfill
+
+{\large Spring 2026}
+
+\end{center}
+\end{titlepage}
+
+% ============================================================
+% CONTENT
+% ============================================================
+\setstretch{1.5}
+
+\section*{Part One  -  Root Cause Analysis}
+
+The case study presents a Franco-Indian IT team where tensions arise from misunderstandings, conflicting work styles, and communication breakdowns. These frictions are not personal failures - they are cultural. Each behaviour described in the case maps to one or more of the GlobeSmart dimensions taught in this course. Below, we identify the cultural drivers on each side.
+
+\subsection*{1.1\quad Direct vs.\ Indirect Communication}
+
+The French ``tend to have a quite direct communication style and to express strong opinions during meetings''~(1). France's GlobeSmart profile positions it as direct, particularly for criticism and debate~(2). Direct communicators state disagreement openly and see this as transparency - ``calling things what they are''~(3).
+
+The Indians ``say `yes' to everything but prevent from committing clearly'' and retain ``information on technical difficulties \ldots\ so as to maintain harmony''~(1). In indirect cultures, ``yes'' often means ``I heard you,'' not ``I agree''~(3). Withholding bad news is an effort to protect group harmony, not an act of deception.
+
+The collision: the French hear ``yes,'' assume commitment, discover non-delivery, and interpret it as dishonesty. The Indians hear French bluntness and read it as hostility. Neither reading is correct - both are filtered through cultural defaults.
+
+\subsection*{1.2\quad Task vs.\ Relationship Orientation}
+
+The French ``demand regularly written reports'' and ``prefer a structured approach''~(1). This is task-oriented behaviour: deliverables and outcomes come first, personal rapport second. France's GlobeSmart profile confirms a moderate task orientation~(4).
+
+The Indian side operates with a stronger relationship orientation. Trust and personal connection precede productive collaboration. An Indian team member who has not built relational capital with a French colleague will not raise concerns openly, participate actively in meetings, or push back on unrealistic timelines. The French reading of this - passivity or lack of initiative - misses that the Indian colleague has not yet reached the relational threshold needed to fully engage.
+
+\subsection*{1.3\quad Monochronic vs.\ Polychronic Time Orientation}
+
+The French are ``strict on deadlines although they are often 5--10 minutes late to meetings''~(1). This is not contradictory. In monochronic cultures, project deadlines are fixed commitments; social time at meeting starts operates on a slightly different register~(5). Five minutes late to a meeting is tolerated. Five days late on a deliverable is not.
+
+Indians ``display a flexible time orientation and tend to be late with deadlines (or deliver on time but with a level of quality and structure considered as insufficient by the French)''~(1). They also arrive ``late by up to 30 minutes to meetings if hierarchy is not present''~(1). This reflects polychronic time management: deadlines are targets rather than walls, and time allocation is fluid based on context and competing priorities.
+
+\subsection*{1.4\quad Egalitarian vs.\ Status (Hierarchy)}
+
+Indian team members arrive punctually when hierarchy is present but are late when it is absent. This tells us that authority is respected based on rank, not on abstract rules~(6). The rule says ``be on time''; the cultural orientation says ``be on time \textit{for someone who matters in the hierarchy}.''
+
+France leans slightly toward status in its GlobeSmart profile, but this manifests through formality of address and intellectual credibility rather than punctuality behaviour~(4). The French debate style - openly challenging proposed approaches during meetings - reflects a belief that intellectual rigour earns authority~(7). Indian team members who read this extended debate as dysfunction are applying a status-oriented lens: in a status culture, publicly disagreeing with a senior figure is unacceptable, and protracted discussion signals disorder, not engagement.
+
+\subsection*{1.5\quad Independent vs.\ Interdependent}
+
+The French expect individual accountability: each person owns their deliverable and is responsible for flagging problems. Indians operate more interdependently. They ``sometimes keep quiet during meetings''~(1) because speaking up as an individual - especially to disagree - risks breaking group cohesion. When they do speak, they ``tend to speak for a very long time in an indirect way''~(1), contextualizing their point rather than stating it plainly, because bluntness can isolate the speaker from the group.
+
+The French read silence as disengagement. The Indians read French assertiveness as self-promotion or disregard for the team.
+
+\subsection*{1.6\quad High Context vs.\ Low Context Communication}
+
+Indian communication tends toward high-context: meaning is carried by tone, silence, relationship history, and what is left unsaid~(8). French work communication, especially in writing, is low-context: explicit, structured, and intended to be taken at face value~(9). The French demand for written reports is a low-context instinct - if it is not written down, it does not exist.
+
+When an Indian team member says ``we are working on it,'' the intended meaning may be ``we have hit a problem and need more time, but I do not want to cause alarm.'' A French colleague hears: ``progress is on track.'' The gap between these two readings is where projects go off course.
+
+\subsection*{1.7\quad The MIS Factor}
+
+Each of these dimension mismatches feeds the MIS cycle from class~(10): \textbf{MIS}perception (not seeing behaviour as intended) $\rightarrow$ \textbf{MIS}interpretation (using our own cultural filters to make sense of it) $\rightarrow$ \textbf{MIS}evaluation (judging their behaviour negatively by our standards) $\rightarrow$ \textbf{MIS}trust (losing confidence in the other side).
+
+Concretely: a French colleague hears an Indian say ``yes'' $\rightarrow$ perceives agreement $\rightarrow$ the deliverable arrives late or wrong $\rightarrow$ interprets this as incompetence or lying $\rightarrow$ evaluates the Indian negatively $\rightarrow$ mistrusts them on future projects $\rightarrow$ begins to micromanage $\rightarrow$ the Indian feels surveilled and withdraws further. The cycle deepens with each iteration unless it is explicitly interrupted.
+
+\newpage
+
+\section*{Part Two  -  Recommendations}
+
+The following recommendations address two questions: what the team leader should put in place so both sides collaborate better, and what actions can rebuild trust. Each recommendation is tied to a course framework and illustrated with concrete actions and sentences.
+
+\subsection*{2.1\quad Co-Create Team Operating Rules}
+
+The first step follows what Trompenaars describes as the ``Recognize'' phase~(11): acknowledge that cultural differences exist and name them explicitly. In the first team meeting, the team leader should say:
+
+\begin{quote}
+\textit{``We come from different work cultures. That is not a problem - it becomes one only when we assume everyone thinks the same way. Let us spend thirty minutes setting ground rules for how we will work together.''}
+\end{quote}
+
+Rules to co-define:
+\begin{itemize}[noitemsep]
+    \item Meeting start time: 5-minute tolerance maximum, regardless of who is present.
+    \item How disagreement works: ``In this team, challenging an idea is not disrespect - it is engagement. We expect it.''
+    \item Definition of ``done'': what format, what documentation, what quality level a deliverable must meet before it is submitted.
+    \item Escalation: what happens when a deadline is at risk - who is informed, by when, and through which channel.
+\end{itemize}
+
+These rules should be written, shared with the full team, and revisited after the first month.
+
+\subsection*{2.2\quad Fix the ``Yes'' Problem with Structured Scope}
+
+The Indian tendency to agree without full understanding has real consequences. In our own professional experience, a development team agreed to build a social networking platform, but what the client actually wanted was a secure internal communication channel between companies. The delivered product missed the mark entirely - not because of technical failure, but because the requirement was accepted before it was fully understood~(12).
+
+The fix that worked in practice: before locking any scope, hold dedicated context meetings where each stakeholder walks through the user flow. Then break work into sprints, each ending with a stakeholder demo. Misunderstandings surface in week two instead of month three.
+
+For this case, the team leader should:
+\begin{itemize}[noitemsep]
+    \item Hold a scope alignment session before each project phase, where the Indian team restates the requirements in their own words.
+    \item Ask explicitly: ``What parts of this are unclear? What could go wrong?'' - framing uncertainty as useful input, not weakness.
+    \item Run biweekly sprint demos with French and Indian team members present so gaps surface early.
+\end{itemize}
+
+\subsection*{2.3\quad Break the Silence in Meetings}
+
+Indian team members staying quiet is not apathy. Speaking up without invitation, especially to disagree, feels like overstepping in an interdependent, status-aware culture. But the French read silence as having nothing to contribute.
+
+From experience: an engineering manager sat through an entire call with a European team without speaking - not because he had nothing to add, but because the meeting format did not pull his input and his workload that week left no space to volunteer~(12). The fix was preparing context documents, implementation notes, and question lists before every meeting, then assigning sections to people so each person had a defined moment to speak.
+
+Actions for the team leader:
+\begin{itemize}[noitemsep]
+    \item Send the agenda and discussion points 24 hours before the meeting.
+    \item Assign topics to individuals: ``Rajamanikam, you cover the backend status. Danish, you present client feedback from last week.''
+    \item Use round-robin at least once per meeting - go around the room and ask each person directly for input.
+    \item For remote members, use a shared document where people can write input before or during the meeting. This gives indirect communicators a channel that suits their style.
+\end{itemize}
+
+\subsection*{2.4\quad Dual Communication: Verbal + Written Follow-Up}
+
+The French need documentation. Indians communicate better verbally and contextually. The answer is not forcing one side to adopt the other - it is using both.
+
+After every meeting or decision, the team leader sends a written summary in low-context format~(9):
+\begin{itemize}[noitemsep]
+    \item What was decided.
+    \item Who owns each action.
+    \item Deadlines for each item.
+    \item Open questions: who resolves them, by when.
+\end{itemize}
+
+The team leader should state:
+\begin{quote}
+\textit{``I will send a recap after each meeting. If anything in the recap does not match your understanding, reply within 24 hours. Silence after 24 hours means agreement.''}
+\end{quote}
+
+This flips the ``yes'' problem: instead of relying on a verbal ``yes'' as commitment, the written follow-up creates a traceable record. It satisfies the French need for explicit documentation and gives the Indian team a written reference instead of reliance on memory.
+
+\subsection*{2.5\quad Safe Channels for Raising Problems Early}
+
+The case says Indians retain information on difficulties to maintain harmony. This is the most damaging behaviour for project timelines - not because it is malicious, but because by the time the problem surfaces, it is often too late to fix cleanly.
+
+The team leader must make early problem-reporting feel safe:
+\begin{itemize}[noitemsep]
+    \item Hold weekly 15-minute one-on-one check-ins with each Indian team member. Private, not in a group.
+    \item Frame the check-in: ``What is going well? What is harder than expected? What do you need from me?''
+    \item When someone flags a problem early, acknowledge it publicly (without naming the person) as good practice: ``We caught an issue this week because it was flagged early - that saved us two weeks.''
+    \item Never penalize early reporting. If someone raises a risk that turns out to be nothing, thank them.
+\end{itemize}
+
+The principle: make the cost of silence higher than the cost of speaking up, and make speaking up feel rewarded rather than risky.
+
+\subsection*{2.6\quad Align on Deadlines with Milestones and Sprint Rituals}
+
+The monochronic-polychronic gap is not fixed by telling Indians to meet deadlines. The gap is in how each side defines progress, quality, and ``done.''
+
+Structure that worked in practice~(12):
+\begin{itemize}[noitemsep]
+    \item Break every project into two-week sprints with clear deliverables per sprint.
+    \item End each sprint with a review where output is demonstrated - not described, shown.
+    \item Hold sprint spillover meetings when work is incomplete: what slipped, why, what is needed to close it.
+    \item Define quality standards in writing: ``A deliverable is done when it passes code review, has documentation, and has been tested against the user flow.''
+\end{itemize}
+
+Everyone makes mistakes. The system's job is to catch and correct them early, so the team does not stay stuck in the same cycle of missed expectations~(12).
+
+\subsection*{2.7\quad Rebuilding Trust}
+
+Trust damaged by the MIS cycle does not return through statements of good intention. It returns through repeated, visible behaviour change.
+
+\textbf{Action 1: Name the pattern without blame.} The team leader should say to the group:
+\begin{quote}
+\textit{``We have had friction because we work differently, not because anyone is wrong. Different work cultures led to different expectations, and neither side was fully aware of the other's assumptions. We are fixing that now.''}
+\end{quote}
+
+\textbf{Action 2: Build evidence with small wins.} Assign a short, low-risk project to a mixed Franco-Indian pair. When it succeeds, reference it: ``This is what happens when we align on scope and process.'' Success builds evidence. Evidence rebuilds trust.
+
+\textbf{Action 3: Create informal relationship space.} Schedule monthly team lunches or coffee breaks - not optional, not agenda-driven. For remote members, run a casual Friday video call with no work discussion. The French value lunch as social ritual~(4); Indians value personal connection before professional engagement. This serves both sides.
+
+\textbf{Action 4: Model adaptation as team leader.} When addressing the French team, be structured, deductive, and direct. When addressing the Indian team, invest in relationship first and ask open questions before assigning tasks. When the team sees the leader adapting style, it normalizes the practice for everyone. This follows the cross-cultural learning process from class: awareness $\rightarrow$ knowledge $\rightarrow$ skills~(13).
+
+
+\vspace{1em}
+\textbf{Action 5: Iterate.} After three months, hold a team retrospective: ``What works better now? What still creates friction? What should change?'' Trust is not a one-time repair. It is maintained through continuous adjustment - the same principle behind sprint retrospectives the team already understands from software development.
+
+% ============================================================
+% SOURCES (does not count toward page limit)
+% ============================================================
+\newpage
+\section*{Sources}
+
+\begin{enumerate}[noitemsep]
+    \item Mini-case study assignment, Cross-Border Management, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#2 PDF  -  France's positioning on the Direct-Indirect dimension, Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#2 PDF  -  Direct vs.\ Indirect communicator comparison table (``calling things what they are'' vs.\ ``we must be respectful of others''), Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#4 and Class \#5 PDFs  -  France's GlobeSmart profile, French core values, and French mindset, Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#1 PDF  -  COF time management dimensions (monochronic/polychronic, scarce/plentiful), Sylvie Tournier, EPITA Spring 2026.
+    \item COF Assessment  -  Arihant Jain, Philippe Rosinski, Cultural Orientations Framework, \texttt{www.cofassessment.com}.
+    \item AIS-SE Gr1, CBM Class \#4 PDF  -  French thinking style: l'esprit critique, Cartesian reasoning, deductive logic, Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#3 PDF  -  High context vs.\ low context communication, Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#5 PDF  -  Email writing tips for task- and low-context-oriented recipients, best practices for cross-cultural written communication, Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#4 PDF  -  The MIS Factor (MISperception, MISinterpretation, MISevaluation, MIStrust), Sylvie Tournier, EPITA Spring 2026.
+    \item AIS-SE Gr1, CBM Class \#2 PDF  -  Trompenaars' 4R method (Recognize, Respect, Reconcile, Realize), Sylvie Tournier, EPITA Spring 2026.
+    \item Personal professional experience  -  Arihant Jain, software engineering and team coordination at Thriwe (India), 2019--2024.
+    \item AIS-SE Gr1, CBM Class \#5 PDF  -  Cross-cultural learning process: awareness $\rightarrow$ knowledge $\rightarrow$ skills, Sylvie Tournier, EPITA Spring 2026.
+\end{enumerate}
+
+\vspace{3em}
+
+\subsection*{AI Use Disclosure}
+
+\textbf{Prompts used:}
+\begin{itemize}[noitemsep]
+    \item ``Read all class PDFs, notes, homework, COF assessment, and the case study. Analyze the root causes of cultural tensions in this Franco-Indian IT team using GlobeSmart dimensions and class content.''
+    \item ``Write specific, concrete recommendations for how the team leader can improve collaboration. Use real professional experiences as examples. No generic advice.''
+\end{itemize}
+
+\textbf{Information obtained from AI (summary):}
+
+AI provided a structural framework mapping each case study behaviour to GlobeSmart dimensions and suggested the MIS cycle as a mechanism through which individual mismatches compound into systemic mistrust. It also proposed recommendation categories: ground rules, communication protocols, meeting structure, and trust-rebuilding actions.
+
+\textbf{What we kept:} The dimensional mapping structure (analyzing each behaviour through a specific GlobeSmart lens) and the MIS cycle framing. These aligned with class content and provided analytical clarity.
+
+\textbf{What we discarded:} AI suggested using ``izzat'' (honor/social dignity) as a central analytical thread. We removed it because it is not a course framework and would have introduced speculation not grounded in the GlobeSmart or COF models. AI also generated generic phrases (``foster mutual understanding,'' ``celebrate cultural diversity,'' ``embrace differences'') which we cut entirely.
+
+\textbf{What we added:} All professional examples - the product scope misdelivery, the silent engineering manager on the European call, sprint spillover meetings, context documentation practices - come from direct experience at Thriwe and EPITA. The specific sentences and dialogue (what the team leader should say in meetings) were written by team members. Class content citations and their application to the case study behaviours were done manually using the course PDFs.
+
+\end{document}
