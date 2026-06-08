@@ -2,6 +2,7 @@ const database = db.getSiblingDB("blog_project");
 const users = database.getCollection("users");
 const posts = database.getCollection("posts");
 const comments = database.getCollection("comments");
+// const likes = database.getCollection("likes");
 const counters = database.getCollection("counters");
 
 function normalizeTag(tag) {
@@ -28,12 +29,15 @@ function seedData() {
   users.deleteMany({});
   posts.deleteMany({});
   comments.deleteMany({});
+  // likes.deleteMany({});
   counters.deleteMany({});
 
   users.createIndex({ username: 1 }, { unique: true });
   posts.createIndex({ authorId: 1, createdAt: -1, _id: 1 });
   posts.createIndex({ tags: 1 });
+  posts.createIndex({ title: "text", body: "text" });
   comments.createIndex({ postId: 1 });
+  // likes.createIndex({ userId: 1, postId: 1 });
 
   users.insertMany([
     {
@@ -81,7 +85,6 @@ function seedData() {
       title: "Getting Started with MongoDB",
       body: "A beginner-friendly overview of MongoDB basics.",
       tags: normalizeTags(["mongodb", "database"]),
-      likeCount: 5,
       commentCount: 1,
       createdAt: new Date("2024-01-10T09:00:00Z"),
     },
@@ -91,7 +94,6 @@ function seedData() {
       title: "Indexing Tips",
       body: "Practical indexing guidance for faster queries.",
       tags: normalizeTags(["mongodb", "performance"]),
-      likeCount: 12,
       commentCount: 2,
       createdAt: new Date("2024-01-12T08:00:00Z"),
     },
@@ -101,7 +103,6 @@ function seedData() {
       title: "My First Post",
       body: "Hello, world! Sharing my first update.",
       tags: normalizeTags(["intro"]),
-      likeCount: 0,
       commentCount: 0,
       createdAt: new Date("2024-01-11T10:00:00Z"),
     },
@@ -111,7 +112,6 @@ function seedData() {
       title: "Aggregation Deep Dive",
       body: "Exploring aggregation pipelines with real examples.",
       tags: normalizeTags(["mongodb", "aggregation"]),
-      likeCount: 7,
       commentCount: 0,
       createdAt: new Date("2024-01-12T08:00:00Z"),
     },
@@ -121,7 +121,6 @@ function seedData() {
       title: "Schema Design Basics",
       body: "How to think about schema decisions in MongoDB.",
       tags: normalizeTags(["mongodb", "database", "design"]),
-      likeCount: 3,
       commentCount: 0,
       createdAt: new Date("2024-01-09T14:00:00Z"),
     },
@@ -131,7 +130,6 @@ function seedData() {
       title: "Hello World",
       body: "Setting up a simple app with MongoDB.",
       tags: normalizeTags(["intro", "database"]),
-      likeCount: 1,
       commentCount: 0,
       createdAt: new Date("2024-01-13T11:00:00Z"),
     },
@@ -160,6 +158,20 @@ function seedData() {
       createdAt: new Date("2024-01-12T11:00:00Z"),
     },
   ]);
+
+  // likes.insertMany([
+  //   { userId: "u_alice", postId: "p1" },
+  //   { userId: "u_bob", postId: "p1" },
+  //   { userId: "u_carol", postId: "p1" },
+  //   { userId: "u_alice", postId: "p2" },
+  //   { userId: "u_bob", postId: "p2" },
+  //   { userId: "u_carol", postId: "p2" },
+  //   { userId: "u_alice", postId: "p3" },
+  //   { userId: "u_bob", postId: "p4" },
+  //   { userId: "u_carol", postId: "p4" },
+  //   { userId: "u_alice", postId: "p5" },
+  //   { userId: "u_bob", postId: "p5" },
+  // ]);
 
   counters.insertMany([
     { _id: "postId", seq: 6 },
@@ -214,7 +226,6 @@ function createPost(authorId, { title, body, tags }) {
     title,
     body,
     tags: normalizeTags(tags),
-    likeCount: 0,
     commentCount: 0,
     createdAt: new Date(),
   });
@@ -236,16 +247,49 @@ function addComment(postId, authorId, text) {
   return commentId;
 }
 
-function likePost(postId) {
-  const post = posts.findOneAndUpdate(
-    { _id: postId },
-    { $inc: { likeCount: 1 } },
-    { returnNewDocument: true }
-  );
-  return post ? post.likeCount : null;
+function likePost(postId, userId) {
+  // const post = posts.findOneAndUpdate(
+  //   { _id: postId },
+  //   { $inc: { likeCount: 1 } },
+  //   { returnNewDocument: true }
+  // );
+  // return post ? post.likeCount : null;
+  const post = posts.findOne({ _id: postId }, { _id: 1 });
+  if (!post) return null;
+  const likeExists = likes.findOne({ userId, postId }, { _id: 1 });
+  if (likeExists) return null;
+  likes.insertOne({ userId, postId });
+  const likeCount = likes.countDocuments({ postId });
+  return likeCount;
 }
 
 function getFeed(userId, { limit = 20, skip = 0 } = {}) {
+  // const user = users.findOne({ _id: userId }, { following: 1 });
+  // if (!user || !Array.isArray(user.following) || user.following.length === 0)
+  //   return [];
+  // const following = user.following.filter((id) => id !== userId);
+  // if (following.length === 0) return [];
+  // return posts
+  //   .aggregate([
+  //     { $match: { authorId: { $in: following } } },
+  //     { $sort: { createdAt: -1, _id: 1 } },
+  //     { $skip: skip },
+  //     { $limit: limit },
+  //     {
+  //       $project: {
+  //         _id: 0,
+  //         id: "$_id",
+  //         authorId: 1,
+  //         title: 1,
+  //         tags: 1,
+  //         likeCount: 1,
+  //         createdAt: 1,
+  //         commentCount: 1,
+  //       },
+  //     },
+  //   ])
+  //   .toArray();
+ // Updated feed function to include like counts from the likes collection
   const user = users.findOne({ _id: userId }, { following: 1 });
   if (!user || !Array.isArray(user.following) || user.following.length === 0)
     return [];
@@ -254,6 +298,19 @@ function getFeed(userId, { limit = 20, skip = 0 } = {}) {
   return posts
     .aggregate([
       { $match: { authorId: { $in: following } } },
+      {
+        $lookup: {
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes",
+        },
+      },
+      {
+        $addFields: {
+          likeCount: { $size: "$likes" },
+        },
+      },
       { $sort: { createdAt: -1, _id: 1 } },
       { $skip: skip },
       { $limit: limit },
@@ -272,7 +329,47 @@ function getFeed(userId, { limit = 20, skip = 0 } = {}) {
     ])
     .toArray();
 }
-
+// Create running total for likes counts for posts of users - using window function
+function getLikeStats(userid) {
+  return posts
+    .aggregate([
+      { $match: { authorId: userid } },
+      {
+        $lookup: {
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes",
+        },
+      },
+      {
+        $addFields: {
+          likeCount: { $size: "$likes" },
+        },
+      },
+      {
+        $setWindowFields: {
+          sortBy: { createdAt: 1, _id: 1 },
+          output: {
+            runningTotalLikes: {
+              $sum: "$likeCount",
+              window: { documents: ["unbounded", "current"] },
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: "$_id",
+          title: 1,
+          likeCount: 1,
+          runningTotalLikes: 1,
+        },
+      },
+    ])
+    .toArray();
+}
 function getTopTags(n = 5) {
   return posts
     .aggregate([
@@ -283,4 +380,11 @@ function getTopTags(n = 5) {
       { $project: { _id: 0, tag: "$_id", count: 1 } },
     ])
     .toArray();
+}
+function searchPostsByText(text) {
+  return posts
+    .find(
+      { $text: { $search: text } }, 
+      { score: { $meta: "textScore" } 
+    }).sort({ score: { $meta: "textScore" }, createdAt: -1, _id: 1 })
 }
