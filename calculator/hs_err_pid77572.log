@@ -1,0 +1,290 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 1065353216 bytes. Error detail: G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   This process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3713), pid=77572, tid=91156
+#
+# JRE version:  (21.0.9+10) (build )
+# Java VM: OpenJDK 64-Bit Server VM (21.0.9+10-LTS, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -javaagent:C:\Users\Presentation\AppData\Local\JetBrains\IntelliJIdea2025.3\captureAgent\debugger-agent.jar=file:///C:/Users/PRESEN~1/AppData/Local/Temp/capture11720089383242235506.props -ea -Didea.test.cyclic.buffer.size=1048576 -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\lib\idea_rt.jar=59253 -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Ddebugger.async.stack.trace.for.all.threads=true -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 fr.epita.calculator.services.test.TestCalculatorWithJunit
+
+Host: Intel(R) Core(TM) Ultra 7 155H, 22 cores, 63G,  Windows 11 , 64 bit Build 26100 (10.0.26100.8521)
+Time: Mon Jun  1 09:26:45 2026 elapsed time: 1.988595 seconds (0d 0h 0m 1s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000002b930c473a0):  JavaThread "Unknown thread" [_thread_in_vm, id=91156, stack(0x000000d595800000,0x000000d595900000) (1024K)]
+
+Stack: [0x000000d595800000,0x000000d595900000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x6d6e29]
+V  [jvm.dll+0x8b4b76]
+V  [jvm.dll+0x8b712e]
+V  [jvm.dll+0x8b7813]
+V  [jvm.dll+0x283d86]
+V  [jvm.dll+0x6d3745]
+V  [jvm.dll+0x6c747a]
+V  [jvm.dll+0x35e7e8]
+V  [jvm.dll+0x366426]
+V  [jvm.dll+0x3b73fe]
+V  [jvm.dll+0x3b76a8]
+V  [jvm.dll+0x3329ec]
+V  [jvm.dll+0x33353b]
+V  [jvm.dll+0x87deeb]
+V  [jvm.dll+0x3c4381]
+V  [jvm.dll+0x867135]
+V  [jvm.dll+0x457391]
+V  [jvm.dll+0x458f81]
+C  [jli.dll+0x52d0]
+C  [ucrtbase.dll+0x2cd30]
+C  [KERNEL32.DLL+0x2e957]
+C  [ntdll.dll+0x87c1c]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ff9ea6191c8, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+Total: 0
+
+Other Threads:
+  0x000002b94b57f790 WorkerThread "GC Thread#0"                     [id=38132, stack(0x000000d595900000,0x000000d595a00000) (1024K)]
+  0x000002b9332be630 ConcurrentGCThread "G1 Main Marker"            [id=80244, stack(0x000000d595a00000,0x000000d595b00000) (1024K)]
+  0x000002b9332bfdc0 WorkerThread "G1 Conc#0"                       [id=106452, stack(0x000000d595b00000,0x000000d595c00000) (1024K)]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff9e9d150d7]
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00007ff9ea68d670] Heap_lock - owner thread: 0x000002b930c473a0
+
+Heap address: 0x0000000408800000, size: 16248 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 4 size 8 Array Of Cards #cards 64 size 144 Howl #buckets 8 coarsen threshold 14745 Howl Bitmap #cards 2048 size 272 coarsen threshold 1843 Card regions per heap region 1 cards per card region 16384
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000408800000, 0x0000000800000000)
+  region size 8192K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff9ea1007a9]
+GC Heap History (0 events):
+No events
+
+Dll operation events (2 events):
+Event: 0.018 Loaded shared library C:\Users\Presentation\.jdks\temurin-21.0.9\bin\java.dll
+Event: 0.020 Loaded shared library C:\Users\Presentation\.jdks\temurin-21.0.9\bin\zip.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+ZGC Phase Switch (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Memory protections (0 events):
+No events
+
+Nmethod flushes (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff708290000 - 0x00007ff70829e000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\java.exe
+0x00007ffb10960000 - 0x00007ffb10bc6000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffb0f340000 - 0x00007ffb0f409000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffb0dbf0000 - 0x00007ffb0dfea000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffb0e450000 - 0x00007ffb0e59c000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffac60a0000 - 0x00007ffac60b8000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\jli.dll
+0x00007ffac6290000 - 0x00007ffac62ae000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\VCRUNTIME140.dll
+0x00007ffb0ec20000 - 0x00007ffb0ede7000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffb0e370000 - 0x00007ffb0e397000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffb0ebf0000 - 0x00007ffb0ec1b000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffae5000000 - 0x00007ffae5292000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8521_none_3e08b75ce33403b3\COMCTL32.dll
+0x00007ffb0e5a0000 - 0x00007ffb0e6cb000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffb0f7b0000 - 0x00007ffb0f859000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffb0e170000 - 0x00007ffb0e213000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffb0edf0000 - 0x00007ffb0ee22000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ffac6ad0000 - 0x00007ffac6adc000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\vcruntime140_1.dll
+0x00007ffaa03e0000 - 0x00007ffaa046d000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\msvcp140.dll
+0x00007ff9e99d0000 - 0x00007ff9ea770000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\server\jvm.dll
+0x00007ffb0eb30000 - 0x00007ffb0ebe6000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffb0e6d0000 - 0x00007ffb0e77a000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffb0f410000 - 0x00007ffb0f528000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffb0fa40000 - 0x00007ffb0fac0000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffb03290000 - 0x00007ffb0329b000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffb0a390000 - 0x00007ffb0a3c6000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffb0d9a0000 - 0x00007ffb0d9fe000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
+0x00007ffb0d880000 - 0x00007ffb0d894000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
+0x00007ffb0c940000 - 0x00007ffb0c95b000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ffac6090000 - 0x00007ffac609a000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\jimage.dll
+0x00007ffb0bbf0000 - 0x00007ffb0be32000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ffb0e780000 - 0x00007ffb0eb03000 	C:\WINDOWS\System32\combase.dll
+0x00007ffb0f160000 - 0x00007ffb0f239000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ffae5a70000 - 0x00007ffae5aab000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ffb0e3a0000 - 0x00007ffb0e448000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffae5d10000 - 0x00007ffae5d1f000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\instrument.dll
+0x00007ffac6070000 - 0x00007ffac6090000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\java.dll
+0x00007ffabc320000 - 0x00007ffabc338000 	C:\Users\Presentation\.jdks\temurin-21.0.9\bin\zip.dll
+
+JVMTI agents:
+C:\Users\Presentation\AppData\Local\JetBrains\IntelliJIdea2025.3\captureAgent\debugger-agent.jar path:none, loaded, not initialized, instrumentlib options:file:///C:/Users/PRESEN~1/AppData/Local/Temp/capture11720089383242235506.props
+C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\lib\idea_rt.jar path:none, loaded, not initialized, instrumentlib options:59253
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\Presentation\.jdks\temurin-21.0.9\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8521_none_3e08b75ce33403b3;C:\Users\Presentation\.jdks\temurin-21.0.9\bin\server
+
+VM Arguments:
+jvm_args: -javaagent:C:\Users\Presentation\AppData\Local\JetBrains\IntelliJIdea2025.3\captureAgent\debugger-agent.jar=file:///C:/Users/PRESEN~1/AppData/Local/Temp/capture11720089383242235506.props -ea -Didea.test.cyclic.buffer.size=1048576 -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\lib\idea_rt.jar=59253 -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Ddebugger.async.stack.trace.for.all.threads=true -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 
+java_command: com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 fr.epita.calculator.services.test.TestCalculatorWithJunit
+java_class_path (initial): C:\Users\Presentation\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.1\junit-platform-launcher-1.10.1.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\lib\idea_rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\plugins\junit\lib\junit6-rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\plugins\junit\lib\junit5-rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\plugins\junit\lib\junit-rt.jar;S:\Work\ae\Epita\workspaces\2025f-adv\parent\calculator\target\test-classes;S:\Work\ae\Epita\workspaces\2025f-adv\parent\calculator\target\classes;C:\Users\Presentation\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.1\junit-jupiter-5.10.1.jar;C:\Users\Presentation\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.1\junit-jupiter-api-5.10.1.jar;C:\Users\Presentation\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Presentation\.m2\repository\org\junit\platform\junit-platform-commons\1.10.1\junit-platform-commons-1.10.1.jar;C:\Users\Presentation\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Presentation\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.1\junit-jupiter-params-5.10.1.jar;C:\Users\Presentation\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.1\junit-jupiter-engine-5.10.1.jar;C:\Users\Presentation\.m2\repository\org\junit\platform\junit-platform-engine\1.10.1\junit-platform-engine-1.10.1.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 12                                        {product} {ergonomic}
+     uint ConcGCThreads                            = 4                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 16                                        {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 8388608                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 1065353216                                {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 17037262848                               {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 8388608                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 7602480                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122027880                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122027880                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 17037262848                            {manageable} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Release file:
+<release file has not been read>
+Environment Variables:
+JAVA_HOME=C:\Program Files\Microsoft\jdk-21.0.10.7-hotspot\
+PATH=C:\Program Files\Microsoft\jdk-21.0.10.7-hotspot\bin;C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\PowerToys\;C:\Users\thoma\.local\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Go\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\GitHub CLI\;C:\Users\Presentation\AppData\Local\Microsoft\WindowsApps;
+USERNAME=Presentation
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 170 Stepping 4, GenuineIntel
+TMP=C:\Users\PRESEN~1\AppData\Local\Temp
+TEMP=C:\Users\PRESEN~1\AppData\Local\Temp
+
+
+
+
+Periodic native trim disabled
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 26100 (10.0.26100.8521)
+OS uptime: 4 days 5:48 hours
+Hyper-V role detected
+
+CPU: total 22 (initial active 22) (11 cores per cpu, 2 threads per core) family 6 model 170 stepping 4 microcode 0x28, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, sha, fma, vzeroupper, clflush, clflushopt, clwb, hv, serialize, rdtscp, rdpid, fsrm, f16c, cet_ibt, cet_ss
+Processor Information for processor 0
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 1
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 2
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 3
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 4
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 5
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 6
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 7
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 8
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 9
+  Max Mhz: 900, Current Mhz: 900, Mhz Limit: 900
+Processor Information for processor 10
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 11
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 12
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 13
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 14
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 15
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 16
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 17
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 18
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 19
+  Max Mhz: 1400, Current Mhz: 1400, Mhz Limit: 1400
+Processor Information for processor 20
+  Max Mhz: 700, Current Mhz: 700, Mhz Limit: 700
+Processor Information for processor 21
+  Max Mhz: 700, Current Mhz: 700, Mhz Limit: 700
+
+Memory: 4k page, system-wide physical 64980M (10357M free)
+TotalPageFile size 127386M (AvailPageFile size 97M)
+current process WorkingSet (physical memory assigned to process): 13M, peak: 13M
+current process commit charge ("private bytes"): 78M, peak: 1093M
+
+vm_info: OpenJDK 64-Bit Server VM (21.0.9+10-LTS) for windows-amd64 JRE (21.0.9+10-LTS), built on 2025-10-21T00:00:00Z by "admin" with unknown MS VC++:1942
+
+END.
