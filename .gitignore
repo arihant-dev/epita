@@ -84,5 +84,13 @@ desktop.ini
 *.cb2
 *.lb
 *.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
 
 # End of .gitignore
