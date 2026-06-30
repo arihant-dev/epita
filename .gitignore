@@ -33,6 +33,7 @@ Icon
 *~
 
 # ---- Python / virtualenv (optional; remove if not used) ----
+.venv/
 venv/
 env/
 ENV/
