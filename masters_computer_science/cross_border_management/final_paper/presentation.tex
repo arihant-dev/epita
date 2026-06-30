@@ -1,0 +1,391 @@
+\documentclass[aspectratio=169, 12pt]{beamer}
+
+% ============================================================
+% THEME AND COLORS
+% ============================================================
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+% Custom EPITA-ish color palette
+\definecolor{epitadark}{RGB}{0, 51, 102}
+\definecolor{epitalight}{RGB}{0, 102, 153}
+\definecolor{epitagray}{RGB}{240, 240, 240}
+\definecolor{accentorange}{RGB}{204, 102, 0}
+
+\setbeamercolor{palette primary}{bg=epitadark, fg=white}
+\setbeamercolor{palette secondary}{bg=epitalight, fg=white}
+\setbeamercolor{palette tertiary}{bg=epitadark, fg=white}
+\setbeamercolor{structure}{fg=epitadark}
+\setbeamercolor{title}{fg=white, bg=epitadark}
+\setbeamercolor{frametitle}{fg=white, bg=epitadark}
+\setbeamercolor{block title}{bg=epitadark, fg=white}
+\setbeamercolor{block body}{bg=epitagray, fg=black}
+\setbeamercolor{item}{fg=epitalight}
+\setbeamercolor{alerted text}{fg=accentorange}
+
+% ============================================================
+% FONTS AND ENCODING
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage{booktabs}
+
+% Remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% Presenter and Slide numbers in footer
+\newcommand{\presenter}[1]{\gdef\currentpresenter{#1}}
+\gdef\currentpresenter{}
+\setbeamertemplate{footline}{%
+  \hspace{0.5cm}{\scriptsize\currentpresenter}\hfill{\scriptsize\insertframenumber/\inserttotalframenumber}\hspace{0.5cm}\vspace{0.3cm}%
+}
+
+% ============================================================
+% TITLE INFO
+% ============================================================
+\title[CBM -- Recommendations]{Managing Cultural Tensions\\in a Franco-Indian IT Team}
+\subtitle{Recommendations for Effective Cross-Cultural Collaboration}
+\author[Team 3]{%
+  Arihant JAIN \and Rajamanikam GANESAN \and Muhammad Danish JAVED\\
+  \and Hemanth Kumar KOKUTAM \and Poorna Sai Kishore MARISETTI%
+}
+\institute[EPITA]{Cross-Border Management -- Professor Sylvie TOURNIER\\AIS-SE Gr1 -- Team 3}
+\date{Spring 2026}
+
+% ============================================================
+% DOCUMENT
+% ============================================================
+\begin{document}
+
+% --------------------------------------------------
+% TITLE SLIDE
+% --------------------------------------------------
+{\setbeamertemplate{footline}{}
+\begin{frame}
+\titlepage
+\end{frame}
+}
+
+% --------------------------------------------------
+% ROADMAP
+% --------------------------------------------------
+\begin{frame}{Roadmap}
+\presenter{}
+
+\begin{tabular}{r l l}
+\toprule
+& \textbf{Speaker} & \textbf{Topics} \\
+\midrule
+1. & Arihant & Context, Co-Create Rules \& Rebuilding Trust \\
+2. & Rajamanikam & Fix the ``Yes'' Problem \\
+3. & Danish & Break the Silence in Meetings \\
+4. & Hemanth & Dual Communication \& Safe Channels \\
+5. & Kishore & Deadlines \& Sprint Rituals \\
+\bottomrule
+\end{tabular}
+
+\end{frame}
+
+% ============================================================
+% ARIHANT — INTRO + §2.1
+% ============================================================
+
+% --------------------------------------------------
+% CONTEXT SLIDE
+% --------------------------------------------------
+\begin{frame}{Context: 7 Cultural Dimension Mismatches}
+\presenter{Presenter: Arihant JAIN}
+
+\vspace{0.3em}
+
+Root causes of team friction identified in our analysis:
+
+\vspace{0.3em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{itemize}
+    \item Direct vs.\ Indirect Communication
+    \item Task vs.\ Relationship Orientation
+    \item Mono- vs.\ Polychronic Time
+    \item Egalitarian vs.\ Status (Hierarchy)
+\end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\begin{itemize}
+    \item Independent vs.\ Interdependent
+    \item High vs.\ Low Context
+    \item Compound: The \alert{MIS Cycle}
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.8em}
+
+\begin{block}{Core Philosophy}
+No personal failures - only cultural defaults. Every friction has a structural remedy.
+\end{block}
+
+\end{frame}
+
+% --------------------------------------------------
+% §2.1 — CO-CREATE TEAM RULES
+% --------------------------------------------------
+\begin{frame}{R1: Co-Create Team Operating Rules}
+\presenter{Presenter: Arihant JAIN}
+
+\vspace{0.3em}
+
+\begin{block}{Step 1: Acknowledge Differences (Trompenaars' ``Recognize'')}
+\textit{``We work differently. Let us spend thirty minutes setting ground rules so we don't assume everyone thinks the same way.''}
+\end{block}
+
+\vspace{0.4em}
+
+\textbf{Co-defined ground rules:}
+\begin{itemize}
+    \item \textbf{Meetings}: 5-minute tolerance for start times, regardless of rank
+    \item \textbf{Debate}: Disagreement is active engagement, not disrespect
+    \item \textbf{Definition of ``Done''}: Specific quality \& documentation standards
+    \item \textbf{Escalation}: Standardized channel, owner, and timeline
+\end{itemize}
+
+\end{frame}
+
+% ============================================================
+% RAJAMANIKAM — §2.2
+% ============================================================
+
+% --------------------------------------------------
+% §2.2 — FIX THE YES PROBLEM (Merged Slide)
+% --------------------------------------------------
+\begin{frame}{R2: Fix the ``Yes'' Problem with Structured Scope}
+\presenter{Presenter: Rajamanikam GANESAN}
+
+\vspace{0.3em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Cultural Conflict:}
+\begin{itemize}
+    \item \textbf{Mismatch}: Indirect ``yes'' (``I hear you'') vs.\ Direct expectation (``I commit'')
+    \item \textbf{Result}: Scope accepted before it is understood
+\end{itemize}
+\vspace{0.5em}
+\begin{alertblock}{Example: Product Scope Mismatch}
+Client wanted a secure comms channel; team delivered a social network due to unvoiced gaps.
+\end{alertblock}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Structured Scope Process:}
+\begin{itemize}
+    \item \textbf{Scope Alignment}: Indian team restates requirements in their own words
+    \item \textbf{Active Inquiry}: Ask: \textit{``What could go wrong?''} to normalize voicing risks
+    \item \textbf{Sprint Demos}: Biweekly demos to surface gaps early
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% ============================================================
+% DANISH — §2.3
+% ============================================================
+
+% --------------------------------------------------
+% §2.3 — BREAK THE SILENCE (Merged Slide)
+% --------------------------------------------------
+\begin{frame}{R3: Break the Silence in Meetings}
+\presenter{Presenter: Muhammad Danish JAVED}
+
+\vspace{0.1em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Cultural Friction:}
+\begin{itemize}
+    \item \textbf{Mismatch}: Silence as deference (Status) vs.\ Silence as apathy (Egalitarian)
+    \item \textbf{Result}: Critical technical input is withheld during group calls
+\end{itemize}
+\vspace{0.2em}
+\begin{alertblock}{Example: Silent Engineering Manager}
+Sat through call without speaking because meeting structure did not prompt his input.
+\end{alertblock}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Active Meeting Design:}
+\begin{itemize}
+    \item \textbf{Preparation}: Send agenda \& discussion points \textbf{24 hours before}
+    \item \textbf{Assigned Topics}: Assign sections to individuals prior to the call
+    \item \textbf{Round-Robin}: Prompt members directly for input
+    \item \textbf{Written Input}: Shared docs for remote written inputs
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% ============================================================
+% HEMANTH — §2.4 + §2.5
+% ============================================================
+
+% --------------------------------------------------
+% §2.4 — DUAL COMMUNICATION
+% --------------------------------------------------
+\begin{frame}{R4: Dual Communication (Verbal + Written)}
+\presenter{Presenter: Hemanth Kumar KOKUTAM}
+
+\vspace{0.3em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Medium Mismatch:}
+\begin{itemize}
+    \item \textbf{Low-Context}: Trusts explicit written records
+    \item \textbf{High-Context}: Relies on fluid verbal exchange
+\end{itemize}
+\vspace{0.5em}
+\begin{block}{The 24-Hour Agreement Rule}
+\textit{``I will send a recap after each meeting. Silence after 24 hours means agreement.''}
+\end{block}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Dual Protocol:}
+\begin{itemize}
+    \item Use verbal meetings for alignment \& discussion
+    \item Document decisions, action items, owners, and deadlines immediately after
+    \item \textbf{Flips the ``Yes'' Problem}: Replaces verbal assent with a traceable written record
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% --------------------------------------------------
+% §2.5 — SAFE CHANNELS
+% --------------------------------------------------
+\begin{frame}{R5: Safe Channels for Early Problem Reporting}
+\presenter{Presenter: Hemanth Kumar KOKUTAM}
+
+\vspace{0.3em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Reporting Friction:}
+\begin{itemize}
+    \item \textbf{Relationship-Orientation}: Reporting problems risks disrupting group harmony
+    \item \textbf{Result}: Issues stay hidden until they become critical
+    \item \textbf{Root cause}: Speaking up feels like breaking group loyalty
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Safety Protocols:}
+\begin{itemize}
+    \item \textbf{Private Check-Ins}: Weekly 15-minute 1-on-1s (private, not group)
+    \item \textbf{Open Questions}: \textit{``What is harder than expected?''}
+    \item \textbf{Zero Penalty}: Publicly thank early risk flags (without naming names)
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+\begin{center}
+\alert{\textbf{Principle: Make the cost of silence higher than the cost of speaking up.}}
+\end{center}
+
+\end{frame}
+
+% ============================================================
+% KISHORE — §2.6
+% ============================================================
+
+% --------------------------------------------------
+% §2.6 — DEADLINES & SPRINTS
+% --------------------------------------------------
+\begin{frame}{R6: Align on Deadlines with Sprint Rituals}
+\presenter{Presenter: Poorna Sai Kishore MARISETTI}
+
+\vspace{0.3em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Temporal Friction:}
+\begin{itemize}
+    \item \textbf{Mismatch}: Monochronic vs.\ Polychronic views of deadlines
+    \item \textbf{Definitions}: Divergent standards of quality and ``done''
+    \item \textbf{Symptom}: Late deliverables with incomplete documentation
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Sprint Mechanics:}
+\begin{itemize}
+    \item \textbf{Two-Week Sprints}: Clear, bite-sized deliverables
+    \item \textbf{Demo-Based Reviews}: Show working output, do not describe it
+    \item \textbf{Spillover Meetings}: Active correction when work is incomplete
+    \item \textbf{Written Quality Standards}: \textit{Done = reviewed + documented + tested}
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% ============================================================
+% ARIHANT — §2.7
+% ============================================================
+
+% --------------------------------------------------
+% §2.7 — REBUILDING TRUST (Merged Slide)
+% --------------------------------------------------
+\begin{frame}{R7: Rebuilding Trust (5 Concrete Actions)}
+\presenter{Presenter: Arihant JAIN}
+
+\vspace{0.3em}
+
+Trust damaged by the MIS cycle is rebuilt through repeated, visible behaviour changes:
+
+\vspace{0.5em}
+
+\begin{enumerate}
+    \item \textbf{Address friction without blame} -- Name the pattern: different, not wrong.
+    \item \textbf{Build momentum with small wins} -- Franco-Indian pairings on low-risk tasks.
+    \item \textbf{Create informal space} -- Monthly lunches \& casual Friday video calls.
+    \item \textbf{Lead by example} -- Model style-switching in daily communication.
+    \item \textbf{Review regularly} -- Group retrospectives every 3 months to adjust.
+\end{enumerate}
+
+\end{frame}
+
+% --------------------------------------------------
+% CLOSING
+% --------------------------------------------------
+{\setbeamertemplate{footline}{}
+\begin{frame}{}
+
+\vspace{2cm}
+
+\begin{center}
+{\Large \textbf{Merci}}
+
+\vspace{1cm}
+
+{\large We welcome your questions.}
+
+\vspace{1.5cm}
+
+{\small Team 3 -- AIS-SE Gr1\\Cross-Border Management -- Spring 2026}
+\end{center}
+
+\end{frame}
+}
+
+\end{document}
