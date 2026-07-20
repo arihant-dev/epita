@@ -4,3 +4,15 @@
 [submodule "masters_computer_science/android_initiation"]
 	path = masters_computer_science/android_initiation
 	url = https://github.com/arihant-dev/myclock_arihant.jain-epita.com.git
+
+[submodule "masters_computer_science/general_frontend_development_principles/test-nest"]
+	path = masters_computer_science/general_frontend_development_principles/test-nest
+	url = https://github.com/arihant-dev/test-nest.git
+
+[submodule "masters_computer_science/software_industralization/project"]
+	path = masters_computer_science/software_industralization/project
+	url = https://github.com/arihant-dev/software-industralization.git
+
+[submodule "masters_computer_science/web_applications_patterns/microservices"]
+	path = masters_computer_science/web_applications_patterns/microservices
+	url = https://github.com/arihant-dev/microservices.git

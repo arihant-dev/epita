@@ -63,8 +63,15 @@ secrets/
 # Uncomment if you don't want to check in exported data files
 # *.csv
 # *.tsv
-# *.xlsx
 # data/
+
+# ---- Course material binaries (kept locally, not pushed to GitHub) ----
+# Note: already-tracked files are unaffected; use `git rm --cached` to untrack.
+*.pdf
+*.epub
+*.docx
+*.pptx
+*.xlsx
 
 # ---- Misc ----
 Thumbs.db
@@ -92,5 +99,8 @@ desktop.ini
 *.nav
 *.snm
 *.vrb
+
+# Local backups
+local_backups/
 
 # End of .gitignore
