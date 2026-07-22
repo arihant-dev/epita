@@ -329,7 +329,7 @@ End
 
 ---
 
-## Summary
+## SEH Summary
 
 - SEH replaces error return codes
 - `try` — code under surveillance
@@ -339,3 +339,241 @@ End
 - Exceptions propagate up the call stack
 - Catch specific exceptions first, general last
 - `finally` block guarantees cleanup execution
+
+---
+
+## Delegates
+
+### Workflow
+
+- **Sender** — The one who is at the origin of the action
+- **Receiver** — The one who implements the action
+
+```text
+Sender: "Let's have a Barbecue"
+        Cal = Cook.BBQ();
+
+Receiver (Cook):
+        int BBQ() { return 3000; }
+```
+
+---
+
+### Strong Coupling
+
+#### Derivation ("Is a")
+
+- Sender **is a** Receiver (inheritance)
+- Direct calls to public methods of the receiver
+
+```csharp
+class Cook
+{
+    public int BBQ() { return 3000; }
+}
+
+class Student : Cook
+{
+    // Student is a Cook — direct access
+}
+```
+
+#### Aggregation ("Has a")
+
+- Sender **has a** reference to the Receiver
+
+```csharp
+class Cook
+{
+    public int BBQ() { return 3000; }
+}
+
+class Student
+{
+    Cook myCook = new Cook();
+    // Student has a Cook — calls via reference
+}
+```
+
+---
+
+### Interfaces (Contract Coupling)
+
+- Sender defines action prototypes in an interface
+- Sender holds a reference to the interface
+- Receiver implements **all** methods of the interface
+
+```csharp
+public interface Ireceiver
+{
+    int FeeMe();
+}
+
+class USCook : Ireceiver
+{
+    public int FeeMe() { return 3000; }
+}
+
+class Indian : Ireceiver
+{
+    public int FeeMe() { return 1800; }
+}
+
+// Sender uses interface reference
+Ireceiver KFC = new USCook();
+int cal = KFC.FeedMe();
+```
+
+- Keyword: `interface`
+- Set of methods — contract oriented programming
+- Multiple interface inheritance
+
+---
+
+### Delegate (Light Coupling)
+
+- Sender defines the prototype of **one** method
+- Sender sets a delegate instance to the receiver's method
+- Receiver only implements **the** method
+
+```csharp
+// Delegate declaration (prototype)
+delegate int FeedMe();
+
+class Italian
+{
+    public int Pasta() { return 1800; }
+}
+
+// Sender
+Italian Luigi = new Italian();
+FeedMe Lunch = new FeedMe(Luigi.Pasta);
+int cal = Lunch.Invoke();
+```
+
+#### Language & Framework
+
+| Aspect   | Details                                                  |
+| -------- | -------------------------------------------------------- |
+| Keyword  | `delegate` — defines a unique method prototype           |
+|          | Must be instantiated                                     |
+|          | Any method matching the prototype can be used            |
+| Class    | `System.Delegate` — may be ignored by the developer      |
+|          | Has specific methods and properties                      |
+
+---
+
+### Delegate Syntax
+
+```csharp
+// 1. Define a delegate type & prototype
+delegate int delExample(float fl);
+
+// 2. Receiver implements the prototype
+int methExample(float f) { /* ... */ }
+
+// 3. Sender creates a delegate instance
+delExample myDel = new delExample(methExample);
+
+// 4. Sender calls the delegate instance
+int result = myDel.Invoke(2.3f);
+```
+
+---
+
+### Anonymous Methods
+
+- No need for a named method when used in one context
+- Method body given inline
+
+```csharp
+S3.Students = myCourse.Selector(
+    delegate(Student std)
+    {
+        if (std.score > 10)
+            return true;
+        else
+            return false;
+    }
+);
+```
+
+---
+
+### Lambda Expressions
+
+- Shortcut syntax for anonymous methods
+- Types are known from delegate declaration
+- `=>` operator: "A is transformed into B"
+
+```csharp
+S4.Students = myCourse.Selector(
+    std => { return (std.score > 10) ? true : false; }
+);
+```
+
+---
+
+### MulticastDelegate
+
+#### Problem
+
+- A standard delegate has a **unique** receiver
+
+#### Solution
+
+- `MulticastDelegate` inherits from `Delegate`
+- Allows a **list of receivers**
+- Is the class behind the `delegate` keyword
+
+```csharp
+// Chaining multiple receivers
+myInstance.myDeleg += M1;
+myInstance.myDeleg += M2;
+myInstance.myDeleg += M3;
+
+// Invoke — all methods called in order
+myInstance.myDeleg();  // M1(), M2(), M3()
+```
+
+#### Operators & Methods
+
+| Member                | Description                          |
+| --------------------- | ------------------------------------ |
+| `=`                   | Set delegate                         |
+| `+=`                  | Add method to invocation list        |
+| `-=`                  | Remove method from invocation list   |
+| `GetInvocationList()` | Get collection of methods            |
+| `Method`              | Description of the delegate method   |
+| `Target`              | Target object of the delegate        |
+
+---
+
+### Events
+
+- An **event** is a `MulticastDelegate` **without** the `=` operator (only `+=` / `-=`)
+- **Sender**: Graphical object receiving user input (Button, etc.)
+- **Receiver**: Application class reacting to user input (Form, etc.)
+
+```csharp
+// Event handler signature
+void DoMyClick(object sender, EventArgs e)
+{
+    // Code for Button1 Click
+}
+
+// Subscription
+Button1.Click += DoMyClick;
+```
+
+---
+
+### Delegates Summary
+
+| Concept           | Focus                    |
+| ----------------- | ------------------------ |
+| Class             | State & behavior (encapsulation) |
+| Interface         | Behavior (contract)      |
+| Delegate          | Action (method)          |
+| MulticastDelegate | Linked list of actions   |
+| Event             | Specific MulticastDelegate for GUI (Click, Load, Draw, etc.) |
